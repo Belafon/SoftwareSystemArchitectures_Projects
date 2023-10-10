@@ -102,14 +102,46 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 
 ---
 
-### Feature:
+### Feature: Komunikace v rámci týmu
 
-<!-- The feature described in a form of a user story -->
+Jako student chci mít možnost komunikovat s lidmi ze svého týmu, abychom si mohli rozdělit práci a domluvit se na podrobnostech.
 
 #### Feature breakdown
 
-<!-- The feature breakdown -->
+**Předpoklady:**
+
+- `Student` je přihlášen do systému jako student.
+
+**Normální interakce:**
+
+1. `Student` otevře modul Projekty.
+2. `Systém` zobrazí hlavní stránku modulu Projekty, včetně seznamu projektů, na kterých je student již přihlášen.
+3. `Student` vybere kliknutím konkrétní projekt ze seznamu.
+4. `Systém` zobrazí detail projektu.
+5. `Student` klikne na možnost `Chat`.
+6. `Systém` zobrazí chatové okno včetně historie a textového pole na novou zprávu.
+7. `Student` napíše do textového pole novou zprávu.
+8. `Student` klikne na tlačítko `Odeslat`.
+9. `Systém` uloží zprávu do historie.
+10. `Systém` odešle upozornění emailem ostatním studentům z týmu o nové zprávě.
+11. `Student` zavře chatové okno křížkem.
 
 #### Responsibilities
 
-<!-- A ##### section for each group of responsibilities -->
+##### Zobrazení seznamu přihlášených projektů studenta
+
+- Vytvoření dotazu na databázi pro získání seznamu projektů, na kterých je student aktuálně přihlášený.
+
+##### Zobrazení detailu projektu
+
+- Vytvoření dotazu na databázi pro získání informací o správném projektu.
+
+##### Managment historie chatu
+
+- Uložení nové zprávy do databáze.
+- Aktualizace chatu pro nové zprávy.
+- Ukončení chatu a smazání historie po ukončení projektu.
+
+##### Notifikace studentů
+
+- Poslání emailu studentům z týmu o aktivitě v chatu.
