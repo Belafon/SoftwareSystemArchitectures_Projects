@@ -46,19 +46,54 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 
 ---
 
-### Feature:
+### Feature: Vypsání témat projektů.
 
-<!-- The feature described in a form of a user story -->
+Jako učitel chci mít možnost vypsat témata projektů, aby se studenti mohli přihlásit do nich. (zapsat si ...)
 
 #### Feature breakdown
 
-<!-- The feature breakdown -->
+**Předpoklady:**
+
+- `Učitel` je přihlášen do systému jako učitel.
+
+** Možné stavy projektu**
+- Otevřený: `Student` se do projektu může přihlásit.
+- Obsazený: Nikdo se nemůže přihlásit do projektu, protože už je potvrzen tým_projekt a aktivně pracují.- Uzavřený: projekt je vypsán a dá se ho prohlížet, nejde se ale přihlašovat.
+- Ukončený: práce nad projektem je již ukončena.
+- Neaktivní: nikdo se do projektu nepřihlásil a vypršel čas na přihlášení.
+
+**Normální interakce:**
+* 1\. `Učitel` otevře modul Projekty.
+* 2\. `Učitel` zmáčkne tlačítko `Vytvořit nový projekt`.
+* 3\. Systém zobrazí formulář a `Učitel` vyplní všechny potřebné detaily projektu.
+* 4\. `Učitel` potvrdí vytvoření projektu zmáčknutím tlačítka `potvrdit a vytvořit`.
+* 5\. Systém ověří, zda projekt už existuje a je otevřený.
+* 6\. Jestli neexistuje: <br>
+    * a) Systém přidá nový projekt k uzavřeným. <br>
+    * b) Systém vrátí, že projekt byl úspěšně vytvořen a nabidne otevřít projekt.<br>
+    * c) Jestli `Učitel` chce otevřít projekt.<br>
+        * I. Systém přidá projekt k otevřeným.<br>
+        * II. Systém vrátí, že projekt byl úspěšně otevře a `Student`i se mohou přihlásit.<br>
+        * III. Systém se přepne na hlavní stránku modulu Projekty.<br>
+    * d) Jestli nechce:<br>
+        * I. `Učitel` zmáčkne tlačítko `Nechat uzavřený` a Systém se přepne na hlavní stránku modulu.
+* 7\. Jestli existuje:
+     * a) Systém vrátí, že projekt už existuje a jestli `Učitel` chce pokračovat a vytvořit projekt, musí změnit název, ...
+        * I. Jestli `Učitel` chybně zadal detaily a popis projektu, který už existuje, zmáčkne `Vrátit se na začátek` nebo `Vrátit se na modul Projekty`.
+        * II. Jestli učitel chce pokračovat, změní potřebné detaily projektu a vrátí se na krok 4. 
 
 #### Responsibilities
 
-<!-- A ##### section for each group of responsibilities -->
+##### Databázové responsibilities.
+- Vytvoření dotazu na databázi a vracení výsledku.
+- Vložení nových dat do databáze a vracení výsledků o úspěšnosti akce(??).
 
----
+##### Data Analysis responsibilities.
+- Analýza výsledku.
+- Na základě výsledků nabízení určitých možností, jak pokračovat.
+
+##### ???? responsibilities.
+- Uložení dat do nějaké cachi, než se rozhodne kam je dát.
 
 ### Feature:
 
