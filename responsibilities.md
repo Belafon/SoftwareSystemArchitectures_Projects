@@ -95,17 +95,38 @@ Jako učitel chci mít možnost vypsat témata projektů, aby se studenti mohli 
 ##### ???? responsibilities.
 - Uložení dat do nějaké cachi, než se rozhodne kam je dát.
 
-### Feature:
+---
 
-<!-- The feature described in a form of a user story -->
+### Feature: Prohlížení projektů učitelem
+
+Jako učitel chci prohlížet projekty, abych mohl zkontrolovat práci studentů.
 
 #### Feature breakdown
 
-<!-- The feature breakdown -->
+**Předpoklady:**
+
+- `Učitel` je přihlášen do systému jako učitel.
+
+**Interakce:**
+
+1. `Učitel` otevře modul Projekty.
+2. `Systém` zobrazí hlavní stránku modulu Projekty: seznam projektů, u nichž je `Učitel` vedoucím.
+3. `Učitel` klikne na požadovaný projekt.
+4. `Systém` zobrazí detailní informace o projektu včetně seznamu zapsaných studentů a nahraných souborů.
+5. `Učitel` klikne na jeden ze zobrazených souborů:
+	-  `Systém` zobrazí soubor a informace o tom kdo a kdy ten soubor nahrál.
+6.  `Učitel` klikne na uživatelské jméno studenta:
+	-  `Systém` zobrazí profil studenta včetně jeho jména, id, ročníku a času, kdy byl do projektu zapsán.
 
 #### Responsibilities
 
-<!-- A ##### section for each group of responsibilities -->
+##### Ukládání dat
+- Ukládání souborů nahraných uživatelem systému
+- Ukládání informací o nahraných souborech spolu s id uživatele, který soubory nahrál
+##### Autorizace
+- Systém zobrazuje informace relevantní pro uživatele na základě přihlašovacích údajů
+##### Reagování 
+- Systém reaguje na kliknutí myší, vhodně zpracovává požadavky a hlásí případné chyby
 
 ---
 
