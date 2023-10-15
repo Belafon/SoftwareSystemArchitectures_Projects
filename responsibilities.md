@@ -213,3 +213,47 @@ Jako student chci mít možnost komunikovat s lidmi ze svého týmu, abychom si 
 ##### Notifikace studentů
 
 - Poslání emailu studentům z týmu o aktivitě v chatu.
+ 
+---
+
+### Feature: Správa projektov
+
+Ako študent viem svoje riešenie upraviť aspoň 50x a viem si pozrieť všetky svoje odovzdané verzie.
+
+#### Feature breakdown
+
+**Předpoklady:**
+
+- `Student` je prihlásený do systému ako student.
+
+**Normální interakce:**
+
+1.	`Student` otvorí zložku projekty.
+2.	`Systém`  zobrazí hlavnú stránku modulu Projekty – všetky projekty, do ktorých je študent prihlásený.
+3.	`Student` klikne na projekt, v ktorom chce vykonávať zmeny.
+4.	`Systém` zobrazí podrobnosti projektu.
+5.	`Student` klikne na tlačidlo upraviť.
+6.	`Systém` zobrazí najnovšiu verziu v editovateľnom móde. (V prípade, že chce vytvoriť nové riešenie, zobrazí sa mu novovytvorený prázdny dokument.)
+7.	Po skončení úprav `Student` klikne na 
+a.	Uložiť zmeny a `Systém`  vytvorí v databáze nový súbor so zaznamenanými zmenami a zobrazí podrobnosti projektu.
+b.	Zrušiť a `Systém` zobrazí podrobnosti projektu.
+8.	`Student` klikne na zobraziť históriu úprav aby si mohol prezrieť svoje odovzdané riešenia.
+9.	`Systém` zobrazí tabuľku, v ktorej bude kto, kedy a čo upravil. Po kliknutí na riadok v tabuľke systém zobrazí vybratú a predchádzajúcu verziu a vyznačí, kde nastali zmeny.
+10.	Keď bude odovzdaných 50 verzií, `Student` môže požiadať učiteľa o navýšenie počtu možných odovzdaných riešení.
+
+#### Responsibilities
+
+##### Zobrazenie zoznamu prihlásených projektov študenta
+
+- Vytvorenie dotazu na databázu na získanie zoznamu projektov, do ktorých je študent aktuálne prihlásený.
+
+##### Zobrazenie detailu projektu
+
+- Vytvorenie dotazu na databázu na získanie informácií o správnom projekte.
+- Správne zobrazenie histórie úprav.
+
+##### Notifikácie študentov
+
+- Poslanie emailu študentom z tímu o počte zostávajúcich pokusov.
+
+
