@@ -56,9 +56,10 @@ Jako učitel chci mít možnost vypsat témata projektů, aby se studenti mohli 
 
 - `Učitel` je přihlášen do systému jako učitel.
 
-** Možné stavy projektu**
+**Možné stavy projektu**
 - Otevřený: `Student` se do projektu může přihlásit.
-- Obsazený: Nikdo se nemůže přihlásit do projektu, protože už je potvrzen tým_projekt a aktivně pracují.- Uzavřený: projekt je vypsán a dá se ho prohlížet, nejde se ale přihlašovat.
+- Obsazený: Nikdo se nemůže přihlásit do projektu, protože už je potvrzen tým_projekt a aktivně pracují.
+- Uzavřený: projekt je vypsán a dá se ho prohlížet, nejde se ale přihlašovat.
 - Ukončený: práce nad projektem je již ukončena.
 - Neaktivní: nikdo se do projektu nepřihlásil a vypršel čas na přihlášení.
 
@@ -130,17 +131,28 @@ Jako učitel chci prohlížet projekty, abych mohl zkontrolovat práci studentů
 
 ---
 
-### Feature:
+### Feature: Potvrzení týmu projektu učitelem
 
-<!-- The feature described in a form of a user story -->
+Jako učitel chci mít možnost označit projekt za `obsazený`. To znamená, že se do projektu již nemůže přihlásit žádný student, tým_projekt je potvrzený a aktivně se na něm pracuje. 
 
 #### Feature breakdown
 
-<!-- The feature breakdown -->
+**Předpoklady:**
 
+- `Učitel` je přihlášen do systému jako učitel.
+
+**Interakce:**
+
+1. `Učitel` otevře modul Projekty.
+2. `Systém` zobrazí hlavní stránku modulu Projekty: seznam projektů, u nichž je `Učitel` vedoucím a u každého projektu je uveden jeho stav.
+3. `Učitel` klikne na požadovaný projekt se stavem `Otevřený`.
+4. `Systém` zobrazí detailní informace o projektu včetně seznamu zapsaných studentů.
+5. `Učitel` zkontroluje stav týmu a klikne na tlačítko `Potvrdit tým`.
+6. `Systém` změní stav projektu na `Obsazený` a zobrazí hlášení s potvrzením.
 #### Responsibilities
 
-<!-- A ##### section for each group of responsibilities -->
+##### Databáze responsibilities.
+- Vytvoření dotazu na databázi, vracení výsledku, nebo změna dat v databázi.
 
 ---
 
