@@ -33,6 +33,10 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 
 #### Responsibilities
 
+##### Uživatelské rozhraní
+
+- Zobrazení jenotlivých stránek modulu Projekty.
+
 ##### Získání seznamu projektů
 
 - Tvoraba dotazu na databázi pro získání seznamu projektů podle zadaných filtrů.
@@ -43,6 +47,14 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 - Kontrola, zda kapacita projektu dovoluje zápis dalšího studenta.
 - Kontrola, zda student splňuje požadavky projektu.
 - Kontrola, zda student již není zapsán do projektu.
+
+##### Zápis studenta do projektu
+
+- Zápis do databáze o zápisu studenta do projektu.
+
+##### Zobrazení hlášení s potvrzením zápisu
+
+- Zobrazení hlášení s potvrzením zápisu.
 
 ---
 
