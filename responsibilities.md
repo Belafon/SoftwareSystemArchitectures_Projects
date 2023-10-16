@@ -134,11 +134,16 @@ Jako učitel chci prohlížet projekty, abych mohl zkontrolovat práci studentů
 #### Responsibilities
 
 ##### Ukládání dat
+
 - Ukládání souborů nahraných uživatelem systému
 - Ukládání informací o nahraných souborech spolu s id uživatele, který soubory nahrál
+
 ##### Autorizace
+
 - Systém zobrazuje informace relevantní pro uživatele na základě přihlašovacích údajů
+
 ##### Reagování 
+
 - Systém reaguje na kliknutí myší, vhodně zpracovává požadavky a hlásí případné chyby
 
 ---
@@ -165,20 +170,6 @@ Jako učitel chci mít možnost označit projekt za `obsazený`. To znamená, ž
 
 ##### Databáze responsibilities.
 - Vytvoření dotazu na databázi, vracení výsledku, nebo změna dat v databázi.
-
----
-
-### Feature:
-
-<!-- The feature described in a form of a user story -->
-
-#### Feature breakdown
-
-<!-- The feature breakdown -->
-
-#### Responsibilities
-
-<!-- A ##### section for each group of responsibilities -->
 
 ---
 
