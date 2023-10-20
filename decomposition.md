@@ -205,4 +205,50 @@ decomposition design
 
 ### Second variant
 
-TODO
+#### Chat log
+
+- Přijmi zprávu odeslanou studentem do jeho týmového chatu
+- Pravidelně předej aktualizovaný chat log cache
+- Odešli zprávu do chatu týmu
+- Ukonči chat a smaž historii po ukončení projektu
+- Zobraz chat log
+- Konstatně hlídej, zda nepřišla nová zpráva do chatu
+- Po hodině nezobrazení chatu, odešli upozornění o nové zprávě
+
+#### Chat uživatelské rozhraní
+- Zobrazení chatu
+
+#### Chat cache
+- Přijmi aktualizovaný log chat
+- Načti historii chatu z databáze
+- Ulož historii do databáze 
+  
+#### Notifikace
+
+- Emailová
+  - Odeštli email studentovi o aktivitě v chatu
+  - Vytvoř email podle template a nahraď proměnné
+- Systémová
+  - Zobraz zprávu o úspěšném zápisu do projektu
+  - Zobraz chybovou zprávu o neúspěšném zápisu do projektu
+  - Zobraz chybovou hlášku
+
+#### Databáze
+
+- Kontrola SQL injection
+- Tvorba dotazu na databázi z předaných parametrů (filtrů)
+- Zápis studenta do projektu
+- Získání seznamu projektů
+
+#### Uživatelské rozhraní
+
+- Zobrazení jenotlivých stránek modulu Projekty
+- Zobrazení seznamu projektů
+
+#### Kontorla
+
+- Kontrola, zda kapacita projektu dovoluje zápis dalšího studenta
+- Kontrola, zda student splňuje požadavky projektu
+- Kontrola, zda student již není zapsán do projektu
+
+#### Statistické reporty
