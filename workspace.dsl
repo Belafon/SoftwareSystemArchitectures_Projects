@@ -46,7 +46,7 @@ workspace "NSWI130" {
                 }
             }
             db = container "Databáze" "Ukládá data" "" "Database"
-            cache = container "Chat cache" "Záloha chatu"
+            chatDabataze = container "Chat Databáze" "Záloha chatu"
             kontrola = container "Kontrola" "Kontrola správnosti dat" ""
             
         }
