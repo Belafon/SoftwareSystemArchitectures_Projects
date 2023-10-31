@@ -27,19 +27,22 @@ workspace "NSWI130" {
                         formular = component "Zobrazení formuláře pro založení projektu"
                     }
                     group "Zobrazení stránky projektu pro studenta" {
-                        
+                         seznamPrihlasenychProjektu = component "Zobrazení seznamu přihlášených projektů "
                     }
-                    
+                    detailProjektuUI = component "Zobrazení detailu projektu"
+                    vyhledaniProjektuUI = component "Vyhledání projektů podle podmínek"
                     systemNotificationsUI = component "Zobrazení systémových notifikací"
                 }
                 group "Business Layer"  {
                     tvorbaDotazu = component "Tvorba dotazů na databázi"
                     group "Kontroly" {
-                        
+                        kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
+                        kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
+                        kontrolaPodminek = component "Kontrola Podmínek" "Kontrola splnění podmínek pro přihlášení do projektu"
                     }
                 }
                 group "Persistence Layer"  {
-                    
+                    praceSDatabazi = component "Práce s databází"
                 }
             }
             db = container "Databáze" "Ukládá data" "" "Database"
@@ -56,5 +59,7 @@ workspace "NSWI130" {
     views {
         theme default
     }
+
+}
 
 }
