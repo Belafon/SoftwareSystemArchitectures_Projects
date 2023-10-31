@@ -1,6 +1,10 @@
 workspace "NSWI130" {
 
     model {
+    
+    properties {
+        "structurizr.groupSeparator" "/"
+    }
         pro = softwareSystem "Projekty" {
             komunikace = container "Komunikace" "" "" {
                 group "Presentation Layer"  {
@@ -19,8 +23,12 @@ workspace "NSWI130" {
             
             managmentProjektu = container "Správa projektů" "" "" {
                 group "Presentation Layer"  {
-                    ucitelUI = component "Zobrazení stránky projektu pro učitele"
-                    studentUI = component "Zobrazení stránky projektu pro studenta"
+                    group "Zobrazení stránky projektu pro učitele" {
+                        formular = component "Zobrazení formuláře pro založení projektu"
+                    }
+                    group "Zobrazení stránky projektu pro studenta" {
+                        
+                    }
                     
                     systemNotificationsUI = component "Zobrazení systémových notifikací"
                 }
@@ -47,8 +55,6 @@ workspace "NSWI130" {
     
     views {
         theme default
-        
-
     }
 
 }
