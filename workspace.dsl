@@ -53,7 +53,15 @@ workspace "NSWI130" {
         
         student = person "Student"
         ucitel = person "Teacher"
+            
+
+        chatLog -> chatCache "Zaloguje zprávu do Cache"
+        chatCache -> kontrolaZprav "Odešle zprávu na kontrolu"
+        startChatu -> chatUI "Aktualizuje chatové okno"
+        startChatu -> notificationUI "Pošle notifikaci"
         
+        kontrolaZprav -> chatDabataze "Odešle zprávu cachi mažéru"
+        chatDabataze -> startChatu "posílá zprávy na zobrazení"
     }
     
     views {
