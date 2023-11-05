@@ -2,9 +2,9 @@ workspace "NSWI130" {
 
     model {
     
-    properties {
-        "structurizr.groupSeparator" "/"
-    }
+        properties {
+            "structurizr.groupSeparator" "/"
+        }
         pro = softwareSystem "Projekty" {
             komunikace = container "Komunikace" "" "" {
                 group "Presentation Layer"  {
@@ -62,6 +62,32 @@ workspace "NSWI130" {
         
         kontrolaZprav -> chatDabataze "Odešle zprávu cachi mažéru"
         chatDabataze -> startChatu "posílá zprávy na zobrazení"
+    
+    
+
+
+        managmentProjektu -> komunikace "Inicializuje chatovací místnost pro nový projekt"
+        managmentProjektu -> db "Ukládá a načítá data projektu"
+        komunikace -> kontrola "Kontroluje správnost zpráv v chatu"
+        managmentProjektu -> kontrola "Kontroluje správnost dat projektu"
+    
+    
+    
+    
+        ucitel -> detailProjektuUI "Spravuje projekty"
+        ucitel -> formular "Vytváří nový projekt"
+
+        student -> detailProjektuUI "Přihlašuje se do nového projektu."
+        student -> detailProjektuUI "Edituje projekt"
+        systemNotificationsUI -> student "Zobrazuje notifikace o potvrzení přihlášení do projektu, nebo změny souboru"
+        systemNotificationsUI -> ucitel "Zobrazuje notifikace o potvrzení vytvoření projektu"
+
+        student -> chatUI "Píše zprávy do společného chatu projektu"
+        chatUI -> student "Zobrazuje zprávy z chatu"
+        ucitel -> chatUI "Píše zprávy do společného chatu projektu"
+        chatUI -> ucitel "Zobrazuje zprávy z chatu"    
+        notificationUI -> student "Zobrazuje notifikace"
+        notificationUI -> ucitel "Zobrazuje notifikace"    
     }
     
     views {
@@ -69,5 +95,4 @@ workspace "NSWI130" {
     }
 
 }
-
 
