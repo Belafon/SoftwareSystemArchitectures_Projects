@@ -47,7 +47,7 @@ workspace "NSWI130" {
             }
             db = container "Databáze" "Ukládá data" "" "Database"
             chatDabataze = container "Chat Databáze" "Záloha chatu"
-            kontrola = container "Kontrola" "Kontrola správnosti dat" ""
+            kontrola = container "Kontrola" "Kontrola sql injection" ""
             
         }
         
@@ -69,8 +69,8 @@ workspace "NSWI130" {
         managmentProjektu -> komunikace "Inicializuje chatovací místnost pro nový projekt"
         managmentProjektu -> db "Ukládá a načítá data projektu"
         komunikace -> kontrola "Kontroluje správnost zpráv v chatu"
-        managmentProjektu -> kontrola "Kontroluje správnost dat projektu"
-    
+        tvorbaDotazu -> kontrola "Kontroluje správnost sql dotazu"
+         kontrolaZprav -> kontrola "Kontroluje správnost zpráv v chatu"
     
     
     
