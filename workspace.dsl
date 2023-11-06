@@ -39,6 +39,7 @@ workspace "NSWI130" {
                         kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
                         kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
                         kontrolaPodminek = component "Kontrola Podmínek" "Kontrola splnění podmínek pro přihlášení do projektu"
+                        kontrolaSpravnehoZobrazeni = component "Kontrola Zobrazení" "Kontrola zobrazení správných informacií"
                     }
                 }
                 group "Persistence Layer"  {
@@ -62,7 +63,7 @@ workspace "NSWI130" {
         
         kontrolaZprav -> chatDabataze "Odešle zprávu cachi mažéru"
         chatDabataze -> startChatu "posílá zprávy na zobrazení"
-    
+        
     
 
 
@@ -70,9 +71,21 @@ workspace "NSWI130" {
         managmentProjektu -> db "Ukládá a načítá data projektu"
         komunikace -> kontrola "Kontroluje správnost zpráv v chatu"
         tvorbaDotazu -> kontrola "Kontroluje správnost sql dotazu"
-         kontrolaZprav -> kontrola "Kontroluje správnost zpráv v chatu"
+        kontrolaZprav -> kontrola "Kontroluje správnost zpráv v chatu"
     
-    
+        kontrolaSouboru -> tvorbaDotazu "Pošle soubor na vytvoření dotazu"
+        kontrolaFiltru -> kontrolaPodminek "Pošle správně vyplnené pole filtru na kontrolu podmínek"
+        kontrolaPodminek -> tvorbaDotazu "Pošle informace na tvorbu dotazu"
+        kontrola -> praceSDatabazi "Pošle hotový příkaz na databázi"
+        vyhledaniProjektuUI -> kontrolaFiltru "Pošle filtry na kontrolu"
+        seznamPrihlasenychProjektu -> tvorbaDotazu "Pošle informace na vytvoření dotazu"
+        detailProjektuUI -> tvorbaDotazu "ošle informace na vytvoření dotazu"
+        praceSDatabazi -> kontrolaSpravnehoZobrazeni
+        kontrolaSpravnehoZobrazeni -> detailProjektuUI
+        kontrolaSpravnehoZobrazeni -> seznamPrihlasenychProjektu
+        kontrolaSpravnehoZobrazeni -> systemNotificationsUI
+        kontrolaSpravnehoZobrazeni -> vyhledaniProjektuUI
+
     
         ucitel -> detailProjektuUI "Spravuje projekty"
         ucitel -> formular "Vytváří nový projekt"
@@ -95,4 +108,3 @@ workspace "NSWI130" {
     }
 
 }
-
