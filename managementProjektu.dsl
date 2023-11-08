@@ -5,6 +5,10 @@ workspace "NSWI130" {
         properties {
             "structurizr.groupSeparator" "/"
         }
+        
+        student = person "Student"
+        ucitel = person "Teacher"
+        
         pro = softwareSystem "Projekty" {
 
             group "Komunikace" {
@@ -45,14 +49,16 @@ workspace "NSWI130" {
                             seznamVytvorenychProjektu = component "Zobrazení seznamu vytvorenych projektu"
                         }
                         group "Zobrazení stránky projektu pro studenta" {
-                            seznamPrihlasenychProjektu = component "Zobrazení seznamu přihlášených projektů "
+                            seznamPrihlasenychProjektu = component "Zobrazení seznamu přihlášených projektů"
+                            seznamProjektuDoKterychSeMuzePrihlasit = component "Zobrazeni seznamu projektu do kterych se muze student prihlasit"
                         }
                         // v deatilu projektu muze ucitel i student upravovat projekt, tedy pridavat a odstranovat soubory
                         detailProjektuUI = component "Zobrazení detailu projektu"
-                        vyhledaniProjektuUI = component "Vyhledání projektů podle podmínek"
+                        vyhledaniProjektuUI = component "Vyledani projektu podle podminek"
                         systemNotificationsUI = component "Zobrazení systémových notifikací"
                     }
                     group "Business Layer"  {
+                        vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru = component "Vytvoreni dotazu na server pro ziskani seznamu projektu podle zadaneho filteru"
                     }
                     group "Persistence Layer"  {
                     }
@@ -60,10 +66,11 @@ workspace "NSWI130" {
 
                 managmentProjektuServer = container "Server Správy projektů" "" "" {
                     group "Presentation Layer" {
-                        managmentProjektuServerUI = component "Správa projektů Server User Interface" "Zobrazení stránky projektu pro učitele"
+                        UIDeliver = component "Správa projektů Server User Interface" ""
                     }
                     group "Business Layer"  {
                         
+                        seznamProjektu = component "Seznam projektu"
                         tvorbaDotazu = component "Tvorba dotazů na databázi"
                         group "Kontroly" {
                             kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
@@ -76,13 +83,34 @@ workspace "NSWI130" {
                         praceSDatabazi = component "Práce s databází"
                     }
                 }
+                ucitel -> UIDeliver "pozadeavek ziskani html stranky projektu"
+                student -> UIDeliver "pozadavek ziskani html stranky projektu"
+                UIDeliver -> ucitel "doruceni html stranky pro ucitele"
+                UIDeliver -> student "doruceni html stranky pro studenta"
+
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektu "pozadavek na ziskani seznamu prihlasenych projektu podle filteru"
+                seznamProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu projektu podle filteru"
+
+                seznamVytvorenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "pozadavek na ziskani seznamu vytvorenych projektu"
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamVytvorenychProjektu "doruceni seznamu vytvorenych projektu"
+
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektuDoKterychSeMuzePrihlasit "pozadavek na ziskani seznamu prihlasenych projektu"
+                seznamProjektuDoKterychSeMuzePrihlasit -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu prihlasenych projektu"
+
+                vyhledaniProjektuUI -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "pozadavek na ziskani seznamu projektu podle filteru"
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> vyhledaniProjektuUI "doruceni seznamu projeku podle filteru"
+
+                seznamProjektu -> kontrolaFiltru "kontrola filtru"
+                kontrolaFiltru -> tvorbaDotazu "pozadavek na ziskani seznamu projektu dle filteru"
+                tvorbaDotazu -> seznamProjektu "doruceni seznamu projektu dle filteru"
+
+
+                detailProjektuUI -> tvorbaDotazu "pozadavek na ziskani informaci detailu projektu"
 
                 databazeProjektu = container "Databáze" "Ukládá data" "" "Database"
             }            
         }
         
-        student = person "Student"
-        ucitel = person "Teacher"
             
 
         chatLog -> chatCache "Zaloguje zprávu do Cache"
