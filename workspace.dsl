@@ -8,34 +8,54 @@ workspace "NSWI130" {
         pro = softwareSystem "Projekty" {
 
             group "Komunikace" {
-                komunikaceUI = container "UI Komunikace" "" "" {
+                // TODO: přidat logiku pro správu chatů - tvorba nových chatů, přidávání/odebírání uživatelů z chatu, zobrazení historie chatu,...
+                // TODO: přidat vztahy s Student a Učitel s UI
+                komunikaceWebApp = container "Webová Aplikace Komunikace" "" "" {
                     group "Presentation Layer"  {
-                        chatUI = component "Chat User Interface" "Zobrazení okénka chatu"
-                        notificationUI = component "Chat Notifications User Interface" "Zobrazení notifikací"
+                        chatUI = component "Chat UI" "Zobrazení okénka chatu"
+                        notifikaceUI = component "Notifikace UI" "Zobrazení notifikací"
                     }
                     group "Business Layer"  {
-                        kontrolaZprav = component "Kontrola zpráv"
-                        startChatu = component "Zobrazení správného chatu pro tým"
+                        websocketKlient = component "WebSocket Klient" "Zajišťuje komunikaci s WebSocket serverem"
+                        ziskaniChatu = component "Získání chatu" "Získává chaty z cache nebo serveru"
                     }
                     group "Persistence Layer"  {
-                        chatCache = component "Cachování zpráv"
-                        chatLog = component "Chat log"
+                        chatCache = component "Cache zpráv" "Cachování zpráv pro rychlejší zobrazení a kontrola aktuálnosti dat"
                     }
+                    // Vztahy pro Webovou Aplikaci
+                    chatUI -> websocketKlient : "zobrazuje uživatelské rozhraní"
+                    notifikaceUI -> websocketKlient : "přijímá notifikace"
+                    websocketKlient -> ziskaniChatu : "žádá o data"
+                    ziskaniChatu -> websocketKlient : "posílá data"
+                    ziskaniChatu -> chatCache : "čte data"
+                    chatCache -> ziskaniChatu : "poskytuje data"
                 }
 
                 komunikaceServer = container "Server Komunikace" "" "" {
-                    group "Presentation Layer"  {
-                        chatServerUI = component "Chat Server User Interface" "Zobrazení okénka chatu"
-                    }
                     group "Business Layer"  {
-                        komunikace = component "Komunikace" "Komunikace mezi uživateli"
+                        websocketServer = component "WebSocket Server" "Zajišťuje komunikaci s webovou aplikací"
+                        kontrolaZprav = component "Kontrola zpráv" "Kontrola obsahu zpráv"
+                        spravaZprav = component "Správa zpráv" "Zpracovává odeslání a příjem zpráv"
+                        spravaChatLogu = component "Správa chat logů" 
                     }
                     group "Persistence Layer"  {
+                        chatLogs = component "Chat logy" "Chat logy aktivních chatů"
                     }
+                    // Vztahy pro Server Komunikace
+                    websocketServer -> spravaZprav : "přijímá zprávy"
+                    spravaZprav -> websocketServer : "odesílá zprávy a notifikace"
+                    kontrolaZprav -> spravaZprav : "poskytuje výsledky kontroly"
+                    spravaZprav -> kontrolaZprav : "žádá o kontrolu zpráv"
+                    spravaZprav -> chatLogs : "ukládá zprávy"
+                    chatLogs -> spravaZprav : "poskytuje historii chatu"
                 }
 
-                databazeChatu = container "Chat Databáze" "Záloha chatu"
+                chatLogDatabaze = container "Databáze Chatů" "Ukládá a poskytuje data pro historii chatů"
+                // Vztahy pro Databázi Chat Logů
+                spravaChatLogu -> chatLogDatabaze : "ukládá data"
+                chatLogDatabaze -> spravaChatLogu : "poskytuje data"
             }
+
             
             group "Management Projektu" {
                 managmentProjektuUI = container "UI Správy projektů" "" "" {
@@ -88,18 +108,6 @@ workspace "NSWI130" {
         
         student = person "Student"
         ucitel = person "Teacher"
-            
-
-        chatLog -> chatCache "Zaloguje zprávu do Cache"
-        chatCache -> kontrolaZprav "Odešle zprávu na kontrolu"
-        startChatu -> chatUI "Aktualizuje chatové okno"
-        startChatu -> notificationUI "Pošle notifikaci"
-        
-        kontrolaZprav -> databazeChatu "Odešle zprávu cachi mažéru"
-        databazeChatu -> startChatu "posílá zprávy na zobrazení"
-        
-    
-
 
         managmentProjektu -> komunikace "Inicializuje chatovací místnost pro nový projekt"
         managmentProjektu -> databazeProjektu "Ukládá a načítá data projektu"
