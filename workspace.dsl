@@ -6,50 +6,84 @@ workspace "NSWI130" {
             "structurizr.groupSeparator" "/"
         }
         pro = softwareSystem "Projekty" {
-            komunikace = container "Komunikace" "" "" {
-                group "Presentation Layer"  {
-                    chatUI = component "Chat User Interface" "Zobrazení okénka chatu"
-                    notificationUI = component "Chat Notifications User Interface" "Zobrazení notifikací"
+
+            group "Komunikace" {
+                komunikaceUI = container "UI Komunikace" "" "" {
+                    group "Presentation Layer"  {
+                        chatUI = component "Chat User Interface" "Zobrazení okénka chatu"
+                        notificationUI = component "Chat Notifications User Interface" "Zobrazení notifikací"
+                    }
+                    group "Business Layer"  {
+                        kontrolaZprav = component "Kontrola zpráv"
+                        startChatu = component "Zobrazení správného chatu pro tým"
+                    }
+                    group "Persistence Layer"  {
+                        chatCache = component "Cachování zpráv"
+                        chatLog = component "Chat log"
+                    }
                 }
-                group "Business Layer"  {
-                    kontrolaZprav = component "Kontrola zpráv"
-                    startChatu = component "Zobrazení správného chatu pro tým"
+
+                komunikaceServer = container "Server Komunikace" "" "" {
+                    group "Presentation Layer"  {
+                        chatServerUI = component "Chat Server User Interface" "Zobrazení okénka chatu"
+                    }
+                    group "Business Layer"  {
+                        komunikace = component "Komunikace" "Komunikace mezi uživateli"
+                    }
+                    group "Persistence Layer"  {
+                    }
                 }
-                group "Persistence Layer"  {
-                    chatCache = component "Cachování zpráv"
-                    chatLog = component "Chat log"
-                }
+
+                databazeChatu = container "Chat Databáze" "Záloha chatu"
             }
             
-            managmentProjektu = container "Správa projektů" "" "" {
-                group "Presentation Layer"  {
-                    group "Zobrazení stránky projektu pro učitele" {
-                        formular = component "Zobrazení formuláře pro založení projektu"
+            group "Management Projektu" {
+                managmentProjektuUI = container "UI Správy projektů" "" "" {
+                    group "Presentation Layer"  {
+                        group "Zobrazení stránky projektu pro učitele" {
+                            formular = component "Zobrazení formuláře pro založení projektu"
+                        }
+                        group "Zobrazení stránky projektu pro studenta" {
+                            seznamPrihlasenychProjektu = component "Zobrazení seznamu přihlášených projektů "
+                        }
+                        detailProjektuUI = component "Zobrazení detailu projektu"
+                        vyhledaniProjektuUI = component "Vyhledání projektů podle podmínek"
+                        systemNotificationsUI = component "Zobrazení systémových notifikací"
                     }
-                    group "Zobrazení stránky projektu pro studenta" {
-                         seznamPrihlasenychProjektu = component "Zobrazení seznamu přihlášených projektů "
+                    group "Business Layer"  {
+                        tvorbaDotazu = component "Tvorba dotazů na databázi"
+                        group "Kontroly" {
+                            kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
+                            kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
+                            kontrolaPodminek = component "Kontrola Podmínek" "Kontrola splnění podmínek pro přihlášení do projektu"
+                            kontrolaSpravnehoZobrazeni = component "Kontrola Zobrazení" "Kontrola zobrazení správných informacií"
+                        }
                     }
-                    detailProjektuUI = component "Zobrazení detailu projektu"
-                    vyhledaniProjektuUI = component "Vyhledání projektů podle podmínek"
-                    systemNotificationsUI = component "Zobrazení systémových notifikací"
-                }
-                group "Business Layer"  {
-                    tvorbaDotazu = component "Tvorba dotazů na databázi"
-                    group "Kontroly" {
-                        kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
-                        kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
-                        kontrolaPodminek = component "Kontrola Podmínek" "Kontrola splnění podmínek pro přihlášení do projektu"
-                        kontrolaSpravnehoZobrazeni = component "Kontrola Zobrazení" "Kontrola zobrazení správných informacií"
+                    group "Persistence Layer"  {
+                        praceSDatabazi = component "Práce s databází"
                     }
                 }
-                group "Persistence Layer"  {
-                    praceSDatabazi = component "Práce s databází"
+
+                managmentProjektuServer = container "Server Správy projektů" "" "" {
+                    group "Presentation Layer"  {
+                        managmentProjektuServerUI = component "Správa projektů Server User Interface" "Zobrazení stránky projektu pro učitele"
+                    }
+                    group "Business Layer"  {
+                        tvorbaDotazu = component "Tvorba dotazů na databázi"
+                        group "Kontroly" {
+                            kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
+                            kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
+                            kontrolaPodminek = component "Kontrola Podmínek" "Kontrola splnění podmínek pro přihlášení do projektu"
+                            kontrolaSpravnehoZobrazeni = component "Kontrola Zobrazení" "Kontrola zobrazení správných informacií"
+                        }
+                    }
+                    group "Persistence Layer"  {
+                        praceSDatabazi = component "Práce s databází"
+                    }
                 }
-            }
-            db = container "Databáze" "Ukládá data" "" "Database"
-            chatDabataze = container "Chat Databáze" "Záloha chatu"
-            kontrola = container "Kontrola" "Kontrola sql injection" ""
-            
+
+                databazeProjektu = container "Databáze" "Ukládá data" "" "Database"
+            }            
         }
         
         student = person "Student"
@@ -61,14 +95,14 @@ workspace "NSWI130" {
         startChatu -> chatUI "Aktualizuje chatové okno"
         startChatu -> notificationUI "Pošle notifikaci"
         
-        kontrolaZprav -> chatDabataze "Odešle zprávu cachi mažéru"
-        chatDabataze -> startChatu "posílá zprávy na zobrazení"
+        kontrolaZprav -> databazeChatu "Odešle zprávu cachi mažéru"
+        databazeChatu -> startChatu "posílá zprávy na zobrazení"
         
     
 
 
         managmentProjektu -> komunikace "Inicializuje chatovací místnost pro nový projekt"
-        managmentProjektu -> db "Ukládá a načítá data projektu"
+        managmentProjektu -> databazeProjektu "Ukládá a načítá data projektu"
         komunikace -> kontrola "Kontroluje správnost zpráv v chatu"
         tvorbaDotazu -> kontrola "Kontroluje správnost sql dotazu"
         kontrolaZprav -> kontrola "Kontroluje správnost zpráv v chatu"
