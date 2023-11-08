@@ -15,7 +15,7 @@ workspace "NSWI130" {
                 komunikaceUI = container "UI Komunikace" "" "" {
                     group "Presentation Layer"  {
                         chatUI = component "Chat User Interface" "Zobrazení okénka chatu"
-                        notificationUI = component "Chat Notifications User Interface" "Zobrazení notifikací"
+                        notifikaceUI = component "Chat Notifications User Interface" "Zobrazení notifikací"
                     }
                     group "Business Layer"  {
                         kontrolaZprav = component "Kontrola zpráv"
@@ -45,7 +45,7 @@ workspace "NSWI130" {
                 managmentProjektuUI = container "UI Správy projektů" "" "" {
                     group "Presentation Layer"  {
                         group "Zobrazení stránky projektu pro učitele" {
-                            formular = component "Zobrazení formuláře pro založení projektu"
+                            formularProVytvoreniNovehoProjektu = component "Zobrazení formuláře pro založení projektu"
                             seznamVytvorenychProjektu = component "Zobrazení seznamu vytvorenych projektu"
                         }
                         group "Zobrazení stránky projektu pro studenta" {
@@ -70,32 +70,44 @@ workspace "NSWI130" {
                     }
                     group "Business Layer"  {
                         
+                        managerNotifikaci = component "Manager notifikaci"
                         seznamProjektu = component "Seznam projektu"
+                        editaceProjektu = component "Editace projektu"
+                        managerProjektu = component "Manager projektů"
                         tvorbaDotazu = component "Tvorba dotazů na databázi"
                         group "Kontroly" {
                             kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
                             kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
-                            kontrolaPodminek = component "Kontrola Podmínek" "Kontrola splnění podmínek pro přihlášení do projektu"
-                            kontrolaSpravnehoZobrazeni = component "Kontrola Zobrazení" "Kontrola zobrazení správných informacií"
+                            kontrolaPodminekProPrihlaseniDoProjektu = component "Kontrola podmínek pro prihlaseni do projektu" "Kontrola splnění podmínek pro přihlášení do projektu"
+                            kontrolaVytvoreniNovehoProjektu = component "Kontrola vytvoření nového projektu" "Kontrola jedinečnosti názvu projektu"
                         }
                     }
                     group "Persistence Layer"  {
-                        praceSDatabazi = component "Práce s databází"
                     }
                 }
+
+                databazeProjektu = container "Databáze" "Ukládá data" "" "Database"
+                
+                // nacteni stranek
                 ucitel -> UIDeliver "pozadeavek ziskani html stranky projektu"
                 student -> UIDeliver "pozadavek ziskani html stranky projektu"
                 UIDeliver -> ucitel "doruceni html stranky pro ucitele"
                 UIDeliver -> student "doruceni html stranky pro studenta"
 
+                // seznam projektu
+                // UI -> server
                 vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektu "pozadavek na ziskani seznamu prihlasenych projektu podle filteru"
-                seznamProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu projektu podle filteru"
+                // server -> UI 
+                seznamProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu projektu podle filteru" 
 
                 seznamVytvorenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "pozadavek na ziskani seznamu vytvorenych projektu"
                 vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamVytvorenychProjektu "doruceni seznamu vytvorenych projektu"
 
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektuDoKterychSeMuzePrihlasit "pozadavek na ziskani seznamu prihlasenych projektu"
-                seznamProjektuDoKterychSeMuzePrihlasit -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu prihlasenych projektu"
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektuDoKterychSeMuzePrihlasit "pozadavek na ziskani seznamu projektu do kterych se uze student prihlasit"
+                seznamProjektuDoKterychSeMuzePrihlasit -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu projektu do kterych se uze student prihlasit"
+
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamPrihlasenychProjektu "pozadavek na ziskani seznamu prihlasenych projektu"
+                seznamPrihlasenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu prihlasenych projektu"
 
                 vyhledaniProjektuUI -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "pozadavek na ziskani seznamu projektu podle filteru"
                 vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> vyhledaniProjektuUI "doruceni seznamu projeku podle filteru"
@@ -105,58 +117,49 @@ workspace "NSWI130" {
                 tvorbaDotazu -> seznamProjektu "doruceni seznamu projektu dle filteru"
 
 
-                detailProjektuUI -> tvorbaDotazu "pozadavek na ziskani informaci detailu projektu"
+                // detail projektu
+                // UI -> server
+                detailProjektuUI -> editaceProjektu "pozadavek na ziskani informaci detailu projektu"
+                editaceProjektu -> tvorbaDotazu "pozadavek na ziskani informaci detailu projektu"
+                tvorbaDotazu -> editaceProjektu "doruceni informaci detailu projektu"
+                // server -> UI
+                editaceProjektu -> detailProjektuUI "doruceni informaci detailu projektu"
 
-                databazeProjektu = container "Databáze" "Ukládá data" "" "Database"
+                // uprava projektu
+                detailProjektuUI -> editaceProjektu "pridani, nebo odstraneni souboru"
+                editaceProjektu -> kontrolaSouboru "kontrola souboru"
+                kontrolaSouboru -> tvorbaDotazu "pridani, nebo odstraneni souboru projektu"
+                kontrolaSouboru -> managerNotifikaci "notifikace problemu, nebo uspechu editace projektu"
+
+                // notifikace
+                managerNotifikaci -> systemNotificationsUI "zobraz notifikaci"
+                kontrolaFiltru -> managerNotifikaci "notifikace problemu"
+                kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace problemu"
+                kontrolaSouboru -> managerNotifikaci "notifikace chyby pri kontrole souboru"
+
+
+
+                // databaze
+                tvorbaDotazu -> databazeProjektu "proved dotaz"
+
+                // prihlaseni se do projektu
+                // UI -> server
+                detailProjektuUI -> managerProjektu "prihlaseni studenta do projektu"
+                managerProjektu -> kontrolaPodminekProPrihlaseniDoProjektu "kontrola podminek"
+                kontrolaPodminekProPrihlaseniDoProjektu -> tvorbaDotazu "pridani studenta do projektu"
+                kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace uspechu, ci neuspechu"
+                
+                formularProVytvoreniNovehoProjektu -> managerProjektu "vytvoreni noveho projektu"
+                managerProjektu -> kontrolaVytvoreniNovehoProjektu "kontrola vytvoreni noveho projektu"
+                kontrolaVytvoreniNovehoProjektu -> tvorbaDotazu "vytvoreni noveho projektu"
+                kontrolaVytvoreniNovehoProjektu -> managerNotifikaci "notifikace uspechu, ci neuspechu"
+
+
+                
             }            
         }
         
-            
-
-        chatLog -> chatCache "Zaloguje zprávu do Cache"
-        chatCache -> kontrolaZprav "Odešle zprávu na kontrolu"
-        startChatu -> chatUI "Aktualizuje chatové okno"
-        startChatu -> notificationUI "Pošle notifikaci"
         
-        kontrolaZprav -> databazeChatu "Odešle zprávu cachi mažéru"
-        databazeChatu -> startChatu "posílá zprávy na zobrazení"
-        
-    
-
-        managmentProjektuServer -> komunikace "Inicializuje chatovací místnost pro nový projekt"
-        managmentProjektuServer -> databazeProjektu "Ukládá a načítá data projektu"
-        //komunikace -> kontrola "Kontroluje správnost zpráv v chatu"
-        //tvorbaDotazu -> kontrola "Kontroluje správnost sql dotazu"
-        //kontrolaZprav -> kontrola "Kontroluje správnost zpráv v chatu"
-    
-        kontrolaSouboru -> tvorbaDotazu "Pošle soubor na vytvoření dotazu"
-        kontrolaFiltru -> kontrolaPodminek "Pošle správně vyplnené pole filtru na kontrolu podmínek"
-        kontrolaPodminek -> tvorbaDotazu "Pošle informace na tvorbu dotazu"
-        //kontrola -> praceSDatabazi "Pošle hotový příkaz na databázi"
-        vyhledaniProjektuUI -> kontrolaFiltru "Pošle filtry na kontrolu"
-        seznamPrihlasenychProjektu -> tvorbaDotazu "Pošle informace na vytvoření dotazu"
-        detailProjektuUI -> tvorbaDotazu "ošle informace na vytvoření dotazu"
-        praceSDatabazi -> kontrolaSpravnehoZobrazeni
-        kontrolaSpravnehoZobrazeni -> detailProjektuUI
-        kontrolaSpravnehoZobrazeni -> seznamPrihlasenychProjektu
-        kontrolaSpravnehoZobrazeni -> systemNotificationsUI
-        kontrolaSpravnehoZobrazeni -> vyhledaniProjektuUI
-
-    
-        ucitel -> detailProjektuUI "Spravuje projekty"
-        ucitel -> formular "Vytváří nový projekt"
-
-        student -> detailProjektuUI "Přihlašuje se do nového projektu."
-        student -> detailProjektuUI "Edituje projekt"
-        systemNotificationsUI -> student "Zobrazuje notifikace o potvrzení přihlášení do projektu, nebo změny souboru"
-        systemNotificationsUI -> ucitel "Zobrazuje notifikace o potvrzení vytvoření projektu"
-
-        student -> chatUI "Píše zprávy do společného chatu projektu"
-        chatUI -> student "Zobrazuje zprávy z chatu"
-        ucitel -> chatUI "Píše zprávy do společného chatu projektu"
-        chatUI -> ucitel "Zobrazuje zprávy z chatu"    
-        notificationUI -> student "Zobrazuje notifikace"
-        notificationUI -> ucitel "Zobrazuje notifikace"    
     }
     
     views {
