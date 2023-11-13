@@ -8,6 +8,8 @@ workspace "NSWI130" {
         student = person "Student"
         ucitel = person "Teacher"
         pro = softwareSystem "Projekty" {
+            // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat"
+            // TODO: přidat do managementPrujektuServer něco, co si bude pamatovat id chatů, které pak zahrne v přesměrování
 
             group "Komunikace" {
                 komunikaceWebApp = container "Webová Aplikace Komunikace" "" "" {
@@ -51,14 +53,17 @@ workspace "NSWI130" {
 
                     spravaZprav -> kontrolaZprav : "žádá o kontrolu zpráv"
                     kontrolaZprav -> spravaZprav : "poskytuje výsledky kontroly"
-                    
-                    spravaZprav -> chatLogs : "ukládá zprávy"
-                    chatLogs -> spravaZprav : "poskytuje historii chatu"
+
+                    spravaZprav -> spravaChatLogu : "ukládá nové zprávy"
+                    spravaChatLogu -> spravaZprav : "poskytuje historii chatu"
+
+                    spravaChatLogu -> chatLogs : "ukládá data"
+                    chatLogs -> spravaChatLogu : "poskytuje data"
                 }
 
                 chatLogDatabaze = container "Databáze Chatů" "Ukládá a poskytuje data pro historii chatů" {
                     // Vztahy pro Databázi Chat Logů
-                    spravaChatLogu -> chatLogDatabaze : "ukládá data"
+                    spravaChatLogu -> chatLogDatabaze : "zálohuje data"
                     chatLogDatabaze -> spravaChatLogu : "poskytuje data"
                 }
 
