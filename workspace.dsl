@@ -81,7 +81,7 @@ workspace "NSWI130" {
             }
             
             group "Management Projektu" {
-                managmentProjektuUI = container "UI Správy projektů" "" "" {
+                managmentProjektuWebApp = container "Webová Aplikace Správa projektů" "" "" {
                     group "Presentation Layer"  {
                         group "Zobrazení stránky projektu pro učitele" {
                             formularProVytvoreniNovehoProjektu = component "Zobrazení formuláře pro založení projektu"
@@ -104,16 +104,16 @@ workspace "NSWI130" {
                 }
 
                 managmentProjektuServer = container "Server Správy projektů" "" "" {
-                    group "Presentation Layer" {
-                        UIDeliver = component "Správa projektů Server User Interface" ""
-                    }
+                    //group "Presentation Layer" {
+                       // UIDeliver = component "Správa projektů Server User Interface" ""
+                    //}
                     group "Business Layer"  {
                         
                         managerNotifikaci = component "Manager notifikaci"
                         seznamProjektu = component "Seznam projektu"
                         editaceProjektu = component "Editace projektu"
                         managerProjektu = component "Manager projektů"
-                        tvorbaDotazu = component "Tvorba dotazů na databázi"
+                        
                         group "Kontroly" {
                             kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
                             kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
@@ -122,17 +122,14 @@ workspace "NSWI130" {
                         }
                     }
                     group "Persistence Layer"  {
+                        tvorbaDotazu = component "Komunikace s databází"
                     }
                 }
 
                 databazeProjektu = container "Databáze" "Ukládá data" "" "Database"
                 
-                // nacteni stranek
-                ucitel -> UIDeliver "pozadeavek ziskani html stranky projektu"
-                student -> UIDeliver "pozadavek ziskani html stranky projektu"
-                UIDeliver -> ucitel "doruceni html stranky pro ucitele"
-                UIDeliver -> student "doruceni html stranky pro studenta"
-
+             
+                
                 // seznam projektu
                 // UI -> server
                 vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektu "pozadavek na ziskani seznamu prihlasenych projektu podle filteru"
