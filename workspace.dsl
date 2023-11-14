@@ -93,7 +93,7 @@ workspace "NSWI130" {
                         }
                         // v deatilu projektu muze ucitel i student upravovat projekt, tedy pridavat a odstranovat soubory
                         detailProjektuUI = component "Zobrazení detailu projektu"
-                        vyhledaniProjektuUI = component "Hladání projektu podle podmínek"
+                        vyhledaniProjektuUI = component "Hledání projektu podle podmínek"
                         systemNotificationsUI = component "Zobrazení systémových notifikací"
                     }
                     group "Business Layer"  {
@@ -104,25 +104,41 @@ workspace "NSWI130" {
                 managmentProjektuServer = container "Server Správy projektů" "" "" {
                     group "Business Layer"  {
                         managerNotifikaci = component "Manager notifikaci"
-                        seznamProjektu = component "Seznam projektu"
-                        editaceProjektu = component "Editace projektu"
-                        managerProjektu = component "Manager projektů"
-                        
-                        group "Kontroly" {
-                            kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
-                            kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
+                        group "Manager projektů" {
+                            managerProjektu = component "Manager projektů"
                             kontrolaPodminekProPrihlaseniDoProjektu = component "Kontrola podmínek pro prihlaseni do projektu" "Kontrola splnění podmínek pro přihlášení do projektu"
                             kontrolaVytvoreniNovehoProjektu = component "Kontrola vytvoření nového projektu" "Kontrola jedinečnosti názvu projektu"
                         }
+                        group "Vyhledávání projektů" {
+                            seznamProjektu = component "Seznam projektu"
+                            kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
+                        }
+                    }
+                    group "Persistence Layer"  {
+                        tvorbaDotazuSpravaProjektu = component "Komunikace s databází"
+                    }
+                }
 
-                        tvorbaDotazu = component "Komunikace s databází"
+                editaceProjektuServer = container "Server Editace projektu" {
+                    group "Business Layer" {
+                        managerNotifikaciEditaceProjektu = component "Manager notifikaci"
+                        group "Editor projektu" {
+                            editaceProjektu = component "Editace projektu"
+                            kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
+                        }
+                    }
+                    group "Persistence Layer"  {
+                        tvorbaDotazuEditaceProjektu = component "Komunikace s databází"
                     }
                 }
 
                 databazeProjektu = container "Databáze" "Ukládá a načítá data projektů" {
                     // Vztahy pro Databázi
-                    tvorbaDotazu -> databazeProjektu : "provede dotaz"
-                    databazeProjektu -> tvorbaDotazu : "poskytne výsledek dotazu"
+                    tvorbaDotazuSpravaProjektu -> databazeProjektu : "provede dotaz"
+                    databazeProjektu -> tvorbaDotazuSpravaProjektu : "poskytne výsledek dotazu"
+
+                    tvorbaDotazuEditaceProjektu -> databazeProjektu : "provede dotaz"
+                    databazeProjektu -> tvorbaDotazuEditaceProjektu : "poskytne výsledek dotazu"
                 } 
                 
              
@@ -146,22 +162,22 @@ workspace "NSWI130" {
                 vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> vyhledaniProjektuUI "doruceni seznamu projeku podle filteru"
 
                 seznamProjektu -> kontrolaFiltru "kontrola filtru"
-                kontrolaFiltru -> tvorbaDotazu "pozadavek na ziskani seznamu projektu dle filteru"
-                tvorbaDotazu -> seznamProjektu "doruceni seznamu projektu dle filteru"
+                kontrolaFiltru -> tvorbaDotazuSpravaProjektu "pozadavek na ziskani seznamu projektu dle filteru"
+                tvorbaDotazuSpravaProjektu -> seznamProjektu "doruceni seznamu projektu dle filteru"
 
 
                 // detail projektu
                 // UI -> server
                 detailProjektuUI -> editaceProjektu "pozadavek na ziskani informaci detailu projektu"
-                editaceProjektu -> tvorbaDotazu "pozadavek na ziskani informaci detailu projektu"
-                tvorbaDotazu -> editaceProjektu "doruceni informaci detailu projektu"
+                editaceProjektu -> tvorbaDotazuEditaceProjektu "pozadavek na ziskani informaci detailu projektu"
+                tvorbaDotazuEditaceProjektu -> editaceProjektu "doruceni informaci detailu projektu"
                 // server -> UI
                 editaceProjektu -> detailProjektuUI "doruceni informaci detailu projektu"
 
                 // uprava projektu
                 detailProjektuUI -> editaceProjektu "pridani, nebo odstraneni souboru"
                 editaceProjektu -> kontrolaSouboru "kontrola souboru"
-                kontrolaSouboru -> tvorbaDotazu "pridani, nebo odstraneni souboru projektu"
+                kontrolaSouboru -> tvorbaDotazuEditaceProjektu "pridani, nebo odstraneni souboru projektu"
                 kontrolaSouboru -> managerNotifikaci "notifikace problemu, nebo uspechu editace projektu"
 
                 // notifikace
@@ -174,23 +190,16 @@ workspace "NSWI130" {
                 // UI -> server
                 detailProjektuUI -> managerProjektu "prihlaseni studenta do projektu"
                 managerProjektu -> kontrolaPodminekProPrihlaseniDoProjektu "kontrola podminek"
-                kontrolaPodminekProPrihlaseniDoProjektu -> tvorbaDotazu "pridani studenta do projektu"
+                kontrolaPodminekProPrihlaseniDoProjektu -> tvorbaDotazuSpravaProjektu "pridani studenta do projektu"
                 kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace uspechu, ci neuspechu"
                 
                 formularProVytvoreniNovehoProjektu -> managerProjektu "vytvoreni noveho projektu"
                 managerProjektu -> kontrolaVytvoreniNovehoProjektu "kontrola vytvoreni noveho projektu"
-                kontrolaVytvoreniNovehoProjektu -> tvorbaDotazu "vytvoreni noveho projektu"
+                kontrolaVytvoreniNovehoProjektu -> tvorbaDotazuSpravaProjektu "vytvoreni noveho projektu"
                 kontrolaVytvoreniNovehoProjektu -> managerNotifikaci "notifikace uspechu, ci neuspechu"
 
             }     
         }
-        
-        // TODO: remove?
-        // managmentProjektu -> komunikace "Inicializuje chatovací místnost pro nový projekt"
-        // managmentProjektu -> databazeProjektu "Ukládá a načítá data projektu"
-        // komunikace -> kontrola "Kontroluje správnost zpráv v chatu"
-        // tvorbaDotazu -> kontrola "Kontroluje správnost sql dotazu"
-        // kontrolaZprav -> kontrola "Kontroluje správnost zpráv v chatu"
     
         ucitel -> detailProjektuUI "Spravuje projekty"
 
