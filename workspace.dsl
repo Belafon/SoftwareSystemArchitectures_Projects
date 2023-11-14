@@ -4,13 +4,13 @@ workspace "NSWI130" {
         properties {
             "structurizr.groupSeparator" "/"
         }
-        
-        student = person "Student"
-        ucitel = person "Teacher"
-        pro = softwareSystem "Projekty" {
+
+        student = person "Student" "Student"
+        ucitel = person "Učitel" "Učitel"
+
+        projekty = softwareSystem "Modul Projekty" {
             // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat"
             // TODO: přidat do managementPrujektuServer něco, co si bude pamatovat id chatů, které pak zahrne v přesměrování
-
             group "Komunikace" {
                 komunikaceWebApp = container "Webová Aplikace Komunikace" "" "" {
                     group "Presentation Layer"  {
@@ -18,7 +18,7 @@ workspace "NSWI130" {
                         notifikaceUI = component "Notifikace UI" "Zobrazení notifikací"
                     }
                     group "Business Layer"  {
-                        websocketKlient = component "WebSocket Klient" "Zajišťuje komunikaci s WebSocket serverem"
+                        komunikaceWebsocketKlient = component "WebSocket Klient" "Zajišťuje komunikaci s WebSocket serverem"
                         spravaChatu = component "Správa chatu" "Zajišťuje získání a odeslání zpráv"
                     }
                     group "Persistence Layer"  {
@@ -30,8 +30,8 @@ workspace "NSWI130" {
 
                     spravaChatu -> notifikaceUI : "zobrazuje notifikace"
 
-                    spravaChatu -> websocketKlient : "žádá o data"
-                    websocketKlient -> spravaChatu : "poskytuje data"
+                    spravaChatu -> komunikaceWebsocketKlient : "žádá o data"
+                    komunikaceWebsocketKlient -> spravaChatu : "poskytuje data"
 
                     spravaChatu -> chatCache : "cachuje data"
                     chatCache -> spravaChatu : "poskytuje data"
@@ -39,7 +39,7 @@ workspace "NSWI130" {
 
                 komunikaceServer = container "Server Komunikace" "" "" {
                     group "Business Layer"  {
-                        websocketServer = component "WebSocket Server" "Zajišťuje komunikaci s webovou aplikací"
+                        komunikaceWebsocketServer = component "WebSocket Server" "Zajišťuje komunikaci s webovou aplikací"
                         kontrolaZprav = component "Kontrola zpráv" "Kontrola obsahu zpráv"
                         spravaZprav = component "Správa zpráv" "Zpracovává odeslání a příjem zpráv"
                         spravaChatLogu = component "Správa chat logů" 
@@ -48,8 +48,8 @@ workspace "NSWI130" {
                         chatLogs = component "Chat logy" "Chat logy aktivních chatů"
                     }
                     // Vztahy pro Server Komunikace
-                    spravaZprav -> websocketServer : "odesílá zprávy a notifikace"
-                    websocketServer -> spravaZprav : "přijímá zprávy"
+                    spravaZprav -> komunikaceWebsocketServer : "odesílá zprávy a notifikace"
+                    komunikaceWebsocketServer -> spravaZprav : "přijímá zprávy"
 
                     spravaZprav -> kontrolaZprav : "žádá o kontrolu zpráv"
                     kontrolaZprav -> spravaZprav : "poskytuje výsledky kontroly"
@@ -61,15 +61,15 @@ workspace "NSWI130" {
                     chatLogs -> spravaChatLogu : "poskytuje data"
                 }
 
-                chatLogDatabaze = container "Databáze Chatů" "Ukládá a poskytuje data pro historii chatů" {
+                chatLogDatabaze = container "Databáze Chatů" "Zálohuje a poskytuje data o historii chatů" {
                     // Vztahy pro Databázi Chat Logů
                     spravaChatLogu -> chatLogDatabaze : "zálohuje data"
                     chatLogDatabaze -> spravaChatLogu : "poskytuje data"
                 }
 
                 // Vztahy mezi kontejnery
-                websocketKlient -> websocketServer : "komunikuje přes WebSocket"
-                websocketServer -> websocketKlient : "komunikuje přes WebSocket"
+                komunikaceWebsocketKlient -> komunikaceWebsocketServer : "komunikuje přes WebSocket"
+                komunikaceWebsocketServer -> komunikaceWebsocketKlient : "komunikuje přes WebSocket"
 
                 // Vztahy s uživateli
                 student -> chatUI : "píše zprávy"
@@ -83,32 +83,26 @@ workspace "NSWI130" {
             group "Management Projektu" {
                 managmentProjektuWebApp = container "Webová Aplikace Správa projektů" "" "" {
                     group "Presentation Layer"  {
-                        group "Zobrazení stránky projektu pro učitele" {
+                        group "Zobrazení pro učitele" {
                             formularProVytvoreniNovehoProjektu = component "Zobrazení formuláře pro založení projektu"
-                            seznamVytvorenychProjektu = component "Zobrazení seznamu vytvorenych projektu"
+                            seznamVytvorenychProjektu = component "Zobrazení seznamu projektů, které učitel vytvořil"
                         }
-                        group "Zobrazení stránky projektu pro studenta" {
-                            seznamPrihlasenychProjektu = component "Zobrazení seznamu přihlášených projektů"
-                            seznamProjektuDoKterychSeMuzePrihlasit = component "Zobrazeni seznamu projektu do kterych se muze student prihlasit"
+                        group "Zobrazení pro studenta" {
+                            seznamPrihlasenychProjektu = component "Zobrazení seznamu projektů, do kterých je student přihlášený"
+                            seznamProjektuDoKterychSeMuzePrihlasit = component "Zobrazení seznamu projektů, do kterých se student může přihlásit"
                         }
                         // v deatilu projektu muze ucitel i student upravovat projekt, tedy pridavat a odstranovat soubory
                         detailProjektuUI = component "Zobrazení detailu projektu"
-                        vyhledaniProjektuUI = component "Vyledani projektu podle podminek"
+                        vyhledaniProjektuUI = component "Hladání projektu podle podmínek"
                         systemNotificationsUI = component "Zobrazení systémových notifikací"
                     }
                     group "Business Layer"  {
                         vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru = component "Vytvoreni dotazu na server pro ziskani seznamu projektu podle zadaneho filteru"
                     }
-                    group "Persistence Layer"  {
-                    }
                 }
 
                 managmentProjektuServer = container "Server Správy projektů" "" "" {
-                    //group "Presentation Layer" {
-                       // UIDeliver = component "Správa projektů Server User Interface" ""
-                    //}
                     group "Business Layer"  {
-                        
                         managerNotifikaci = component "Manager notifikaci"
                         seznamProjektu = component "Seznam projektu"
                         editaceProjektu = component "Editace projektu"
@@ -120,13 +114,16 @@ workspace "NSWI130" {
                             kontrolaPodminekProPrihlaseniDoProjektu = component "Kontrola podmínek pro prihlaseni do projektu" "Kontrola splnění podmínek pro přihlášení do projektu"
                             kontrolaVytvoreniNovehoProjektu = component "Kontrola vytvoření nového projektu" "Kontrola jedinečnosti názvu projektu"
                         }
-                    }
-                    group "Persistence Layer"  {
+
                         tvorbaDotazu = component "Komunikace s databází"
                     }
                 }
 
-                databazeProjektu = container "Databáze" "Ukládá data" "" "Database"
+                databazeProjektu = container "Databáze" "Ukládá a načítá data projektů" {
+                    // Vztahy pro Databázi
+                    tvorbaDotazu -> databazeProjektu : "provede dotaz"
+                    databazeProjektu -> tvorbaDotazu : "poskytne výsledek dotazu"
+                } 
                 
              
                 
@@ -173,11 +170,6 @@ workspace "NSWI130" {
                 kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace problemu"
                 kontrolaSouboru -> managerNotifikaci "notifikace chyby pri kontrole souboru"
 
-
-
-                // databaze
-                tvorbaDotazu -> databazeProjektu "proved dotaz"
-
                 // prihlaseni se do projektu
                 // UI -> server
                 detailProjektuUI -> managerProjektu "prihlaseni studenta do projektu"
@@ -190,31 +182,61 @@ workspace "NSWI130" {
                 kontrolaVytvoreniNovehoProjektu -> tvorbaDotazu "vytvoreni noveho projektu"
                 kontrolaVytvoreniNovehoProjektu -> managerNotifikaci "notifikace uspechu, ci neuspechu"
 
-
-                
             }     
         }
         
-
-
+        // TODO: remove?
         // managmentProjektu -> komunikace "Inicializuje chatovací místnost pro nový projekt"
         // managmentProjektu -> databazeProjektu "Ukládá a načítá data projektu"
         // komunikace -> kontrola "Kontroluje správnost zpráv v chatu"
         // tvorbaDotazu -> kontrola "Kontroluje správnost sql dotazu"
         // kontrolaZprav -> kontrola "Kontroluje správnost zpráv v chatu"
     
-
         ucitel -> detailProjektuUI "Spravuje projekty"
 
         student -> detailProjektuUI "Přihlašuje se do nového projektu."
         student -> detailProjektuUI "Edituje projekt"
         
-        systemNotificationsUI -> student "Zobrazuje notifikace o potvrzení přihlášení do projektu, nebo změny souboru"
+        systemNotificationsUI -> student "Zobrazuje notifikace o potvrzení přihlášení do projektu nebo změny souboru"
         systemNotificationsUI -> ucitel "Zobrazuje notifikace o potvrzení vytvoření projektu"
+
+
+        ucitel -> projekty "Spravuje studentské projekty a komunikuje se studenty"
+        student -> projekty "Přihlašuje se do projektů, pracuje na nich a komunikuje se svým učitelem a spolužáky"
     }
     
+    // TODO: upravit views, aby všechno vypadalo ok (include, exclude,...)
     views {
+        systemContext projekty "projektySystemContext" "Diagram systému" {
+            include *
+            autoLayout lr
+        }
+
+        container projekty "projektyContainer" "Diagram kontejnerů" {
+            include *
+            autoLayout lr
+        }
+
+        component komunikaceWebApp "komunikaceWebAppComponent" "Diagram komponent" {
+            include *
+            autoLayout lr
+        }
+
+        component komunikaceServer "komunikaceServerComponent" "Diagram komponent" {
+            include *
+            autoLayout lr
+        }
+
+        component managmentProjektuWebApp "managmentProjektuWebAppComponent" "Diagram komponent" {
+            include *
+            autoLayout lr
+        }
+
+        component managmentProjektuServer "managmentProjektuServerComponent" "Diagram komponent" {
+            include *
+            autoLayout lr
+        }
+
         theme default
     }
-
 }
