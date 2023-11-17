@@ -25,16 +25,16 @@ workspace "NSWI130" {
                         chatCache = component "Cache zpráv" "Cachování zpráv pro rychlejší zobrazení a kontrola aktuálnosti dat"
                     }
                     // Vztahy pro Webovou Aplikaci
-                    chatUI -> spravaChatu : "odesílá zprávy"
-                    spravaChatu -> chatUI : "zobrazuje zprávy"
+                    chatUI -> spravaChatu  "odesílá zprávy"
+                    spravaChatu -> chatUI  "zobrazuje zprávy"
 
-                    spravaChatu -> notifikaceUI : "zobrazuje notifikace"
+                    spravaChatu -> notifikaceUI  "zobrazuje notifikace"
 
-                    spravaChatu -> komunikaceWebsocketKlient : "žádá o data"
-                    komunikaceWebsocketKlient -> spravaChatu : "poskytuje data"
+                    spravaChatu -> komunikaceWebsocketKlient  "žádá o data"
+                    komunikaceWebsocketKlient -> spravaChatu  "poskytuje data"
 
-                    spravaChatu -> chatCache : "cachuje data"
-                    chatCache -> spravaChatu : "poskytuje data"
+                    spravaChatu -> chatCache  "cachuje data"
+                    chatCache -> spravaChatu  "poskytuje data"
                 }
 
                 komunikaceServer = container "Server Komunikace" "" "" {
@@ -48,36 +48,36 @@ workspace "NSWI130" {
                         chatLogs = component "Chat logy" "Chat logy aktivních chatů"
                     }
                     // Vztahy pro Server Komunikace
-                    spravaZprav -> komunikaceWebsocketServer : "odesílá zprávy a notifikace"
-                    komunikaceWebsocketServer -> spravaZprav : "přijímá zprávy"
+                    spravaZprav -> komunikaceWebsocketServer  "odesílá zprávy a notifikace"
+                    komunikaceWebsocketServer -> spravaZprav  "přijímá zprávy"
 
-                    spravaZprav -> kontrolaZprav : "žádá o kontrolu zpráv"
-                    kontrolaZprav -> spravaZprav : "poskytuje výsledky kontroly"
+                    spravaZprav -> kontrolaZprav  "žádá o kontrolu zpráv"
+                    kontrolaZprav -> spravaZprav  "poskytuje výsledky kontroly"
 
-                    spravaZprav -> spravaChatLogu : "ukládá nové zprávy"
-                    spravaChatLogu -> spravaZprav : "poskytuje historii chatu"
+                    spravaZprav -> spravaChatLogu  "ukládá nové zprávy"
+                    spravaChatLogu -> spravaZprav  "poskytuje historii chatu"
 
-                    spravaChatLogu -> chatLogs : "ukládá data"
-                    chatLogs -> spravaChatLogu : "poskytuje data"
+                    spravaChatLogu -> chatLogs  "ukládá data"
+                    chatLogs -> spravaChatLogu  "poskytuje data"
                 }
 
                 chatLogDatabaze = container "Databáze Chatů" "Zálohuje a poskytuje data o historii chatů" {
                     // Vztahy pro Databázi Chat Logů
-                    spravaChatLogu -> chatLogDatabaze : "zálohuje data"
-                    chatLogDatabaze -> spravaChatLogu : "poskytuje data"
+                    spravaChatLogu -> chatLogDatabaze  "zálohuje data"
+                    chatLogDatabaze -> spravaChatLogu  "poskytuje data"
                 }
 
                 // Vztahy mezi kontejnery
-                komunikaceWebsocketKlient -> komunikaceWebsocketServer : "komunikuje přes WebSocket"
-                komunikaceWebsocketServer -> komunikaceWebsocketKlient : "komunikuje přes WebSocket"
+                komunikaceWebsocketKlient -> komunikaceWebsocketServer  "komunikuje přes WebSocket"
+                komunikaceWebsocketServer -> komunikaceWebsocketKlient  "komunikuje přes WebSocket"
 
                 // Vztahy s uživateli
-                student -> chatUI : "píše zprávy"
-                ucitel -> chatUI : "píše zprávy"
-                chatUI -> student : "zobrazuje zprávy"
-                chatUI -> ucitel : "zobrazuje zprávy"
-                notifikaceUI -> student : "zobrazuje notifikace"
-                notifikaceUI -> ucitel : "zobrazuje notifikace"
+                student -> chatUI  "píše zprávy"
+                ucitel -> chatUI  "píše zprávy"
+                chatUI -> student  "zobrazuje zprávy"
+                chatUI -> ucitel  "zobrazuje zprávy"
+                notifikaceUI -> student  "zobrazuje notifikace"
+                notifikaceUI -> ucitel  "zobrazuje notifikace"
             }
             
             group "Management Projektu" {
@@ -145,58 +145,58 @@ workspace "NSWI130" {
                 
                 // seznam projektu
                 // UI -> server
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektu "pozadavek na ziskani seznamu prihlasenych projektu podle filteru"
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektu "požadavek na získání seznamu přihlášených projektů podle filteru"
                 // server -> UI 
-                seznamProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu projektu podle filteru" 
+                seznamProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doručení seznamu projektů podle filteru" 
 
-                seznamVytvorenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "pozadavek na ziskani seznamu vytvorenych projektu"
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamVytvorenychProjektu "doruceni seznamu vytvorenych projektu"
+                seznamVytvorenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "požadavek na získání seznamu vytvorenych projektu"
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamVytvorenychProjektu "doručení seznamu vytvořených projektů"
 
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektuDoKterychSeMuzePrihlasit "pozadavek na ziskani seznamu projektu do kterych se uze student prihlasit"
-                seznamProjektuDoKterychSeMuzePrihlasit -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu projektu do kterych se uze student prihlasit"
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektuDoKterychSeMuzePrihlasit "požadavek na získání seznamu projektů, do kterých se může student přihlásit"
+                seznamProjektuDoKterychSeMuzePrihlasit -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doručení seznamu projektů, do kterých se může student přihlásit"
 
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamPrihlasenychProjektu "pozadavek na ziskani seznamu prihlasenych projektu"
-                seznamPrihlasenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doruceni seznamu prihlasenych projektu"
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamPrihlasenychProjektu "požadavek na získání seznamu přihlášených projektů"
+                seznamPrihlasenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doručení seznamu přihlášených projektů"
 
-                vyhledaniProjektuUI -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "pozadavek na ziskani seznamu projektu podle filteru"
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> vyhledaniProjektuUI "doruceni seznamu projeku podle filteru"
+                vyhledaniProjektuUI -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "požadavek na získání seznamu projektů podle filteru"
+                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> vyhledaniProjektuUI "doručení seznamu projektů podle filteru"
 
                 seznamProjektu -> kontrolaFiltru "kontrola filtru"
-                kontrolaFiltru -> tvorbaDotazuSpravaProjektu "pozadavek na ziskani seznamu projektu dle filteru"
-                tvorbaDotazuSpravaProjektu -> seznamProjektu "doruceni seznamu projektu dle filteru"
+                kontrolaFiltru -> tvorbaDotazuSpravaProjektu "požadavek na získání seznamu projektů dle filteru"
+                tvorbaDotazuSpravaProjektu -> seznamProjektu "doručení seznamu projektů dle filteru"
 
 
                 // detail projektu
                 // UI -> server
-                detailProjektuUI -> editaceProjektu "pozadavek na ziskani informaci detailu projektu"
-                editaceProjektu -> tvorbaDotazuEditaceProjektu "pozadavek na ziskani informaci detailu projektu"
-                tvorbaDotazuEditaceProjektu -> editaceProjektu "doruceni informaci detailu projektu"
+                detailProjektuUI -> editaceProjektu "požadavek na získání informaci detailu projektu"
+                editaceProjektu -> tvorbaDotazuEditaceProjektu "požadavek na získání informaci detailu projektu"
+                tvorbaDotazuEditaceProjektu -> editaceProjektu "doručení informaci detailu projektu"
                 // server -> UI
-                editaceProjektu -> detailProjektuUI "doruceni informaci detailu projektu"
+                editaceProjektu -> detailProjektuUI "doručení informaci detailu projektu"
 
                 // uprava projektu
-                detailProjektuUI -> editaceProjektu "pridani, nebo odstraneni souboru"
+                detailProjektuUI -> editaceProjektu "přidání, nebo odstranění souboru"
                 editaceProjektu -> kontrolaSouboru "kontrola souboru"
-                kontrolaSouboru -> tvorbaDotazuEditaceProjektu "pridani, nebo odstraneni souboru projektu"
-                kontrolaSouboru -> managerNotifikaci "notifikace problemu, nebo uspechu editace projektu"
+                kontrolaSouboru -> tvorbaDotazuEditaceProjektu "přidání, nebo odstranění souboru projektu"
+                kontrolaSouboru -> managerNotifikaci "notifikace problému, nebo úspěchu editace projektu"
 
                 // notifikace
                 managerNotifikaci -> systemNotificationsUI "zobraz notifikaci"
-                kontrolaFiltru -> managerNotifikaci "notifikace problemu"
-                kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace problemu"
-                kontrolaSouboru -> managerNotifikaci "notifikace chyby pri kontrole souboru"
+                kontrolaFiltru -> managerNotifikaci "notifikace problému"
+                kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace problému"
+                kontrolaSouboru -> managerNotifikaci "notifikace chyby při kontrole souboru"
 
                 // prihlaseni se do projektu
                 // UI -> server
-                detailProjektuUI -> managerProjektu "prihlaseni studenta do projektu"
-                managerProjektu -> kontrolaPodminekProPrihlaseniDoProjektu "kontrola podminek"
-                kontrolaPodminekProPrihlaseniDoProjektu -> tvorbaDotazuSpravaProjektu "pridani studenta do projektu"
-                kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace uspechu, ci neuspechu"
+                detailProjektuUI -> managerProjektu "přihlášení studenta do projektu"
+                managerProjektu -> kontrolaPodminekProPrihlaseniDoProjektu "kontrola podmínek"
+                kontrolaPodminekProPrihlaseniDoProjektu -> tvorbaDotazuSpravaProjektu "přidání studenta do projektu"
+                kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace úspěchu, či neúspěchu"
                 
-                formularProVytvoreniNovehoProjektu -> managerProjektu "vytvoreni noveho projektu"
-                managerProjektu -> kontrolaVytvoreniNovehoProjektu "kontrola vytvoreni noveho projektu"
-                kontrolaVytvoreniNovehoProjektu -> tvorbaDotazuSpravaProjektu "vytvoreni noveho projektu"
-                kontrolaVytvoreniNovehoProjektu -> managerNotifikaci "notifikace uspechu, ci neuspechu"
+                formularProVytvoreniNovehoProjektu -> managerProjektu "vytvoření nového projektu"
+                managerProjektu -> kontrolaVytvoreniNovehoProjektu "kontrola vytvoření nového projektu"
+                kontrolaVytvoreniNovehoProjektu -> tvorbaDotazuSpravaProjektu "vytvoření nového projektu"
+                kontrolaVytvoreniNovehoProjektu -> managerNotifikaci "notifikace úspěchu, či neúspěchu"
 
             }     
         }
