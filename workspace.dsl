@@ -4,13 +4,22 @@ workspace "NSWI130" {
         properties {
             "structurizr.groupSeparator" "/"
         }
+        #External
+        //Ted to puzivam pro Gateway, nevim jestli Komunikace potrebuje SIS pro neco
+        studentInfoSystem = softwareSystem "Studijni Informacni System" {
+            tags "External" 
+        }
 
-        student = person "Student" "Student"
-        ucitel = person "Učitel" "Učitel"
 
-        projekty = softwareSystem "Modul Projekty" {
-            // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat"
+        # Akteri
+        student = person "Student" "Studuje univerzitu"
+        ucitel = person "Učitel" "Prednasi na univerzite"
+
+        projekty = softwareSystem "Modul Projekty" "Modul Projekty pro Studenty a ucitele" {
+            
             // TODO: přidat do managementPrujektuServer něco, co si bude pamatovat id chatů, které pak zahrne v přesměrování
+            // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat"
+            
             group "Komunikace" {
                 komunikaceWebApp = container "Webová Aplikace Komunikace" "" "" {
                     group "Presentation Layer"  {
@@ -62,6 +71,7 @@ workspace "NSWI130" {
                 }
 
                 chatLogDatabaze = container "Databáze Chatů" "Zálohuje a poskytuje data o historii chatů" {
+                    tags "Database"
                     // Vztahy pro Databázi Chat Logů
                     spravaChatLogu -> chatLogDatabaze  "zálohuje data"
                     chatLogDatabaze -> spravaChatLogu  "poskytuje data"
@@ -80,172 +90,231 @@ workspace "NSWI130" {
                 notifikaceUI -> ucitel  "zobrazuje notifikace"
             }
             
+            
+
             group "Management Projektu" {
-                managmentProjektuWebApp = container "Webová Aplikace Správa projektů" "" "" {
-                    group "Presentation Layer"  {
-                        group "Zobrazení pro učitele" {
-                            formularProVytvoreniNovehoProjektu = component "Zobrazení formuláře pro založení projektu"
-                            seznamVytvorenychProjektu = component "Zobrazení seznamu projektů, které učitel vytvořil"
-                        }
-                        group "Zobrazení pro studenta" {
-                            seznamPrihlasenychProjektu = component "Zobrazení seznamu projektů, do kterých je student přihlášený"
-                            seznamProjektuDoKterychSeMuzePrihlasit = component "Zobrazení seznamu projektů, do kterých se student může přihlásit"
-                        }
-                        // v deatilu projektu muze ucitel i student upravovat projekt, tedy pridavat a odstranovat soubory
-                        detailProjektuUI = component "Zobrazení detailu projektu"
-                        vyhledaniProjektuUI = component "Hledání projektu podle podmínek"
-                        systemNotificationsUI = component "Zobrazení systémových notifikací"
-                    }
-                    group "Business Layer"  {
-                        vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru = component "Vytvoreni dotazu na server pro ziskani seznamu projektu podle zadaneho filteru"
-                    }
+                #HTML 
+                # Ty containery bezi na strane uzivatele a posilaji api calls na controllery
+                // A jsou vic potrebne pro deployment. Podobny container bych vytvorila i v Komunikaci, aby to mohlo reprezentovat Uzivatelsky
+                //webovy prohlizec
+                MPstHTML = container "Management projektu pro studenty HTML" "Funkcionalita pro managaovani projektu studenty ve webovem prohlizeci" "HTML+JavaScript" "Web Front-End"
+                MPteachHTML = container "Management projektu pro ucitele HTML" "Funkcionalita pro managaovani projektu uciteli ve webovem prohlizeci" "HTML+JavaScript" "Web Front-End"
+                
+                #Web Apps
+                managementProjektustudentApp = container "Webova aplikace Management Projektu pro studenta Front end" "Dorucuje HTML data aby student zobrazil info o projektech" {
+                    managementProjektControllerSt = component "Project Controller pro studenta" "Definuje rozhrani pro cteni/prihlaseni do projektu a poskytuje tohle rozhrani."
+                    managementProjektUISt = component "Uzivatelske Rozhrani pro modul Projekty pro studenta (Viewer)" "Poskytuje HTML rozhrani"
+                }
+                managementProjektuteacherApp = container "Webova aplikace Management Projektu pro ucitele Front end" "Dorucuje HTML data aby student zobrazil info o projektech" {
+                    managementProjektControllerT = component "Project Controller pro ucitele" "Definuje rozhrani pro cteni/vytvareni/editaci projektu a poskytuje tohle rozhrani."
+                    managementProjektUIT = component "Uzivatelske Rozhrani pro modul Projekty pro ucitele (Viewer)" "Poskytuje HTML rozhrani"
                 }
 
-                managmentProjektuServer = container "Server Správy projektů" "" "" {
-                    group "Business Layer"  {
-                        managerNotifikaci = component "Manager notifikaci"
-                        group "Manager projektů" {
-                            managerProjektu = component "Manager projektů"
-                            kontrolaPodminekProPrihlaseniDoProjektu = component "Kontrola podmínek pro prihlaseni do projektu" "Kontrola splnění podmínek pro přihlášení do projektu"
-                            kontrolaVytvoreniNovehoProjektu = component "Kontrola vytvoření nového projektu" "Kontrola jedinečnosti názvu projektu"
-                        }
-                        group "Vyhledávání projektů" {
-                            seznamProjektu = component "Seznam projektu"
-                            kontrolaFiltru = component "Kontrola Filtru" "Kontrola chyb ve vyplněných filtrech"
-                        }
+                
+                # Manager
+                // To si predstavuju jako server na kterem ja zarizena Business a Persistent logika. Tu Presentation ma na starosti WebApp frontend 
+                // V predchozi verzi jsme meli containery editace projektu a Notifikace  (ti notifikaci vubec nechapu co a pro co je),
+                // takse container notifikace jsem smazala, ale je tu mala komponenta managerNotifikaci, jenom musime rozhodnout, kam s ni dal
+                // Do mailu? do weboveho rozhrani? nebo di SISu, kde pak se tam o to postara
+                //
+                //Ohledne toho, ze jsme dopodrobna meli rozepsany Editace Projektu s predpokladem, ze by pro to byl jeste 
+                //zvlastni serever si myslim je zbytecne. Myslim si, ze to vsechno jde zahrnout v Business logice, vzdyt to poznamenava 
+                //zmeny (bud to je prihlaseni studenta, nebo vypsani noveho projektu), prevadi ty zmeny do podoby, ve ktere je sezere Persistent
+                //a pak ulozi do DB
+                managementProjektuManager = container "Sprava projektu" "Managovani (vytvareni, editace, prihlaseni do) prjektu" {
+                    
+                    managerNotifikaci = component "Manager notifikaci" "Posila notifikaci studentovi"  
+                    
+                    group "Persistent Layer" {
+                        projectsRepository = component "Repository projektu" "Persists projekty v repositorii. Definuje rozhrani pro cteni a vytvareni projektu a poskytuje implmentaci rozhrani."
                     }
-                    group "Persistence Layer"  {
-                        tvorbaDotazuSpravaProjektu = component "Komunikace s databází"
-                    }
-                }
-
-                editaceProjektuServer = container "Server Editace projektu" {
+                    
                     group "Business Layer" {
-                        managerNotifikaciEditaceProjektu = component "Manager notifikaci"
-                        group "Editor projektu" {
-                            editaceProjektu = component "Editace projektu"
-                            kontrolaSouboru = component "Kontrola souborů" "Kontrola formátu a správnosti vkládaných souborů"
-                        }
-                    }
-                    group "Persistence Layer"  {
-                        tvorbaDotazuEditaceProjektu = component "Komunikace s databází"
+                        //Kontroly pro neco
+                        kontrolniUnit = component "Kontrola a Validace" "Provedeni kontroly a validace dat"
+                        // Hlavni business logika pro vytvareni, editaci, prihlaseni do projektu (Na tehle urovni rozdeleni do mensich casti nas jenonm zmatne, ne?)
+                        projectBusiness = component "Projekt" "Business logika pro projekt"
+                        // Gateway aby zmeny byly poznamenany v SISu u stufdenta a ucitele
+                        // Ohledne tech Gateways si nejsem uplne jista.
+                        // Jestli mame situaci, kdyz chceme, aby se zmeny provedene v modulu projekty byly videt zvenku. Jako treba kdyz vsichni
+                        // postupujeme do dalsiho rocniku, potom to, ze jsme ve 3. rocniku najdeme nejen v modulu "Vysledky Zkousek" ale i na hlavni strance SISu v pravem hornim rohu
+                        // Takze pokud podobne zmeny chceme poznamenavat do jinych modulu, odkazem GateWayem na SIS
+                        studentGateway = component "Student Gateway" "Definuje rozhrani pro zapsani studentu do projektu a poskytuje implementaci rozhrani."
+                        teacherGateway = component "Gateway ucitele" "Definuje rozhrani pro vypsani projektu a poskytuje implementaci rozhrani."
                     }
                 }
+                databazeProjektu = container "Databáze projektu" "Ukládá a načítá data projektů" {
+                    tags "Database"
+                }
+            }
+            
+            
+            #Vztahy 
+            
+            ##Akteri
+            
+            student -> MPstHTML "Prohlizi a prihlasi se do projektu"
+            ucitel -> MPteachHTML "Prohlizi, managuje a vytvoruje projekty"
+            
 
-                databazeProjektu = container "Databáze" "Ukládá a načítá data projektů" {
-                    // Vztahy pro Databázi
-                    tvorbaDotazuSpravaProjektu -> databazeProjektu : "provede dotaz"
-                    databazeProjektu -> tvorbaDotazuSpravaProjektu : "poskytne výsledek dotazu"
+            ## z web App do prohlizece
+            MPstHTML -> managementProjektControllerSt "Posila pozadavky na data"
+            managementProjektControllerSt -> MPstHTML "Dorucuje data"
+            
+            MPteachHTML -> managementProjektControllerT "Posila pozadavky na data"
+            managementProjektControllerT -> MPteachHTML "Dorucuje data"
+            
+            //Uvnitr WebApp frontEnd
+            managementProjektControllerSt -> managementProjektUISt "Pouziva pro renderovani dat pro management projektu"
+            managementProjektControllerT -> managementProjektUIT "Pouziva pro renderovani dat pro management projektu"
+            
+            // Z webApp front end do Business Sprava Projektu
+            managementProjektControllerSt -> projectBusiness "Ziskava a meni data projektu"
+            managementProjektControllerT -> projectBusiness  "Ziskava a meni data projektu"
+            
+            ##Kontroly
+            kontrolniUnit -> projectBusiness "Posila validni data"
+            projectBusiness -> kontrolniUnit "Posila data pro validaci"
+            
+            ## Gateway vztahy na urovni business logiky
+            managementProjektControllerSt -> studentGateway "Posila pozadavek na zmenu dat ohledne projektu (ve vztahu ke studentu)"
+            managementProjektControllerT -> teacherGateway  "Posila pozadavek na zmenu dat ohledne projektu (ve vztahu ke uciteli)"
+            
+            studentGateway -> studentInfoSystem "Udela API call pro zapsani zmen, takajicich se studenta"
+            teacherGateway -> studentInfoSystem "Udela API call pro zapsani zmen, takajicich se ucitele"
+            studentGateway -> managerNotifikaci "Notifikuje studenta (o necem, uz nepamatuju)"
 
-                    tvorbaDotazuEditaceProjektu -> databazeProjektu : "provede dotaz"
-                    databazeProjektu -> tvorbaDotazuEditaceProjektu : "poskytne výsledek dotazu"
-                } 
-                
-             
-                
-                // seznam projektu
-                // UI -> server
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektu "požadavek na získání seznamu přihlášených projektů podle filteru"
-                // server -> UI 
-                seznamProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doručení seznamu projektů podle filteru" 
+            # Z Business do Persistent
+            projectBusiness -> projectsRepository "Cte/pise data pres rozhrani"
 
-                seznamVytvorenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "požadavek na získání seznamu vytvorenych projektu"
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamVytvorenychProjektu "doručení seznamu vytvořených projektů"
-
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamProjektuDoKterychSeMuzePrihlasit "požadavek na získání seznamu projektů, do kterých se může student přihlásit"
-                seznamProjektuDoKterychSeMuzePrihlasit -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doručení seznamu projektů, do kterých se může student přihlásit"
-
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> seznamPrihlasenychProjektu "požadavek na získání seznamu přihlášených projektů"
-                seznamPrihlasenychProjektu -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "doručení seznamu přihlášených projektů"
-
-                vyhledaniProjektuUI -> vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru "požadavek na získání seznamu projektů podle filteru"
-                vytvoreniDotazuNaZiskaniSeznamuProjektuPodleFiltru -> vyhledaniProjektuUI "doručení seznamu projektů podle filteru"
-
-                seznamProjektu -> kontrolaFiltru "kontrola filtru"
-                kontrolaFiltru -> tvorbaDotazuSpravaProjektu "požadavek na získání seznamu projektů dle filteru"
-                tvorbaDotazuSpravaProjektu -> seznamProjektu "doručení seznamu projektů dle filteru"
-
-
-                // detail projektu
-                // UI -> server
-                detailProjektuUI -> editaceProjektu "požadavek na získání informaci detailu projektu"
-                editaceProjektu -> tvorbaDotazuEditaceProjektu "požadavek na získání informaci detailu projektu"
-                tvorbaDotazuEditaceProjektu -> editaceProjektu "doručení informaci detailu projektu"
-                // server -> UI
-                editaceProjektu -> detailProjektuUI "doručení informaci detailu projektu"
-
-                // uprava projektu
-                detailProjektuUI -> editaceProjektu "přidání, nebo odstranění souboru"
-                editaceProjektu -> kontrolaSouboru "kontrola souboru"
-                kontrolaSouboru -> tvorbaDotazuEditaceProjektu "přidání, nebo odstranění souboru projektu"
-                kontrolaSouboru -> managerNotifikaci "notifikace problému, nebo úspěchu editace projektu"
-
-                // notifikace
-                managerNotifikaci -> systemNotificationsUI "zobraz notifikaci"
-                kontrolaFiltru -> managerNotifikaci "notifikace problému"
-                kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace problému"
-                kontrolaSouboru -> managerNotifikaci "notifikace chyby při kontrole souboru"
-
-                // prihlaseni se do projektu
-                // UI -> server
-                detailProjektuUI -> managerProjektu "přihlášení studenta do projektu"
-                managerProjektu -> kontrolaPodminekProPrihlaseniDoProjektu "kontrola podmínek"
-                kontrolaPodminekProPrihlaseniDoProjektu -> tvorbaDotazuSpravaProjektu "přidání studenta do projektu"
-                kontrolaPodminekProPrihlaseniDoProjektu -> managerNotifikaci "notifikace úspěchu, či neúspěchu"
-                
-                formularProVytvoreniNovehoProjektu -> managerProjektu "vytvoření nového projektu"
-                managerProjektu -> kontrolaVytvoreniNovehoProjektu "kontrola vytvoření nového projektu"
-                kontrolaVytvoreniNovehoProjektu -> tvorbaDotazuSpravaProjektu "vytvoření nového projektu"
-                kontrolaVytvoreniNovehoProjektu -> managerNotifikaci "notifikace úspěchu, či neúspěchu"
-
-            }     
-        }
+            # z Pesristent do DB
+            projectsRepository -> databazeProjektu "Cte z/zapisuje do DB"
     
-        ucitel -> detailProjektuUI "Spravuje projekty"
+        }
+        # Deployment
+            deploymentEnvironment "Live"    {
+                # HTML
+                deploymentNode "Studentuv webovy prohlizec" "" ""    {
+                   MPstHTMLInstance = containerInstance MPstHTML
+                }
+                deploymentNode "Webovy prohlizec Ucitele" "" ""    {
+                   MPteachHTMLInstance = containerInstance MPteachHTML
+                }
+                 
+                
+                
+                # Aplikace
+                deploymentNode "Project Management Aplikacni Server" "" "Ubuntu 22.04 LTS"   {
+                   deploymentNode "Web server" "" "Apache Tomcat 10.1.15"  {
+                       studentProjectManagerAppInstance = containerInstance managementProjektustudentApp
+                       teacherProjectManagerAppInstance = containerInstance managementProjektuteacherApp
+                   }
+                   ProjectManagementManagerInstance = containerInstance managementProjektuManager
+                }
+                
 
-        student -> detailProjektuUI "Přihlašuje se do nového projektu."
-        student -> detailProjektuUI "Edituje projekt"
-        
-        systemNotificationsUI -> student "Zobrazuje notifikace o potvrzení přihlášení do projektu nebo změny souboru"
-        systemNotificationsUI -> ucitel "Zobrazuje notifikace o potvrzení vytvoření projektu"
+                
+                # Databases
+                # Pripadne databaze mohou bezet i na stejenem sereveru co aplikace
+                deploymentNode "Database Server pro Projekty" "" "Ubuntu 22.04 LTS"   {
+                   deploymentNode "Relational DB server" "" "Oracle 23.2.0" {
+                       applicationsDatabaseInstance = containerInstance databazeProjektu
+                   }
+                }
+                
+                #Komunikace Deployment
+                
+                #Aplikace
+                
+               
+                
+                deploymentNode "Project Komunikacni server" "" "Ubuntu 22.04 LTS" {
+                    deploymentNode "Web Server" "" "Apache Tomcat 10.1.15" {
+                        komunikaceWebAppInstance = containerInstance komunikaceWebApp
+                    }
+                    komunikaceServerInstance = containerInstance komunikaceServer
+                }
+                
 
-
-        ucitel -> projekty "Spravuje studentské projekty a komunikuje se studenty"
-        student -> projekty "Přihlašuje se do projektů, pracuje na nich a komunikuje se svým učitelem a spolužáky"
+                deploymentNode "Database Server pro Komunikaci" "" "Ubuntu 22.04 LTS"   {
+                   deploymentNode "Relational DB server" "" "Oracle 23.2.0" {
+                       komunikaceDatabaseInstance = containerInstance chatLogDatabaze
+                   }
+                }
+        }
     }
+                    
     
-    // TODO: upravit views, aby všechno vypadalo ok (include, exclude,...)
+    
     views {
-        systemContext projekty "projektySystemContext" "Diagram systému" {
-            include *
-            autoLayout lr
-        }
+            systemContext projekty "projektySystemContext" "Diagram systému" {
+                include *
+                //autoLayout lr
+            }
+    
+            container projekty "projektyContainer" "Diagram kontejnerů" {
+                include *
+                //autoLayout lr
+            }
+            
+            component managementProjektustudentApp "ProjectManagementWebAppStudent" {
+                include *
+                //autoLayout
+            }
+            
+            component managementProjektuteacherApp "ProjectManagementWebAppTeacher" {
+                include *
+                //autoLayout
+            }
+            
+            component managementProjektuManager "ProjektManagementComponent" {
+                include *
+                //autolayout lr
+            }
+    
+            component komunikaceWebApp "komunikaceWebAppComponent" "Diagram komponent" {
+                include *
+                //autoLayout lr
+            }
+    
+            component komunikaceServer "komunikaceServerComponent" "Diagram komponent" {
+                include *
+                //autoLayout lr
+            }
+    
+            deployment projekty "Live" "StudentSystemDeployment"   {
+                include *
+                //autolayout
+            }
+            theme default
+        
+        styles {
 
-        container projekty "projektyContainer" "Diagram kontejnerů" {
-            include *
-            autoLayout lr
-        }
+            element "Existing System" {
+                background #999999
+                color #ffffff
+            }
 
-        component komunikaceWebApp "komunikaceWebAppComponent" "Diagram komponent" {
-            include *
-            autoLayout lr
-        }
+            element "Web Front-End"  {
+                shape WebBrowser
+            }
 
-        component komunikaceServer "komunikaceServerComponent" "Diagram komponent" {
-            include *
-            autoLayout lr
+            element "Database"  {
+                shape Cylinder
+            }
+        
+            element "Software System" {
+                background #1168bd
+                color #ffffff
+            }
+            element "Person" {
+                shape person
+                background #08427b
+                color #ffffff
+            }
+            element "External" {
+                background  #636363
+            }
         }
-
-        component managmentProjektuWebApp "managmentProjektuWebAppComponent" "Diagram komponent" {
-            include *
-            autoLayout lr
-        }
-
-        component managmentProjektuServer "managmentProjektuServerComponent" "Diagram komponent" {
-            include *
-            autoLayout lr
-        }
-
-        theme default
     }
 }
