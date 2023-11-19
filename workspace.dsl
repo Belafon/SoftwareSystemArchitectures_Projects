@@ -4,24 +4,23 @@ workspace "NSWI130" {
         properties {
             "structurizr.groupSeparator" "/"
         }
-        #External
-        //Ted to puzivam pro Gateway, nevim jestli Komunikace potrebuje SIS pro neco
+        # External
+        // Teď to používám pro Gateway, nevím jestli Komunikace potřebuje SIS pro něco
         studentInfoSystem = softwareSystem "Studijni Informacni System" {
             tags "External" 
         }
 
-
-        # Akteri
+        # Aktéři
         student = person "Student" "Studuje univerzitu"
         ucitel = person "Učitel" "Prednasi na univerzite"
 
         projekty = softwareSystem "Modul Projekty" "Modul Projekty pro Studenty a ucitele" {
-            
+
             // TODO: přidat do managementPrujektuServer něco, co si bude pamatovat id chatů, které pak zahrne v přesměrování
             // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat"
-            
+
             group "Komunikace" {
-                komunikaceWebApp = container "Webová Aplikace Komunikace" "" "" {
+                komunikaceWebApp = container "Webová Aplikace Komunikace" "" "" "Web Front-End" {
                     group "Presentation Layer"  {
                         chatUI = component "Chat UI" "Zobrazení okénka chatu"
                         notifikaceUI = component "Notifikace UI" "Zobrazení notifikací"
@@ -89,14 +88,12 @@ workspace "NSWI130" {
                 notifikaceUI -> student  "zobrazuje notifikace"
                 notifikaceUI -> ucitel  "zobrazuje notifikace"
             }
-            
-            
 
             group "Management Projektu" {
-                #HTML 
-                # Ty containery bezi na strane uzivatele a posilaji api calls na controllery
-                // A jsou vic potrebne pro deployment. Podobny container bych vytvorila i v Komunikaci, aby to mohlo reprezentovat Uzivatelsky
-                //webovy prohlizec
+                # HTML 
+                # Ty containery běží na straně uživatele a posílají api calls na controllery
+                // A jsou víc potřebné pro deployment. Podobný container bych vytvořila i v Komunikaci, aby to mohlo reprezentovat Uživatelský
+                // webový prohlížeč
                 MPstHTML = container "Management projektu pro studenty HTML" "Funkcionalita pro managaovani projektu studenty ve webovem prohlizeci" "HTML+JavaScript" "Web Front-End"
                 MPteachHTML = container "Management projektu pro ucitele HTML" "Funkcionalita pro managaovani projektu uciteli ve webovem prohlizeci" "HTML+JavaScript" "Web Front-End"
                 
@@ -110,17 +107,16 @@ workspace "NSWI130" {
                     managementProjektUIT = component "Uzivatelske Rozhrani pro modul Projekty pro ucitele (Viewer)" "Poskytuje HTML rozhrani"
                 }
 
-                
                 # Manager
                 // To si predstavuju jako server na kterem ja zarizena Business a Persistent logika. Tu Presentation ma na starosti WebApp frontend 
                 // V predchozi verzi jsme meli containery editace projektu a Notifikace  (ti notifikaci vubec nechapu co a pro co je),
                 // takse container notifikace jsem smazala, ale je tu mala komponenta managerNotifikaci, jenom musime rozhodnout, kam s ni dal
                 // Do mailu? do weboveho rozhrani? nebo di SISu, kde pak se tam o to postara
                 //
-                //Ohledne toho, ze jsme dopodrobna meli rozepsany Editace Projektu s predpokladem, ze by pro to byl jeste 
-                //zvlastni serever si myslim je zbytecne. Myslim si, ze to vsechno jde zahrnout v Business logice, vzdyt to poznamenava 
-                //zmeny (bud to je prihlaseni studenta, nebo vypsani noveho projektu), prevadi ty zmeny do podoby, ve ktere je sezere Persistent
-                //a pak ulozi do DB
+                // Ohledne toho, ze jsme dopodrobna meli rozepsany Editace Projektu s predpokladem, ze by pro to byl jeste 
+                // zvlastni serever si myslim je zbytecne. Myslim si, ze to vsechno jde zahrnout v Business logice, vzdyt to poznamenava 
+                // zmeny (bud to je prihlaseni studenta, nebo vypsani noveho projektu), prevadi ty zmeny do podoby, ve ktere je sezere Persistent
+                // a pak ulozi do DB
                 managementProjektuManager = container "Sprava projektu" "Managovani (vytvareni, editace, prihlaseni do) prjektu" {
                     
                     managerNotifikaci = component "Manager notifikaci" "Posila notifikaci studentovi"  
@@ -130,7 +126,7 @@ workspace "NSWI130" {
                     }
                     
                     group "Business Layer" {
-                        //Kontroly pro neco
+                        // Kontroly pro neco
                         kontrolniUnit = component "Kontrola a Validace" "Provedeni kontroly a validace dat"
                         // Hlavni business logika pro vytvareni, editaci, prihlaseni do projektu (Na tehle urovni rozdeleni do mensich casti nas jenonm zmatne, ne?)
                         projectBusiness = component "Projekt" "Business logika pro projekt"
@@ -147,171 +143,162 @@ workspace "NSWI130" {
                     tags "Database"
                 }
             }
-            
-            
-            #Vztahy 
-            
-            ##Akteri
-            
+
+            # Vztahy 
+            ## Aktéři
             student -> MPstHTML "Prohlizi a prihlasi se do projektu"
             ucitel -> MPteachHTML "Prohlizi, managuje a vytvoruje projekty"
-            
 
             ## z web App do prohlizece
             MPstHTML -> managementProjektControllerSt "Posila pozadavky na data"
             managementProjektControllerSt -> MPstHTML "Dorucuje data"
-            
+
             MPteachHTML -> managementProjektControllerT "Posila pozadavky na data"
             managementProjektControllerT -> MPteachHTML "Dorucuje data"
-            
-            //Uvnitr WebApp frontEnd
+
+            ## Uvnitr WebApp frontEnd
             managementProjektControllerSt -> managementProjektUISt "Pouziva pro renderovani dat pro management projektu"
             managementProjektControllerT -> managementProjektUIT "Pouziva pro renderovani dat pro management projektu"
-            
-            // Z webApp front end do Business Sprava Projektu
+
+            ## Z webApp front end do Business Sprava Projektu
             managementProjektControllerSt -> projectBusiness "Ziskava a meni data projektu"
             managementProjektControllerT -> projectBusiness  "Ziskava a meni data projektu"
-            
-            ##Kontroly
+
+            ## Kontroly
             kontrolniUnit -> projectBusiness "Posila validni data"
             projectBusiness -> kontrolniUnit "Posila data pro validaci"
-            
+
             ## Gateway vztahy na urovni business logiky
             managementProjektControllerSt -> studentGateway "Posila pozadavek na zmenu dat ohledne projektu (ve vztahu ke studentu)"
             managementProjektControllerT -> teacherGateway  "Posila pozadavek na zmenu dat ohledne projektu (ve vztahu ke uciteli)"
-            
+
             studentGateway -> studentInfoSystem "Udela API call pro zapsani zmen, takajicich se studenta"
             teacherGateway -> studentInfoSystem "Udela API call pro zapsani zmen, takajicich se ucitele"
             studentGateway -> managerNotifikaci "Notifikuje studenta (o necem, uz nepamatuju)"
 
-            # Z Business do Persistent
+            ## Z Business do Persistent
             projectBusiness -> projectsRepository "Cte/pise data pres rozhrani"
 
-            # z Pesristent do DB
+            ## z Pesristent do DB
             projectsRepository -> databazeProjektu "Cte z/zapisuje do DB"
-    
         }
+
         # Deployment
-            deploymentEnvironment "Live"    {
-                # HTML
-                deploymentNode "Studentuv webovy prohlizec" "" ""    {
-                   MPstHTMLInstance = containerInstance MPstHTML
-                }
-                deploymentNode "Webovy prohlizec Ucitele" "" ""    {
-                   MPteachHTMLInstance = containerInstance MPteachHTML
-                }
-                 
-                
-                
-                # Aplikace
-                deploymentNode "Project Management Aplikacni Server" "" "Ubuntu 22.04 LTS"   {
-                   deploymentNode "Web server" "" "Apache Tomcat 10.1.15"  {
-                       studentProjectManagerAppInstance = containerInstance managementProjektustudentApp
-                       teacherProjectManagerAppInstance = containerInstance managementProjektuteacherApp
-                   }
-                   ProjectManagementManagerInstance = containerInstance managementProjektuManager
-                }
-                
+        deploymentEnvironment "Live" {
+            # Management Projektu
+            ## HTML
+            deploymentNode "Studentuv webovy prohlizec" "" "" {
+                MPstHTMLInstance = containerInstance MPstHTML
+            }
+            deploymentNode "Webovy prohlizec Ucitele" "" "" {
+                MPteachHTMLInstance = containerInstance MPteachHTML
+            }
 
-                
-                # Databases
-                # Pripadne databaze mohou bezet i na stejenem sereveru co aplikace
-                deploymentNode "Database Server pro Projekty" "" "Ubuntu 22.04 LTS"   {
-                   deploymentNode "Relational DB server" "" "Oracle 23.2.0" {
-                       applicationsDatabaseInstance = containerInstance databazeProjektu
-                   }
+            ## Aplikace
+            deploymentNode "Project Management Aplikacni Server" "" "Ubuntu 22.04 LTS" {
+                deploymentNode "Web server" "" "Apache Tomcat 10.1.15" {
+                    studentProjectManagerAppInstance = containerInstance managementProjektustudentApp
+                    teacherProjectManagerAppInstance = containerInstance managementProjektuteacherApp
                 }
-                
-                #Komunikace Deployment
-                
-                #Aplikace
-                
-               
-                
-                deploymentNode "Project Komunikacni server" "" "Ubuntu 22.04 LTS" {
-                    deploymentNode "Web Server" "" "Apache Tomcat 10.1.15" {
-                        komunikaceWebAppInstance = containerInstance komunikaceWebApp
-                    }
-                    komunikaceServerInstance = containerInstance komunikaceServer
-                }
-                
+                ProjectManagementManagerInstance = containerInstance managementProjektuManager
+            }
 
-                deploymentNode "Database Server pro Komunikaci" "" "Ubuntu 22.04 LTS"   {
-                   deploymentNode "Relational DB server" "" "Oracle 23.2.0" {
-                       komunikaceDatabaseInstance = containerInstance chatLogDatabaze
-                   }
+            ## Databáze
+            // Pripadne databaze mohou bezet i na stejenem sereveru co aplikace
+            deploymentNode "Database Server pro Projekty" "" "Ubuntu 22.04 LTS" {
+                deploymentNode "Relational DB server" "" "Oracle 23.2.0" {
+                    applicationsDatabaseInstance = containerInstance databazeProjektu
                 }
+            }
+
+            # Komunikace
+            ## Web App
+            // TODO: Web App chatu
+
+            ## Aplikace
+            deploymentNode "Project Komunikacni server" "" "Ubuntu 22.04 LTS" {
+                deploymentNode "Web Server" "" "Apache Tomcat 10.1.15" {
+                    komunikaceWebAppInstance = containerInstance komunikaceWebApp
+                }
+                komunikaceServerInstance = containerInstance komunikaceServer
+            }
+
+            ## Databáze
+            deploymentNode "Database Server pro Komunikaci" "" "Ubuntu 22.04 LTS" {
+                deploymentNode "Relational DB server" "" "Oracle 23.2.0" {
+                    komunikaceDatabaseInstance = containerInstance chatLogDatabaze
+                }
+            }
         }
     }
-                    
-    
-    
+
     views {
             systemContext projekty "projektySystemContext" "Diagram systému" {
                 include *
                 //autoLayout lr
             }
-    
+
             container projekty "projektyContainer" "Diagram kontejnerů" {
                 include *
                 //autoLayout lr
             }
-            
+
             component managementProjektustudentApp "ProjectManagementWebAppStudent" {
                 include *
-                //autoLayout
+                //autoLayout lr
             }
-            
+
             component managementProjektuteacherApp "ProjectManagementWebAppTeacher" {
                 include *
-                //autoLayout
+                //autoLayout lr
             }
-            
+
             component managementProjektuManager "ProjektManagementComponent" {
                 include *
                 //autolayout lr
             }
-    
+
             component komunikaceWebApp "komunikaceWebAppComponent" "Diagram komponent" {
                 include *
                 //autoLayout lr
             }
-    
+
             component komunikaceServer "komunikaceServerComponent" "Diagram komponent" {
                 include *
                 //autoLayout lr
             }
-    
-            deployment projekty "Live" "StudentSystemDeployment"   {
+
+            deployment projekty "Live" "StudentSystemDeployment" {
                 include *
-                //autolayout
+                //autolayout lr
             }
             theme default
-        
-        styles {
 
+        styles {
             element "Existing System" {
                 background #999999
                 color #ffffff
             }
 
-            element "Web Front-End"  {
+            element "Web Front-End" {
                 shape WebBrowser
             }
 
-            element "Database"  {
+            element "Database" {
                 shape Cylinder
             }
-        
+
             element "Software System" {
                 background #1168bd
                 color #ffffff
             }
+
             element "Person" {
                 shape person
                 background #08427b
                 color #ffffff
             }
+
             element "External" {
                 background  #636363
             }
