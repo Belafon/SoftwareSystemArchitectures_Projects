@@ -5,17 +5,16 @@ workspace "NSWI130" {
             "structurizr.groupSeparator" "/"
         }
         # External
-        // Teď to používám pro Gateway, nevím jestli Komunikace potřebuje SIS pro něco
+        // TODO: rozhodnout se, zda je potřeba mít propojení se SISem
         studentInfoSystem = softwareSystem "Studijni Informacni System" {
             tags "External" 
         }
 
         # Aktéři
-        student = person "Student" "Studuje univerzitu"
-        ucitel = person "Učitel" "Prednasi na univerzite"
+        student = person "Student" "Studuje na univerzitě"
+        ucitel = person "Učitel" "Přednáší na univerzitě"
 
-        projekty = softwareSystem "Modul Projekty" "Modul Projekty pro Studenty a ucitele" {
-
+        projekty = softwareSystem "Modul Projekty" "Modul Projekty pro Studenty a učitele" {
             // TODO: přidat do managementPrujektuServer něco, co si bude pamatovat id chatů, které pak zahrne v přesměrování
             // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat"
 
@@ -96,8 +95,8 @@ workspace "NSWI130" {
                 // webový prohlížeč
                 MPstHTML = container "Management projektu pro studenty HTML" "Funkcionalita pro managaovani projektu studenty ve webovem prohlizeci" "HTML+JavaScript" "Web Front-End"
                 MPteachHTML = container "Management projektu pro ucitele HTML" "Funkcionalita pro managaovani projektu uciteli ve webovem prohlizeci" "HTML+JavaScript" "Web Front-End"
-                
-                #Web Apps
+
+                # Web Apps
                 managementProjektustudentApp = container "Webova aplikace Management Projektu pro studenta Front end" "Dorucuje HTML data aby student zobrazil info o projektech" {
                     managementProjektControllerSt = component "Project Controller pro studenta" "Definuje rozhrani pro cteni/prihlaseni do projektu a poskytuje tohle rozhrani."
                     managementProjektUISt = component "Uzivatelske Rozhrani pro modul Projekty pro studenta (Viewer)" "Poskytuje HTML rozhrani"
@@ -118,13 +117,10 @@ workspace "NSWI130" {
                 // zmeny (bud to je prihlaseni studenta, nebo vypsani noveho projektu), prevadi ty zmeny do podoby, ve ktere je sezere Persistent
                 // a pak ulozi do DB
                 managementProjektuManager = container "Sprava projektu" "Managovani (vytvareni, editace, prihlaseni do) prjektu" {
-                    
                     managerNotifikaci = component "Manager notifikaci" "Posila notifikaci studentovi"  
-                    
                     group "Persistent Layer" {
                         projectsRepository = component "Repository projektu" "Persists projekty v repositorii. Definuje rozhrani pro cteni a vytvareni projektu a poskytuje implmentaci rozhrani."
                     }
-                    
                     group "Business Layer" {
                         // Kontroly pro neco
                         kontrolniUnit = component "Kontrola a Validace" "Provedeni kontroly a validace dat"
@@ -182,6 +178,9 @@ workspace "NSWI130" {
             ## z Pesristent do DB
             projectsRepository -> databazeProjektu "Cte z/zapisuje do DB"
         }
+
+        ucitel -> projekty "Spravuje studentské projekty a komunikuje se studenty"
+        student -> projekty "Přihlašuje se do projektů, pracuje na nich a komunikuje se svým učitelem a spolužáky"
 
         # Deployment
         deploymentEnvironment "Live" {
