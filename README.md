@@ -1,10 +1,12 @@
-## Projects (PRO)
+# Projects (PRO)
 
-### Stakeholders
+## Stakeholders
+
 - Students
 - Teachers
 
-### Feature Areas
+## Feature Areas
+
 - Management of student teams within a course
 - Management of projects and their structuring to required outputs
 - Assignment of teams to projects

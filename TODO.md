@@ -1,7 +1,8 @@
 # TODO List do 27.11.2023
 
-- [ ] vztah mezi `Komunikací` a `Managementem projektů`
-- [ ] doladit view pomocí tagů u vztahů
+- [x] vztah mezi `Komunikací` a `Managementem projektů`
+- [x] doladit view pomocí tagů u vztahů
+- [ ] update responsibilities.md podle aktuálního modelu
 - [ ] připravy screenshoty k prezentaci
 - [ ] napsat dokumentaci
 
