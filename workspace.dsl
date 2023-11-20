@@ -135,8 +135,8 @@ workspace "NSWI130" {
                         // Jestli mame situaci, kdyz chceme, aby se zmeny provedene v modulu projekty byly videt zvenku. Jako treba kdyz vsichni
                         // postupujeme do dalsiho rocniku, potom to, ze jsme ve 3. rocniku najdeme nejen v modulu "Vysledky Zkousek" ale i na hlavni strance SISu v pravem hornim rohu
                         // Takze pokud podobne zmeny chceme poznamenavat do jinych modulu, odkazem GateWayem na SIS
-                        studentGateway = component "Student Gateway" "Definuje rozhrani pro zapsani studentu do projektu a poskytuje implementaci rozhrani."
-                        teacherGateway = component "Gateway ucitele" "Definuje rozhrani pro vypsani projektu a poskytuje implementaci rozhrani."
+                        gateway = component "Gateway" "Zajišťuje komunikaci s informačním systémem"
+                        
                     }
                 }
                 databazeProjektu = container "Databáze projektu" "Ukládá a načítá data projektů" {
@@ -172,11 +172,9 @@ workspace "NSWI130" {
             kontrolniUnit -> managerNotifikaci "Posílá informace o výsledku kontroly"
 
             ## Gateway vztahy na urovni business logiky
-            managementProjektControllerSt -> studentGateway "Posila pozadavek na zmenu dat ohledne projektu (ve vztahu ke studentu)"
-            managementProjektControllerT -> teacherGateway  "Posila pozadavek na zmenu dat ohledne projektu (ve vztahu ke uciteli)"
+            projectBusiness -> gateway  "Posila pozadavek na zmenu dat"
 
-            studentGateway -> studentInfoSystem "Udela API call pro zapsani zmen, takajicich se studenta"
-            teacherGateway -> studentInfoSystem "Udela API call pro zapsani zmen, takajicich se ucitele"
+            gateway -> studentInfoSystem "Udela API call pro zapsani zmen, takajicich se studenta"
 
             ## Z Business do Persistent
             projectBusiness -> projectsRepository "Cte/pise data pres rozhrani"
@@ -184,6 +182,7 @@ workspace "NSWI130" {
             ## z Pesristent do DB
             projectsRepository -> databazeProjektu "Cte z/zapisuje do DB"
         }
+
 
         # Deployment
         deploymentEnvironment "Live" {
