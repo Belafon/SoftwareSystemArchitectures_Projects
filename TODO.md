@@ -2,9 +2,10 @@
 
 - [x] vztah mezi `Komunikací` a `Managementem projektů`
 - [x] doladit view pomocí tagů u vztahů
-- [ ] update responsibilities.md podle aktuálního modelu
-- [ ] připravy screenshoty k prezentaci
+- [ ] update [responsibilities](responsibilities.md) podle aktuálního modelu
+- [ ] přiřadit responsibilities ke kontejnerům/komponentám
 - [ ] napsat dokumentaci
+- [ ] připravy screenshoty k prezentaci
 
 ## Dokumentace
 
