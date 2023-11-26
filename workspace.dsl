@@ -16,7 +16,7 @@ workspace "NSWI130" {
 
         projekty = softwareSystem "Modul Projekty" "Modul Projekty pro Studenty a učitele" {
             // TODO: přidat do managementPrujektuServer něco, co si bude pamatovat id chatů, které pak zahrne v přesměrování
-            // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat"
+            // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat" (stačí mezi kontejnery)
 
             group "Komunikace" {
                 komunikaceWebApp = container "Webová Aplikace Komunikace" "" "" "Web Front-End" {
@@ -91,7 +91,6 @@ workspace "NSWI130" {
             group "Management Projektu" {
                 # HTML 
                 # Containery běží na straně uživatele a posílají api calls na controllery
-
                 MPstHTML = container "Management projektu pro studenty HTML" "Funkcionalita pro správu projektů studenty ve webovém prohlížeči" "HTML+JavaScript" "Web Front-End"
                 MPteachHTML = container "Management projektu pro ucitele HTML" "Funkcionalita pro správu projektů učitely ve webovém prohlížeči" "HTML+JavaScript" "Web Front-End"
 
@@ -130,18 +129,18 @@ workspace "NSWI130" {
             student -> MPstHTML "Prohlíží a přihlásí se do projektů" "" "internal"
             ucitel -> MPteachHTML "Prohlíží, managuje a vytváří projekty" "" "internal"
 
-            ## z web App do prohlizece
+            ## z WebApp do prohlížeče
             MPstHTML -> managementProjektControllerSt "Posílá požadavky na data"
             managementProjektControllerSt -> MPstHTML "Doručuje data"
 
             MPteachHTML -> managementProjektControllerT "Posílá požadavky na data"
             managementProjektControllerT -> MPteachHTML "Doručuje data"
 
-            ## Uvnitr WebApp frontEnd
+            ## Uvnitř WebApp front-end
             managementProjektControllerSt -> managementProjektUISt "Používá pro renderovani dat pro management projektů"
             managementProjektControllerT -> managementProjektUIT "Používá pro renderovani dat pro management projektů"
 
-            ## Z webApp front end do Business Sprava Projektu
+            ## Z webApp front-end do Business Sprava Projektu
             managementProjektControllerSt -> projectBusiness "Získává a mění data projektu"
             managementProjektControllerT -> projectBusiness  "Získává a mění data projektu"
             managerNotifikaci -> managementProjektControllerSt "Posílá notifikace o úspěchu či neúspěchu akcí"
@@ -152,7 +151,7 @@ workspace "NSWI130" {
             projectBusiness -> kontrolniUnit "Posílá data pro validaci"
             kontrolniUnit -> managerNotifikaci "Posílá informace o výsledku kontroly"
 
-            ## Gateway vztahy na urovni business logiky
+            ## Gateway vztahy na úrovni business logiky
             projectBusiness -> gateway  "Posílá požadavek na změnu dat"
 
             gateway -> studentInfoSystem "Udělá API call pro zapsání změn"
@@ -160,7 +159,7 @@ workspace "NSWI130" {
             ## Z Business do Persistent
             projectBusiness -> projectsRepository "Čte/píše data přes rozhraní"
 
-            ## z Pesristent do DB
+            ## Z Pesristent do DB
             projectsRepository -> databazeProjektu "Čte z/zapisuje do"
         }
         MPstHTML -> komunikaceWebApp "přesměrování na daný chat"
@@ -190,7 +189,7 @@ workspace "NSWI130" {
             }
 
             ## Databáze
-            // Pripadne databaze mohou bezet i na stejenem serveru co aplikace
+            // Databáze mohou bězet i na stejénem serveru jako aplikace
             deploymentNode "Database Server pro Projekty" "" "Ubuntu 22.04 LTS" {
                 deploymentNode "Relational DB server" "" "Oracle 23.2.0" {
                     applicationsDatabaseInstance = containerInstance databazeProjektu
