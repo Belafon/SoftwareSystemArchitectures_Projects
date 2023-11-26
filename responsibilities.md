@@ -22,7 +22,7 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 5. `Student` vyplní filtrovací formulář projektů.
 6. `Student` klikne na tlačítko `Zobrazit`.
 7. `Systém` zobrazí seznam projektů, které odpovídají filtrovacímu formuláři.
-8. `Student` klikne na požadovalý projekt.
+8. `Student` klikne na požadovaný projekt.
 9. `Systém` zobrazí detail projektu.
 10. `Student` klikne na tlačítko `Zapsat se`.
 11. `Systém` zapíše studenta do projektu.
@@ -61,7 +61,7 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 
 ### Feature: Vypsání témat projektů
 
-Jako učitel chci mít možnost vypsat témata projektů, aby se studenti mohli přihlásit do nich. (zapsat si ...)
+Jako učitel chci mít možnost vypsat témata projektů, aby se do nich studenti mohli přihlásit. 
 
 #### Feature breakdown
 
@@ -103,16 +103,12 @@ Jako učitel chci mít možnost vypsat témata projektů, aby se studenti mohli 
 ##### Databázové responsibilities
 
 - Vytvoření dotazu na databázi a vracení výsledku.
-- Vložení nových dat do databáze a vracení výsledků o úspěšnosti akce(??).
+- Vložení nových dat do databáze a vracení výsledků o úspěšnosti akce.
 
 ##### Data Analysis responsibilities
 
 - Analýza výsledku.
 - Na základě výsledků nabízení určitých možností, jak pokračovat.
-
-##### ???? responsibilities
-
-- Uložení dat do nějaké cachi, než se rozhodne kam je dát.
 
 ---
 
@@ -197,12 +193,12 @@ Jako student chci mít možnost komunikovat s lidmi ze svého týmu, abychom si 
 2. `Systém` zobrazí hlavní stránku modulu Projekty, včetně seznamu projektů, na kterých je student již přihlášen.
 3. `Student` vybere kliknutím konkrétní projekt ze seznamu.
 4. `Systém` zobrazí detail projektu.
-5. `Student` klikne na možnost `Chat`.
+5. `Student` klikne na možnost `Otevřít chat týmu`.
 6. `Systém` zobrazí chatové okno včetně historie a textového pole na novou zprávu.
 7. `Student` napíše do textového pole novou zprávu.
 8. `Student` klikne na tlačítko `Odeslat`.
 9. `Systém` uloží zprávu do historie.
-10. `Systém` odešle upozornění emailem ostatním studentům z týmu o nové zprávě.
+10. `Systém` odešle notifikaci ostatním studentům z týmu o nové zprávě.
 11. `Student` zavře chatové okno křížkem.
 
 #### Responsibilities
@@ -217,13 +213,13 @@ Jako student chci mít možnost komunikovat s lidmi ze svého týmu, abychom si 
 
 ##### Managment historie chatu
 
-- Uložení nové zprávy do databáze.
+- Uložení nové zprávy do cache a databáze.
 - Aktualizace chatu pro nové zprávy.
-- Ukončení chatu a smazání historie po ukončení projektu.
+- Ukončení chatu a smazání historie z databáze po ukončení projektu.
 
 ##### Notifikace studentů
 
-- Poslání emailu studentům z týmu o aktivitě v chatu.
+- Zobrazení notifikace studentům z týmu o aktivitě v chatu.
 
 ---
 
@@ -262,7 +258,3 @@ Ako študent viem svoje riešenie upraviť aspoň 50x a viem si pozrieť všetky
 
 - Vytvorenie dotazu na databázu na získanie informácií o správnom projekte.
 - Správne zobrazenie histórie úprav.
-
-##### Notifikácie študentov
-
-- Poslanie emailu študentom z tímu o počte zostávajúcich pokusov.
