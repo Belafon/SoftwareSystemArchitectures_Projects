@@ -194,13 +194,12 @@ workspace "NSWI130" {
 
             # Komunikace
             ## Web App
-            // TODO: Web App chatu
+            deploymentNode "Webová aplikace pro Komunikaci" "" "" {
+                komunikaceWebAppInstance = containerInstance komunikaceWebApp
+            }
 
             ## Aplikace
             deploymentNode "Project Komunikační server" "" "Ubuntu 22.04 LTS" {
-                deploymentNode "Web Server" "" "Apache Tomcat 10.1.15" {
-                    komunikaceWebAppInstance = containerInstance komunikaceWebApp
-                }
                 komunikaceServerInstance = containerInstance komunikaceServer
             }
 
