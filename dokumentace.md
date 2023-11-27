@@ -98,7 +98,7 @@ The `Project Management` also includes a `Notification Manager` that sends a not
 
 Software system is deployed to four physical nodes: Application servers for Project Management, Application server for Communication and Database servers. The users are represented by their web browsers, where web applications send html pages, generated on the backend side.
 
-Project management Application server is divided to two different parts: web application for user and container which provides business and persistent logic for Project management. Communication application server is roughly the same: web application for user on web server and beackend part. 
+Project management Application server is divided to two different parts: web application for user and container which provides business and persistent logic for Project management. Communication application server is roughly the same: web application for user on web server and business and persistent logic as one container. 
 
 ![](./prezentace/deployment.png)
 *C4 diagram of the Deployment*
