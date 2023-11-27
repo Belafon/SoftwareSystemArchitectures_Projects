@@ -48,11 +48,11 @@
 
 #### Notifikace
 
-  - Zobraz notifikaci studentovi o aktivitě v chatu
-  - Vytvoř email podle template a nahraď proměnné
-  - Zobraz zprávu o úspěšném zápisu do projektu
-  - Zobraz chybovou zprávu o neúspěšném zápisu do projektu
-  - Zobraz chybovou hlášku
+- Zobraz notifikaci studentovi o aktivitě v chatu
+- Vytvoř email podle template a nahraď proměnné
+- Zobraz zprávu o úspěšném zápisu do projektu
+- Zobraz chybovou zprávu o neúspěšném zápisu do projektu
+- Zobraz chybovou hlášku
 
 #### Databáze
 
@@ -101,10 +101,10 @@
   
 #### Notifikace
 
-  - Zobraz notifikaci studentovi o aktivitě v chatu
-  - Zobraz zprávu o úspěšném zápisu do projektu
-  - Zobraz chybovou zprávu o neúspěšném zápisu do projektu
-  - Zobraz chybovou hlášku
+- Zobraz notifikaci studentovi o aktivitě v chatu
+- Zobraz zprávu o úspěšném zápisu do projektu
+- Zobraz chybovou zprávu o neúspěšném zápisu do projektu
+- Zobraz chybovou hlášku
 
 #### Databáze
 

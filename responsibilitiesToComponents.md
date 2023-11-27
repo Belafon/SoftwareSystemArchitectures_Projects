@@ -1,3 +1,48 @@
+# Přiřazení zodpovědností ke kontejnerům/komponentám
+
+Soubor je strukturován podle hierarchie kontejnerů/komponentů v C4 modelu.
+
+## Komunikace
+
+### Webová Aplikace Komunikace
+
+#### Chat UI
+
+#### Notifikace UI
+
+#### Správa Chatu
+
+- Aktualizace chatu pro nové zprávy.
+
+#### Cache zpráv
+
+- Uložení nové zprávy do cache
+
+### Server Komunikace
+
+#### Kontrola zpráv
+
+#### Správa zpráv
+
+- Ukončení chatu a smazání historie z databáze po ukončení projektu.
+
+#### Správa chat logů
+
+- Uložení nové zprávy do cache a databáze.
+
+### Databáze Chatů
+
+## Management Projektu
+
+### Management projektu HTML
+
+### Webová aplikace Management Projektu
+
+### Správa projektu
+
+### Databáze projektu
+
+
 ### component "WebSocket Server" "Zajišťuje komunikaci s webovou aplikací"
 - Zobrazení notifikace studentům z týmu o aktivitě v chatu.
 
@@ -41,3 +86,4 @@ Kontrola a validace dat - Kontrola a validace dat před uložením do databáze
 
 ### component "Cache zpráv" "Cachování zpráv pro rychlejší zobrazení a kontrola aktuálnosti dat"
 - Uložení nové zprávy do cache (na straně klienta)
+
