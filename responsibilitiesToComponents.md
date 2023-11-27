@@ -43,24 +43,27 @@ Soubor je strukturován podle hierarchie kontejnerů/komponentů v C4 modelu.
 ### Správa projektu
 
 #### Manager notifikaci
+
 - Zobrazení hlášení s potvrzením zápisu studenta do projektu. 
 
 #### Repository projektu
+
 - Ukládání souborů nahraných uživatelem systému.
 - Vytvorenie dotazu na databázu na získanie informácií o správnom projekte.
 - Správne zobrazenie histórie úprav.
 
 #### Kontrola a Validace
+
 - Kontrola a validace dat před uložením do databáze.
 
 #### Student Gateway
+
 - Zápis studenta do projektu.
 - Zobrazení seznamu přihlášených projektů studenta.
 - Získání seznamu projektů.
 - Kontrola, zda kapacita projektu dovoluje zápis dalšího studenta.
 - Kontrola, zda student splňuje požadavky projektu.
 - Kontrola, zda student již není zapsán do projektu.
-
 
 #### Gateway ucitele
 - Vytvoření nového projektu.
