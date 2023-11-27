@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Module &quot;Projects&quot; of the Student Information System</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="module-projects-of-the-student-information-system">Module &quot;Projects&quot; of the Student Information System</h1>
+<p>This document describes the architecture of the <code>Projects</code> module. It is intended primarily for the <code>Student Information System</code> (<code>SIS</code> for short) development teams.</p>
+<h2 id="context">Context</h2>
+<p><code>Projects</code> is the part of the <code>SIS</code> and is responsible for management of projects, enrolment of students in the project, communication within the project team and with the teacher.</p>
+<p>The described <code>Projects</code> context is displayed on the C4 model software system diagram.</p>
+<h2 id="functional-overview">Functional overview</h2>
+<p><code>Projects</code> provides its functionality to the user through a web application. It is assumed that the user is logged into the <code>SIS</code> using their login credentials. There are two separate Web Applications for <a href="#teacher-web-application">Teacher</a> and <a href="#student-web-application">Student</a> due to the fact that the information displayed and the functionality provided are different for teachers and students.</p>
+<p>There is also the <a href="#communication-web-application">Communication Web Application</a> that provides access to the chat interface.</p>
+<p>Data containing information about projects is persisted in the <code>Project Database</code>. Data containing chat information is persisted in the <code>Chat Database</code>.</p>
+<h3 id="teacher-web-application">Teacher Web Application</h3>
+<p><code>Teacher</code> uses <code>Teacher Web Application</code> for announcement of project topics, confirmation of the project team, view project details including enrolled students and submitted files. After receiving a request from the <code>Teacher</code>, it retrieves the project data from the <code>Project Manager</code> and sends it to the <code>Teacher</code> via an HTML page.</p>
+<h3 id="student-web-application">Student Web Application</h3>
+<p>The student uses the <code>Student Web Application</code> to search and filter projects, enroll in required projects, upload and edit project files, view project details including other enrolled students, project supervisor, and submitted files. After receiving a request from the <code>Student</code>, it retrieves the project data from the <code>Project Manager</code> and sends it to the <code>Student</code> via an HTML page.</p>
+<h3 id="communication-web-application">Communication Web Application</h3>
+<p>Accessible from the project page, the <code>Communication Web Application</code> allows either a <code>Teacher</code> or <code>Student</code> to initiate a chat by clicking the <code>View chat</code> button, which redirects to the chat web application. This application offers a feature for initiating private chats with specific members. It operates separately from the <code>Student</code> and <code>Teacher Web Applications</code>, necessitating only the member IDs and project ID to launch the appropriate chat window.</p>
+<p>The simplicity of the redirect is achieved by the <code>Communication Web Application</code> having it's own <code>Chat Database</code>, which stores the chat logs and member information. The exact details of the redirect are implementation specific.</p>
+<h4 id="chat-notifications">Chat notifications</h4>
+<p>The <code>Communication Web Application</code> displays notifications about new messages and members.</p>
+<h3 id="project-management">Project Management</h3>
+<p>The core <code>Projects</code> logic that processes data received from a <code>Teacher</code> or <code>Student</code> through a <code>Web Application</code>. It provides business logic, data checks and validations, query creation and communication with the <code>Project Database</code>.</p>
+<h4 id="system-notifications">System notifications</h4>
+<p>The <code>Project Management</code> also includes a <code>Notification Manager</code> that sends a notification to the <code>Web Application</code> whether the action was successful or not.</p>
+
+        
+        
+    </body>
+    </html>

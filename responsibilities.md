@@ -61,7 +61,7 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 
 ### Feature: Vypsání témat projektů
 
-Jako učitel chci mít možnost vypsat témata projektů, aby se do nich studenti mohli přihlásit. 
+Jako učitel chci mít možnost vypsat témata projektů, aby se do nich studenti mohli přihlásit.
 
 #### Feature breakdown
 

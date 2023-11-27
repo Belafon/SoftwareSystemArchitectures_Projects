@@ -6,10 +6,6 @@ Soubor je strukturován podle hierarchie kontejnerů/komponentů v C4 modelu.
 
 ### Webová Aplikace Komunikace
 
-#### Chat UI
-
-#### Notifikace UI
-
 #### Správa Chatu
 
 - Aktualizace chatu pro nové zprávy.
@@ -19,8 +15,6 @@ Soubor je strukturován podle hierarchie kontejnerů/komponentů v C4 modelu.
 - Uložení nové zprávy do cache
 
 ### Server Komunikace
-
-#### Kontrola zpráv
 
 #### Správa zpráv
 
@@ -33,8 +27,6 @@ Soubor je strukturován podle hierarchie kontejnerů/komponentů v C4 modelu.
 ### Databáze Chatů
 
 ## Management Projektu
-
-### Management projektu HTML
 
 ### Webová aplikace Management Projektu
 
@@ -65,11 +57,10 @@ Soubor je strukturován podle hierarchie kontejnerů/komponentů v C4 modelu.
 - Kontrola, zda student splňuje požadavky projektu.
 - Kontrola, zda student již není zapsán do projektu.
 
-#### Gateway ucitele
+#### Gateway učitele
+
 - Vytvoření nového projektu.
 - Oznaceni projektu jako `Obsazený`.
 - Získání seznamu projektů.
 
 ### Databáze projektu
-
-
