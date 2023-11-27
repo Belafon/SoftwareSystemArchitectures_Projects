@@ -5,7 +5,6 @@ workspace "NSWI130" {
             "structurizr.groupSeparator" "/"
         }
         # External
-        // TODO: rozhodnout se, zda je potřeba mít propojení se SISem
         studentInfoSystem = softwareSystem "Studijni Informacni System" {
             tags "External" 
         }
@@ -15,9 +14,6 @@ workspace "NSWI130" {
         ucitel = person "Učitel" "Přednáší na univerzitě"
 
         projekty = softwareSystem "Modul Projekty" "Modul Projekty pro Studenty a učitele" {
-            // TODO: přidat do managementPrujektuServer něco, co si bude pamatovat id chatů, které pak zahrne v přesměrování
-            // TODO: přidat managementProjektuWebApp -> komunikaceWebApp: "přesměrovává na daný chat" (stačí mezi kontejnery)
-
             group "Komunikace" {
                 komunikaceWebApp = container "Webová Aplikace Komunikace" "" "" "Web Front-End" {
                     group "Presentation Layer"  {
