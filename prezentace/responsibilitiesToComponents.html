@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>P&rcaron;i&rcaron;azen&iacute; zodpov&ecaron;dnost&iacute; ke kontejner&uring;m&sol;komponent&aacute;m</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="přiřazení-zodpovědností-ke-kontejnerůmkomponentám">Přiřazení zodpovědností ke kontejnerům/komponentám</h1>
+<p>Soubor je strukturován podle hierarchie kontejnerů/komponentů v C4 modelu.</p>
+<h2 id="komunikace">Komunikace</h2>
+<h3 id="webová-aplikace-komunikace">Webová Aplikace Komunikace</h3>
+<h4 id="správa-chatu">Správa Chatu</h4>
+<ul>
+<li>Aktualizace chatu pro nové zprávy.</li>
+</ul>
+<h4 id="cache-zpráv">Cache zpráv</h4>
+<ul>
+<li>Uložení nové zprávy do cache</li>
+</ul>
+<h3 id="server-komunikace">Server Komunikace</h3>
+<h4 id="správa-zpráv">Správa zpráv</h4>
+<ul>
+<li>Ukončení chatu a smazání historie z databáze po ukončení projektu.</li>
+</ul>
+<h4 id="správa-chat-logů">Správa chat logů</h4>
+<ul>
+<li>Uložení nové zprávy do cache a databáze.</li>
+</ul>
+<h3 id="databáze-chatů">Databáze Chatů</h3>
+<h2 id="management-projektu">Management Projektu</h2>
+<h3 id="webová-aplikace-management-projektu">Webová aplikace Management Projektu</h3>
+<ul>
+<li>Zobrazení jenotlivých stránek modulu Projekty.</li>
+</ul>
+<h3 id="správa-projektu">Správa projektu</h3>
+<h4 id="manager-notifikaci">Manager notifikaci</h4>
+<ul>
+<li>Zobrazení hlášení s potvrzením zápisu studenta do projektu.</li>
+</ul>
+<h4 id="repository-projektu">Repository projektu</h4>
+<ul>
+<li>Ukládání souborů nahraných uživatelem systému.</li>
+<li>Vytvorenie dotazu na databázu na získanie informácií o správnom projekte.</li>
+<li>Správne zobrazenie histórie úprav.</li>
+</ul>
+<h4 id="kontrola-a-validace">Kontrola a Validace</h4>
+<ul>
+<li>Kontrola a validace dat před uložením do databáze.</li>
+</ul>
+<h4 id="student-gateway">Student Gateway</h4>
+<ul>
+<li>Zápis studenta do projektu.</li>
+<li>Zobrazení seznamu přihlášených projektů studenta.</li>
+<li>Získání seznamu projektů.</li>
+<li>Kontrola, zda kapacita projektu dovoluje zápis dalšího studenta.</li>
+<li>Kontrola, zda student splňuje požadavky projektu.</li>
+<li>Kontrola, zda student již není zapsán do projektu.</li>
+</ul>
+<h4 id="gateway-učitele">Gateway učitele</h4>
+<ul>
+<li>Vytvoření nového projektu.</li>
+<li>Oznaceni projektu jako <code>Obsazený</code>.</li>
+<li>Získání seznamu projektů.</li>
+</ul>
+<h3 id="databáze-projektu">Databáze projektu</h3>
+
+        
+        
+    </body>
+    </html>

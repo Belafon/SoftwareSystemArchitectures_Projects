@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Projects &lpar;PRO&rpar;</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <!-- markdownlint-disable MD024 -->
+<h1 id="projects-pro">Projects (PRO)</h1>
+<h2 id="core-features-and-responsibilities">Core features and responsibilities</h2>
+<h3 id="feature-příhlášení-studenta-do-projektu">Feature: Příhlášení studenta do projektu</h3>
+<p>Jako student se chci být schopen se přihlásit do projektu, abych mohl pracovat na projektu.</p>
+<h4 id="feature-breakdown">Feature breakdown</h4>
+<p><strong>Předpoklady:</strong></p>
+<ul>
+<li><code>Student</code> je přihlášen do systému jako student.</li>
+</ul>
+<p><strong>Normální interakce:</strong></p>
+<ol>
+<li><code>Student</code> otevře modul Projekty.</li>
+<li><code>Systém</code> zobrazí hlavní stránku modulu Projekty.</li>
+<li><code>Student</code> klikne na tlačítko <code>Přihlásit se do projektu</code>.</li>
+<li><code>Systém</code> zobrazí filtrovací formulář projektů.</li>
+<li><code>Student</code> vyplní filtrovací formulář projektů.</li>
+<li><code>Student</code> klikne na tlačítko <code>Zobrazit</code>.</li>
+<li><code>Systém</code> zobrazí seznam projektů, které odpovídají filtrovacímu formuláři.</li>
+<li><code>Student</code> klikne na požadovaný projekt.</li>
+<li><code>Systém</code> zobrazí detail projektu.</li>
+<li><code>Student</code> klikne na tlačítko <code>Zapsat se</code>.</li>
+<li><code>Systém</code> zapíše studenta do projektu.</li>
+<li><code>Systém</code> zobrazí hlášení s potvrzením zápisu.</li>
+</ol>
+<p><strong>Co se může pokazit:</strong></p>
+<p>7. Filtrům neodpoovídají žádné projekty. <code>Systém</code> zobrazí hlášení, že nebyly nalezeny žádné projekty. <code>Student</code> může upravit filtrovací formulář a pokračovat od bodu 6.</p>
+<h4 id="responsibilities">Responsibilities</h4>
+<h5 id="uživatelské-rozhraní">Uživatelské rozhraní</h5>
+<ul>
+<li>Zobrazení jenotlivých stránek modulu Projekty.</li>
+</ul>
+<h5 id="získání-seznamu-projektů">Získání seznamu projektů</h5>
+<ul>
+<li>Tvoraba dotazu na databázi pro získání seznamu projektů podle zadaných filtrů.</li>
+<li>Kontrola chyb v zadání filtrů.</li>
+</ul>
+<h5 id="kontrola-možnosti-zápisu-do-projektu">Kontrola možnosti zápisu do projektu</h5>
+<ul>
+<li>Kontrola, zda kapacita projektu dovoluje zápis dalšího studenta.</li>
+<li>Kontrola, zda student splňuje požadavky projektu.</li>
+<li>Kontrola, zda student již není zapsán do projektu.</li>
+</ul>
+<h5 id="zápis-studenta-do-projektu">Zápis studenta do projektu</h5>
+<ul>
+<li>Zápis do databáze o zápisu studenta do projektu.</li>
+</ul>
+<h5 id="zobrazení-hlášení-s-potvrzením-zápisu">Zobrazení hlášení s potvrzením zápisu</h5>
+<ul>
+<li>Zobrazení hlášení s potvrzením zápisu.</li>
+</ul>
+<hr>
+<h3 id="feature-vypsání-témat-projektů">Feature: Vypsání témat projektů</h3>
+<p>Jako učitel chci mít možnost vypsat témata projektů, aby se do nich studenti mohli přihlásit.</p>
+<h4 id="feature-breakdown-1">Feature breakdown</h4>
+<p><strong>Předpoklady:</strong></p>
+<ul>
+<li><code>Učitel</code> je přihlášen do systému jako učitel.</li>
+</ul>
+<p><strong>Možné stavy projektu:</strong></p>
+<ul>
+<li>Otevřený: <code>Student</code> se do projektu může přihlásit.</li>
+<li>Obsazený: Nikdo se nemůže přihlásit do projektu, protože už je potvrzen tým_projekt a aktivně pracují.</li>
+<li>Uzavřený: projekt je vypsán a dá se ho prohlížet, nejde se ale přihlašovat.</li>
+<li>Ukončený: práce nad projektem je již ukončena.</li>
+<li>Neaktivní: nikdo se do projektu nepřihlásil a vypršel čas na přihlášení.</li>
+</ul>
+<p><strong>Normální interakce:</strong></p>
+<ol>
+<li><code>Učitel</code> otevře modul Projekty.</li>
+<li><code>Učitel</code> zmáčkne tlačítko <code>Vytvořit nový projekt</code>.</li>
+<li>Systém zobrazí formulář a <code>Učitel</code> vyplní všechny potřebné detaily projektu.</li>
+<li><code>Učitel</code> potvrdí vytvoření projektu zmáčknutím tlačítka <code>potvrdit a vytvořit</code>.</li>
+<li>Systém ověří, zda projekt už existuje a je otevřený.</li>
+<li>Jestli neexistuje:
+<ol>
+<li>Systém přidá nový projekt k uzavřeným.</li>
+<li>Systém vrátí, že projekt byl úspěšně vytvořen a nabidne otevřít projekt.</li>
+<li>Jestli <code>Učitel</code> chce otevřít projekt:
+<ol>
+<li>Systém přidá projekt k otevřeným.</li>
+<li>Systém vrátí, že projekt byl úspěšně otevře a <code>Student</code>i se mohou přihlásit.</li>
+<li>Systém se přepne na hlavní stránku modulu Projekty.</li>
+</ol>
+</li>
+<li>Jestli nechce:
+1. <code>Učitel</code> zmáčkne tlačítko <code>Nechat uzavřený</code> a Systém se přepne na hlavní stránku modulu.</li>
+</ol>
+</li>
+<li>Jestli existuje:
+<ol>
+<li>Systém vrátí, že projekt už existuje a jestli <code>Učitel</code> chce pokračovat a vytvořit projekt, musí změnit název, ...
+<ol>
+<li>Jestli <code>Učitel</code> chybně zadal detaily a popis projektu, který už existuje, zmáčkne <code>Vrátit se na začátek</code> nebo <code>Vrátit se na modul Projekty</code>.</li>
+<li>Jestli učitel chce pokračovat, změní potřebné detaily projektu a vrátí se na krok 4.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="responsibilities-1">Responsibilities</h4>
+<h5 id="databázové-responsibilities">Databázové responsibilities</h5>
+<ul>
+<li>Vytvoření dotazu na databázi a vracení výsledku.</li>
+<li>Vložení nových dat do databáze a vracení výsledků o úspěšnosti akce.</li>
+</ul>
+<h5 id="data-analysis-responsibilities">Data Analysis responsibilities</h5>
+<ul>
+<li>Analýza výsledku.</li>
+<li>Na základě výsledků nabízení určitých možností, jak pokračovat.</li>
+</ul>
+<hr>
+<h3 id="feature-prohlížení-projektů-učitelem">Feature: Prohlížení projektů učitelem</h3>
+<p>Jako učitel chci prohlížet projekty, abych mohl zkontrolovat práci studentů.</p>
+<h4 id="feature-breakdown-2">Feature breakdown</h4>
+<p><strong>Předpoklady:</strong></p>
+<ul>
+<li><code>Učitel</code> je přihlášen do systému jako učitel.</li>
+</ul>
+<p><strong>Interakce:</strong></p>
+<ol>
+<li><code>Učitel</code> otevře modul Projekty.</li>
+<li><code>Systém</code> zobrazí hlavní stránku modulu Projekty: seznam projektů, u nichž je <code>Učitel</code> vedoucím.</li>
+<li><code>Učitel</code> klikne na požadovaný projekt.</li>
+<li><code>Systém</code> zobrazí detailní informace o projektu včetně seznamu zapsaných studentů a nahraných souborů.</li>
+<li><code>Učitel</code> klikne na jeden ze zobrazených souborů:
+<ul>
+<li><code>Systém</code> zobrazí soubor a informace o tom kdo a kdy ten soubor nahrál.</li>
+</ul>
+</li>
+<li><code>Učitel</code> klikne na uživatelské jméno studenta:
+<ul>
+<li><code>Systém</code> zobrazí profil studenta včetně jeho jména, id, ročníku a času, kdy byl do projektu zapsán.</li>
+</ul>
+</li>
+</ol>
+<h4 id="responsibilities-2">Responsibilities</h4>
+<h5 id="ukládání-dat">Ukládání dat</h5>
+<ul>
+<li>Ukládání souborů nahraných uživatelem systému</li>
+<li>Ukládání informací o nahraných souborech spolu s id uživatele, který soubory nahrál</li>
+</ul>
+<h5 id="autorizace">Autorizace</h5>
+<ul>
+<li>Systém zobrazuje informace relevantní pro uživatele na základě přihlašovacích údajů</li>
+</ul>
+<h5 id="reagování">Reagování</h5>
+<ul>
+<li>Systém reaguje na kliknutí myší, vhodně zpracovává požadavky a hlásí případné chyby</li>
+</ul>
+<hr>
+<h3 id="feature-potvrzení-týmu-projektu-učitelem">Feature: Potvrzení týmu projektu učitelem</h3>
+<p>Jako učitel chci mít možnost označit projekt za <code>obsazený</code>. To znamená, že se do projektu již nemůže přihlásit žádný student, tým_projekt je potvrzený a aktivně se na něm pracuje.</p>
+<h4 id="feature-breakdown-3">Feature breakdown</h4>
+<p><strong>Předpoklady:</strong></p>
+<ul>
+<li><code>Učitel</code> je přihlášen do systému jako učitel.</li>
+</ul>
+<p><strong>Interakce:</strong></p>
+<ol>
+<li><code>Učitel</code> otevře modul Projekty.</li>
+<li><code>Systém</code> zobrazí hlavní stránku modulu Projekty: seznam projektů, u nichž je <code>Učitel</code> vedoucím a u každého projektu je uveden jeho stav.</li>
+<li><code>Učitel</code> klikne na požadovaný projekt se stavem <code>Otevřený</code>.</li>
+<li><code>Systém</code> zobrazí detailní informace o projektu včetně seznamu zapsaných studentů.</li>
+<li><code>Učitel</code> zkontroluje stav týmu a klikne na tlačítko <code>Potvrdit tým</code>.</li>
+<li><code>Systém</code> změní stav projektu na <code>Obsazený</code> a zobrazí hlášení s potvrzením.</li>
+</ol>
+<h4 id="responsibilities-3">Responsibilities</h4>
+<h5 id="databáze-responsibilities">Databáze responsibilities</h5>
+<ul>
+<li>Vytvoření dotazu na databázi, vracení výsledku, nebo změna dat v databázi.</li>
+</ul>
+<hr>
+<h3 id="feature-komunikace-v-rámci-týmu">Feature: Komunikace v rámci týmu</h3>
+<p>Jako student chci mít možnost komunikovat s lidmi ze svého týmu, abychom si mohli rozdělit práci a domluvit se na podrobnostech.</p>
+<h4 id="feature-breakdown-4">Feature breakdown</h4>
+<p><strong>Předpoklady:</strong></p>
+<ul>
+<li><code>Student</code> je přihlášen do systému jako student.</li>
+</ul>
+<p><strong>Normální interakce:</strong></p>
+<ol>
+<li><code>Student</code> otevře modul Projekty.</li>
+<li><code>Systém</code> zobrazí hlavní stránku modulu Projekty, včetně seznamu projektů, na kterých je student již přihlášen.</li>
+<li><code>Student</code> vybere kliknutím konkrétní projekt ze seznamu.</li>
+<li><code>Systém</code> zobrazí detail projektu.</li>
+<li><code>Student</code> klikne na možnost <code>Otevřít chat týmu</code>.</li>
+<li><code>Systém</code> zobrazí chatové okno včetně historie a textového pole na novou zprávu.</li>
+<li><code>Student</code> napíše do textového pole novou zprávu.</li>
+<li><code>Student</code> klikne na tlačítko <code>Odeslat</code>.</li>
+<li><code>Systém</code> uloží zprávu do historie.</li>
+<li><code>Systém</code> odešle notifikaci ostatním studentům z týmu o nové zprávě.</li>
+<li><code>Student</code> zavře chatové okno křížkem.</li>
+</ol>
+<h4 id="responsibilities-4">Responsibilities</h4>
+<h5 id="zobrazení-seznamu-přihlášených-projektů-studenta">Zobrazení seznamu přihlášených projektů studenta</h5>
+<ul>
+<li>Vytvoření dotazu na databázi pro získání seznamu projektů, na kterých je student aktuálně přihlášený.</li>
+</ul>
+<h5 id="zobrazení-detailu-projektu">Zobrazení detailu projektu</h5>
+<ul>
+<li>Vytvoření dotazu na databázi pro získání informací o správném projektu.</li>
+</ul>
+<h5 id="managment-historie-chatu">Managment historie chatu</h5>
+<ul>
+<li>Uložení nové zprávy do cache a databáze.</li>
+<li>Aktualizace chatu pro nové zprávy.</li>
+<li>Ukončení chatu a smazání historie z databáze po ukončení projektu.</li>
+</ul>
+<h5 id="notifikace-studentů">Notifikace studentů</h5>
+<ul>
+<li>Zobrazení notifikace studentům z týmu o aktivitě v chatu.</li>
+</ul>
+<hr>
+<h3 id="feature-správa-projektov">Feature: Správa projektov</h3>
+<p>Ako študent viem svoje riešenie upraviť aspoň 50x a viem si pozrieť všetky svoje odovzdané verzie.</p>
+<h4 id="feature-breakdown-5">Feature breakdown</h4>
+<p><strong>Předpoklady:</strong></p>
+<ul>
+<li><code>Student</code> je prihlásený do systému ako student.</li>
+</ul>
+<p><strong>Normální interakce:</strong></p>
+<ol>
+<li><code>Student</code> otvorí zložku projekty.</li>
+<li><code>Systém</code>  zobrazí hlavnú stránku modulu Projekty – všetky projekty, do ktorých je študent prihlásený.</li>
+<li><code>Student</code> klikne na projekt, v ktorom chce vykonávať zmeny.</li>
+<li><code>Systém</code> zobrazí podrobnosti projektu.</li>
+<li><code>Student</code> klikne na tlačidlo upraviť.</li>
+<li><code>Systém</code> zobrazí najnovšiu verziu v editovateľnom móde. (V prípade, že chce vytvoriť nové riešenie, zobrazí sa mu novovytvorený prázdny dokument.)</li>
+<li>Po skončení úprav <code>Student</code> klikne na:
+<ol>
+<li>Uložiť zmeny a <code>Systém</code>  vytvorí v databáze nový súbor so zaznamenanými zmenami a zobrazí podrobnosti projektu.</li>
+<li>Zrušiť a <code>Systém</code> zobrazí podrobnosti projektu.</li>
+</ol>
+</li>
+<li><code>Student</code> klikne na zobraziť históriu úprav aby si mohol prezrieť svoje odovzdané riešenia.</li>
+<li><code>Systém</code> zobrazí tabuľku, v ktorej bude kto, kedy a čo upravil. Po kliknutí na riadok v tabuľke systém zobrazí vybratú a predchádzajúcu verziu a vyznačí, kde nastali zmeny.</li>
+<li>Keď bude odovzdaných 50 verzií, <code>Student</code> môže požiadať učiteľa o navýšenie počtu možných odovzdaných riešení.</li>
+</ol>
+<h4 id="responsibilities-5">Responsibilities</h4>
+<h5 id="zobrazenie-zoznamu-prihlásených-projektov-študenta">Zobrazenie zoznamu prihlásených projektov študenta</h5>
+<ul>
+<li>Vytvorenie dotazu na databázu na získanie zoznamu projektov, do ktorých je študent aktuálne prihlásený.</li>
+</ul>
+<h5 id="zobrazenie-detailu-projektu">Zobrazenie detailu projektu</h5>
+<ul>
+<li>Vytvorenie dotazu na databázu na získanie informácií o správnom projekte.</li>
+<li>Správne zobrazenie histórie úprav.</li>
+</ul>
+
+        
+        
+    </body>
+    </html>

@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD024 -->
 # Projects (PRO)
 
 ## Core features and responsibilities
@@ -21,15 +22,15 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 5. `Student` vyplní filtrovací formulář projektů.
 6. `Student` klikne na tlačítko `Zobrazit`.
 7. `Systém` zobrazí seznam projektů, které odpovídají filtrovacímu formuláři.
-8. `Student` klikne na požadovalý projekt.
+8. `Student` klikne na požadovaný projekt.
 9. `Systém` zobrazí detail projektu.
 10. `Student` klikne na tlačítko `Zapsat se`.
 11. `Systém` zapíše studenta do projektu.
 12. `Systém` zobrazí hlášení s potvrzením zápisu.
 
-**Co se může pokazit:**	
+**Co se může pokazit:**
 
-7. Filtrům neodpoovídají žádné projekty. `Systém` zobrazí hlášení, že nebyly nalezeny žádné projekty. `Student` může upravit filtrovací formulář a pokračovat od bodu 6.
+7\. Filtrům neodpoovídají žádné projekty. `Systém` zobrazí hlášení, že nebyly nalezeny žádné projekty. `Student` může upravit filtrovací formulář a pokračovat od bodu 6.
 
 #### Responsibilities
 
@@ -58,9 +59,9 @@ Jako student se chci být schopen se přihlásit do projektu, abych mohl pracova
 
 ---
 
-### Feature: Vypsání témat projektů.
+### Feature: Vypsání témat projektů
 
-Jako učitel chci mít možnost vypsat témata projektů, aby se studenti mohli přihlásit do nich. (zapsat si ...)
+Jako učitel chci mít možnost vypsat témata projektů, aby se do nich studenti mohli přihlásit.
 
 #### Feature breakdown
 
@@ -68,7 +69,8 @@ Jako učitel chci mít možnost vypsat témata projektů, aby se studenti mohli 
 
 - `Učitel` je přihlášen do systému jako učitel.
 
-**Možné stavy projektu**
+**Možné stavy projektu:**
+
 - Otevřený: `Student` se do projektu může přihlásit.
 - Obsazený: Nikdo se nemůže přihlásit do projektu, protože už je potvrzen tým_projekt a aktivně pracují.
 - Uzavřený: projekt je vypsán a dá se ho prohlížet, nejde se ale přihlašovat.
@@ -76,37 +78,37 @@ Jako učitel chci mít možnost vypsat témata projektů, aby se studenti mohli 
 - Neaktivní: nikdo se do projektu nepřihlásil a vypršel čas na přihlášení.
 
 **Normální interakce:**
-* 1\. `Učitel` otevře modul Projekty.
-* 2\. `Učitel` zmáčkne tlačítko `Vytvořit nový projekt`.
-* 3\. Systém zobrazí formulář a `Učitel` vyplní všechny potřebné detaily projektu.
-* 4\. `Učitel` potvrdí vytvoření projektu zmáčknutím tlačítka `potvrdit a vytvořit`.
-* 5\. Systém ověří, zda projekt už existuje a je otevřený.
-* 6\. Jestli neexistuje: <br>
-    * a) Systém přidá nový projekt k uzavřeným. <br>
-    * b) Systém vrátí, že projekt byl úspěšně vytvořen a nabidne otevřít projekt.<br>
-    * c) Jestli `Učitel` chce otevřít projekt.<br>
-        * I. Systém přidá projekt k otevřeným.<br>
-        * II. Systém vrátí, že projekt byl úspěšně otevře a `Student`i se mohou přihlásit.<br>
-        * III. Systém se přepne na hlavní stránku modulu Projekty.<br>
-    * d) Jestli nechce:<br>
-        * I. `Učitel` zmáčkne tlačítko `Nechat uzavřený` a Systém se přepne na hlavní stránku modulu.
-* 7\. Jestli existuje:
-     * a) Systém vrátí, že projekt už existuje a jestli `Učitel` chce pokračovat a vytvořit projekt, musí změnit název, ...
-        * I. Jestli `Učitel` chybně zadal detaily a popis projektu, který už existuje, zmáčkne `Vrátit se na začátek` nebo `Vrátit se na modul Projekty`.
-        * II. Jestli učitel chce pokračovat, změní potřebné detaily projektu a vrátí se na krok 4. 
+
+1. `Učitel` otevře modul Projekty.
+2. `Učitel` zmáčkne tlačítko `Vytvořit nový projekt`.
+3. Systém zobrazí formulář a `Učitel` vyplní všechny potřebné detaily projektu.
+4. `Učitel` potvrdí vytvoření projektu zmáčknutím tlačítka `potvrdit a vytvořit`.
+5. Systém ověří, zda projekt už existuje a je otevřený.
+6. Jestli neexistuje:
+   1. Systém přidá nový projekt k uzavřeným.
+   2. Systém vrátí, že projekt byl úspěšně vytvořen a nabidne otevřít projekt.
+   3. Jestli `Učitel` chce otevřít projekt:
+      1. Systém přidá projekt k otevřeným.
+      2. Systém vrátí, že projekt byl úspěšně otevře a `Student`i se mohou přihlásit.
+      3. Systém se přepne na hlavní stránku modulu Projekty.
+   4. Jestli nechce:
+      1. `Učitel` zmáčkne tlačítko `Nechat uzavřený` a Systém se přepne na hlavní stránku modulu.
+7. Jestli existuje:
+   1. Systém vrátí, že projekt už existuje a jestli `Učitel` chce pokračovat a vytvořit projekt, musí změnit název, ...
+      1. Jestli `Učitel` chybně zadal detaily a popis projektu, který už existuje, zmáčkne `Vrátit se na začátek` nebo `Vrátit se na modul Projekty`.
+      2. Jestli učitel chce pokračovat, změní potřebné detaily projektu a vrátí se na krok 4.
 
 #### Responsibilities
 
-##### Databázové responsibilities.
-- Vytvoření dotazu na databázi a vracení výsledku.
-- Vložení nových dat do databáze a vracení výsledků o úspěšnosti akce(??).
+##### Databázové responsibilities
 
-##### Data Analysis responsibilities.
+- Vytvoření dotazu na databázi a vracení výsledku.
+- Vložení nových dat do databáze a vracení výsledků o úspěšnosti akce.
+
+##### Data Analysis responsibilities
+
 - Analýza výsledku.
 - Na základě výsledků nabízení určitých možností, jak pokračovat.
-
-##### ???? responsibilities.
-- Uložení dat do nějaké cachi, než se rozhodne kam je dát.
 
 ---
 
@@ -127,9 +129,9 @@ Jako učitel chci prohlížet projekty, abych mohl zkontrolovat práci studentů
 3. `Učitel` klikne na požadovaný projekt.
 4. `Systém` zobrazí detailní informace o projektu včetně seznamu zapsaných studentů a nahraných souborů.
 5. `Učitel` klikne na jeden ze zobrazených souborů:
-	-  `Systém` zobrazí soubor a informace o tom kdo a kdy ten soubor nahrál.
-6.  `Učitel` klikne na uživatelské jméno studenta:
-	-  `Systém` zobrazí profil studenta včetně jeho jména, id, ročníku a času, kdy byl do projektu zapsán.
+   - `Systém` zobrazí soubor a informace o tom kdo a kdy ten soubor nahrál.
+6. `Učitel` klikne na uživatelské jméno studenta:
+   - `Systém` zobrazí profil studenta včetně jeho jména, id, ročníku a času, kdy byl do projektu zapsán.
 
 #### Responsibilities
 
@@ -142,7 +144,7 @@ Jako učitel chci prohlížet projekty, abych mohl zkontrolovat práci studentů
 
 - Systém zobrazuje informace relevantní pro uživatele na základě přihlašovacích údajů
 
-##### Reagování 
+##### Reagování
 
 - Systém reaguje na kliknutí myší, vhodně zpracovává požadavky a hlásí případné chyby
 
@@ -150,7 +152,7 @@ Jako učitel chci prohlížet projekty, abych mohl zkontrolovat práci studentů
 
 ### Feature: Potvrzení týmu projektu učitelem
 
-Jako učitel chci mít možnost označit projekt za `obsazený`. To znamená, že se do projektu již nemůže přihlásit žádný student, tým_projekt je potvrzený a aktivně se na něm pracuje. 
+Jako učitel chci mít možnost označit projekt za `obsazený`. To znamená, že se do projektu již nemůže přihlásit žádný student, tým_projekt je potvrzený a aktivně se na něm pracuje.
 
 #### Feature breakdown
 
@@ -166,9 +168,11 @@ Jako učitel chci mít možnost označit projekt za `obsazený`. To znamená, ž
 4. `Systém` zobrazí detailní informace o projektu včetně seznamu zapsaných studentů.
 5. `Učitel` zkontroluje stav týmu a klikne na tlačítko `Potvrdit tým`.
 6. `Systém` změní stav projektu na `Obsazený` a zobrazí hlášení s potvrzením.
+
 #### Responsibilities
 
-##### Databáze responsibilities.
+##### Databáze responsibilities
+
 - Vytvoření dotazu na databázi, vracení výsledku, nebo změna dat v databázi.
 
 ---
@@ -189,12 +193,12 @@ Jako student chci mít možnost komunikovat s lidmi ze svého týmu, abychom si 
 2. `Systém` zobrazí hlavní stránku modulu Projekty, včetně seznamu projektů, na kterých je student již přihlášen.
 3. `Student` vybere kliknutím konkrétní projekt ze seznamu.
 4. `Systém` zobrazí detail projektu.
-5. `Student` klikne na možnost `Chat`.
+5. `Student` klikne na možnost `Otevřít chat týmu`.
 6. `Systém` zobrazí chatové okno včetně historie a textového pole na novou zprávu.
 7. `Student` napíše do textového pole novou zprávu.
 8. `Student` klikne na tlačítko `Odeslat`.
 9. `Systém` uloží zprávu do historie.
-10. `Systém` odešle upozornění emailem ostatním studentům z týmu o nové zprávě.
+10. `Systém` odešle notifikaci ostatním studentům z týmu o nové zprávě.
 11. `Student` zavře chatové okno křížkem.
 
 #### Responsibilities
@@ -209,14 +213,14 @@ Jako student chci mít možnost komunikovat s lidmi ze svého týmu, abychom si 
 
 ##### Managment historie chatu
 
-- Uložení nové zprávy do databáze.
+- Uložení nové zprávy do cache a databáze.
 - Aktualizace chatu pro nové zprávy.
-- Ukončení chatu a smazání historie po ukončení projektu.
+- Ukončení chatu a smazání historie z databáze po ukončení projektu.
 
 ##### Notifikace studentů
 
-- Poslání emailu studentům z týmu o aktivitě v chatu.
- 
+- Zobrazení notifikace studentům z týmu o aktivitě v chatu.
+
 ---
 
 ### Feature: Správa projektov
@@ -231,18 +235,18 @@ Ako študent viem svoje riešenie upraviť aspoň 50x a viem si pozrieť všetky
 
 **Normální interakce:**
 
-1.	`Student` otvorí zložku projekty.
-2.	`Systém`  zobrazí hlavnú stránku modulu Projekty – všetky projekty, do ktorých je študent prihlásený.
-3.	`Student` klikne na projekt, v ktorom chce vykonávať zmeny.
-4.	`Systém` zobrazí podrobnosti projektu.
-5.	`Student` klikne na tlačidlo upraviť.
-6.	`Systém` zobrazí najnovšiu verziu v editovateľnom móde. (V prípade, že chce vytvoriť nové riešenie, zobrazí sa mu novovytvorený prázdny dokument.)
-7.	Po skončení úprav `Student` klikne na 
-a.	Uložiť zmeny a `Systém`  vytvorí v databáze nový súbor so zaznamenanými zmenami a zobrazí podrobnosti projektu.
-b.	Zrušiť a `Systém` zobrazí podrobnosti projektu.
-8.	`Student` klikne na zobraziť históriu úprav aby si mohol prezrieť svoje odovzdané riešenia.
-9.	`Systém` zobrazí tabuľku, v ktorej bude kto, kedy a čo upravil. Po kliknutí na riadok v tabuľke systém zobrazí vybratú a predchádzajúcu verziu a vyznačí, kde nastali zmeny.
-10.	Keď bude odovzdaných 50 verzií, `Student` môže požiadať učiteľa o navýšenie počtu možných odovzdaných riešení.
+1. `Student` otvorí zložku projekty.
+2. `Systém`  zobrazí hlavnú stránku modulu Projekty – všetky projekty, do ktorých je študent prihlásený.
+3. `Student` klikne na projekt, v ktorom chce vykonávať zmeny.
+4. `Systém` zobrazí podrobnosti projektu.
+5. `Student` klikne na tlačidlo upraviť.
+6. `Systém` zobrazí najnovšiu verziu v editovateľnom móde. (V prípade, že chce vytvoriť nové riešenie, zobrazí sa mu novovytvorený prázdny dokument.)
+7. Po skončení úprav `Student` klikne na:
+   1. Uložiť zmeny a `Systém`  vytvorí v databáze nový súbor so zaznamenanými zmenami a zobrazí podrobnosti projektu.
+   2. Zrušiť a `Systém` zobrazí podrobnosti projektu.
+8. `Student` klikne na zobraziť históriu úprav aby si mohol prezrieť svoje odovzdané riešenia.
+9. `Systém` zobrazí tabuľku, v ktorej bude kto, kedy a čo upravil. Po kliknutí na riadok v tabuľke systém zobrazí vybratú a predchádzajúcu verziu a vyznačí, kde nastali zmeny.
+10. Keď bude odovzdaných 50 verzií, `Student` môže požiadať učiteľa o navýšenie počtu možných odovzdaných riešení.
 
 #### Responsibilities
 
@@ -254,9 +258,3 @@ b.	Zrušiť a `Systém` zobrazí podrobnosti projektu.
 
 - Vytvorenie dotazu na databázu na získanie informácií o správnom projekte.
 - Správne zobrazenie histórie úprav.
-
-##### Notifikácie študentov
-
-- Poslanie emailu študentom z tímu o počte zostávajúcich pokusov.
-
-
