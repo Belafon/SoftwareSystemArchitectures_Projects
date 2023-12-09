@@ -25,6 +25,10 @@ If not, explain why the current architecture can fulfill the scenario
    
   
 ## Performance
+1.   - Automatic scheduller caller (stimulus source): Sends request to Automatic Scheduler (artifact) to schedule tickets.
+     - Artifact: Automatic Scheduler: Scheduling algorithm has to be able to finish in a reasonable time.
+     - Response: The scheduling algorithm can make compromises in teacher preferences to finish in a reasonable time.
+
 ## Security
 ## Scalability
 ## Modifiability
