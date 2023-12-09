@@ -25,9 +25,10 @@ If not, explain why the current architecture can fulfill the scenario
    
   
 ## Performance
-1.   - Automatic scheduller caller (stimulus source): Sends request to Automatic Scheduler (artifact) to schedule tickets.
-     - Artifact: Automatic Scheduler: Scheduling algorithm has to be able to finish in a reasonable time.
-     - Response: The scheduling algorithm can make compromises in teacher preferences to finish in a reasonable time.
+1.   - Stimulus Source: Business Processor (Automatic Scheduller Caller)
+     - Stimulus: Stimulus Source sends request to Automatic Scheduler (artifact) to schedule tickets and the results are not provided in a reasonable time.
+     - Artifact: Collision Controller (Automatic Scheduler)
+     - Response: The system can analyze the task to estimate the time needed to schedule tickets. If the time is too long, the system can notify the user and ask for permission to make compromises.
 
 ## Security
 ## Scalability
@@ -38,11 +39,16 @@ If not, explain why the current architecture can fulfill the scenario
      - Artifact: Business Processor (Dispatcher)
      - Respons: Synthetic user data prepared, correctness of requests dispatching is checked on the data
      - Measure: Coverage of 100% known user requests with different rights and permissions in 3 man-month
+     - 
 ## Interoperability
 1.   - The Enrollments module (stimulus source) needs the data from the Schedules module (artifact) to display scheduled tickets (interoperability on data).
      - The responce: 100% of already scheduled tickets are provided
      - The architecture lacks a communication channel with the Enrollments module. API and data format need to be defined.
 
+2.   - Stimulus Source: Collision Controller (Automatic Scheduller Caller)
+     - Stimulus: Stimulus Source needs data about schoolrooms (artifact), buildings and mutual distances to schedule tickets.
+     - Artifact: Student Information System
+     - Responce: 100% of schoolrooms are provided
  
 
   
