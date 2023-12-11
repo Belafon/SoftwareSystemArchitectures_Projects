@@ -31,6 +31,12 @@ If not, explain why the current architecture can fulfill the scenario
      - Response: The system can analyze the task to estimate the time needed to schedule tickets. If the time is too long, the system can notify the user and ask for permission to make compromises.
 
 ## Security
+1.    - Source of Stimulus: Unknown attacker
+      - Stimulus: Request to view schedule of a specific student
+      - Artifact: Business Processor
+      - Response: Unauthorized request detected
+      - Measure: Each unauthorized request is detected and its information is stored for further analysis, such requests are not processed.
+
 ## Scalability
 1.    - Source of Stimulus: Browser/User
       - Stimulus: Increasing avarage number of requests
