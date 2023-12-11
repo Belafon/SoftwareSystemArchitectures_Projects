@@ -32,6 +32,12 @@ If not, explain why the current architecture can fulfill the scenario
 
 ## Security
 ## Scalability
+1.    Source of Stimulus: Browser/User
+      Stimulus: Increasing avarage number of requests
+      Artifact: Business Processor
+      Response: Request processing is scaled up
+      Measure: Performance and availability is not affected
+
 ## Modifiability
 ## Testability
 1.   - System tester (stimulus source)
