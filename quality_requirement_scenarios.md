@@ -41,6 +41,12 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
    - Response: Unauthorized request detected
    - Measure: Each unauthorized request is detected and its information is stored for further analysis, such requests are not processed.
 
+2. - Source of Stimulus: Unknown attacker.
+   - Stimulus: Request to edit ticket data.
+   - Artifact: Business Processor.
+   - Response: Unauthorized request detected.
+
+
 ## Scalability
 
 1. - Source of Stimulus: Browser/User
@@ -48,6 +54,13 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
    - Artifact: Business Processor
    - Response: Request processing is scaled up
    - Measure: Performance and availability is not affected
+  
+2. - Source of Stimulus: Browser/User.
+   - Stimulus: Higher number of tickets to schedule.
+   - Atifact: Business Processor.
+   - Response: Automatic scheduling is scaled up.
+   - Measure: Performance and availability is not affected.
+
 
 ## Modifiability
 
