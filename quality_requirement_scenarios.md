@@ -18,7 +18,8 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
 
 1. - Browser (stimulus source): unable to recieve client source code from Static File Server (artifact)
    - The response: mask the fault and repeat the request within 1 second
-   - The architecture can fulfill the scenario by detecting the fault using the HTTP HEAD request method. It is also possible to provide backup copies of the static file server with active redundancy so the system can recover from a fault.
+   - The architecture does not fullfill the scenario: if Static File Server is unavailable, the request is lost and no responce is provided.
+   - The scenario can be fullfilled by detecting the fault using the HTTP HEAD request method. Browser should send the request to the Request Handler, which will request data from the Static File Server and repeat the request if needed. It is also possible to provide backup copies of the static file server with active redundancy so the system can recover from a fault. If the Static File Server does not respond repeatedly, the Request Handler will redirect the request to one of back up copies.
 
 2. - Business Processor (stimulus source): unable to get response (data) about collisions (Example: Ticket Editing, Automatic Scheduling Caller) after sending data to be checked
    - Artifact: Collision Controller
@@ -85,7 +86,7 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
 
 1. - The Enrollments module (stimulus source) needs the data from the Schedules module (artifact) to display scheduled tickets (interoperability on data).
    - The responce: 100% of already scheduled tickets are provided
-   - The architecture lacks a communication channel with the Enrollments module. API and data format need to be defined.
+   - The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added.
 
 2. - Stimulus Source: Collision Controller (Automatic Scheduller Caller)
    - Stimulus: Stimulus Source needs data about schoolrooms (artifact), buildings and mutual distances to schedule tickets.
