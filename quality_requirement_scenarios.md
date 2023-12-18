@@ -21,10 +21,12 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
    - The architecture does not fullfill the scenario: if Static File Server is unavailable, the request is lost and no responce is provided.
    - The scenario can be fullfilled by detecting the fault using the HTTP HEAD request method. Browser should send the request to the Request Handler, which will request data from the Static File Server and repeat the request if needed. It is also possible to provide backup copies of the static file server with active redundancy so the system can recover from a fault. If the Static File Server does not respond repeatedly, the Request Handler will redirect the request to one of back up copies.
 
-2. - Business Processor (stimulus source): unable to get response (data) about collisions (Example: Ticket Editing, Automatic Scheduling Caller) after sending data to be checked
+2. - Stimulus source: Business Processor
+   - Stimulus: unable to get response (data) about collisions (Example: Ticket Editing, Automatic Scheduling Caller) after sending data to be checked
    - Artifact: Collision Controller
    - Response: mask the fault and postpone (within 5 minutes repeat action), and log
-   - The architecture can fulfill scenario by getting response within 5 minutes ??
+   - New container will be added for queueing requests. Within 5 minutes request will be sent to the Business processor again to be sent to Collision Controller and serviced. 
+   - Measure: 5 minutes 
 
 3. - Source of Stimulus: Browser/User
    - Stimulus: Unable to get response from the system
