@@ -36,10 +36,11 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
 
 ## Performance
 
-1. - Stimulus Source: Business Processor (Automatic Scheduller Caller)
-   - Stimulus: Stimulus Source sends request to Automatic Scheduler (artifact) to schedule tickets and the results are not provided in a reasonable time.
+1. - Automatic Scheduller Caller sends request to Automatic Scheduler to schedule tickets and the results have to be provided in a reasonable time.
+   - Stimulus Source: Business Processor (Automatic Scheduller Caller)
    - Artifact: Collision Controller (Automatic Scheduler)
    - Response: The system can analyze the task to estimate the time needed to schedule tickets. If the time is too long, the system can notify the user and ask for permission to make compromises.
+   - Measure: The estimate corresponds approximately to the final time.
 
 ## Security
 
@@ -90,7 +91,7 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
    - The responce: 100% of already scheduled tickets are provided
    - The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added.
 
-2. - Stimulus Source: Collision Controller (Automatic Scheduller Caller)
-   - Stimulus: Stimulus Source needs data about schoolrooms (artifact), buildings and mutual distances to schedule tickets.
-   - Artifact: Student Information System
-   - Response: 100% of schoolrooms and buildings and distances between them are provided
+2. - Stimulus Source: Collision Controller (Automatic Scheduller Caller) 
+   - Stimulus: Stimulus Source needs data about schoolrooms, buildings and mutual distances from the Student Information System to schedule tickets.
+   - Artifact: Collision Controller (Automatic Scheduller Caller)
+   - Response: Data about schoolrooms, buildings and distances between them are provided.
