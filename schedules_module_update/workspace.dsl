@@ -32,6 +32,14 @@ workspace {
             auditDatabaseContainer = container "Audit Database" "Database for audit logs" "" "Database" {
                 auditDatabase = component "Audit Database" "Store logs" "" "Database"
             }
+
+            externalDataProvider = container "External Data Provider" "Makes API calls and provides API for external systems" "" "" {
+                externalDataProviderEntry = component "External Data Provider Entry" "Makes API calls to external systems to get other data" "" ""
+            }
+
+            APIProvider = container "API Provider" "Provides API for external systems to access data" "" "" {
+                APIProviderEntry = component "API Provider Entry" "Provides API for external systems to access data" "" ""
+            }
         }
 
         SIS = softwareSystem "Student Information System" "Stores user login data and manages their respective roles" "Existing System"
@@ -55,7 +63,12 @@ workspace {
         scheduleViewer -> RWManager "Reads from"
         ticketEditor -> RWManager "Writes to"
         ticketEditor -> collisionChecker "Checks for collisions"
-        dispatcher -> SIS "Makes API calls to authorize user access"
+
+        dispatcher -> externalDataProviderEntry "Requests call to authorize user access"
+        externalDataProviderEntry -> SIS "Make API call to get data from external system"
+        APIProviderEntry -> Dispatcher "Reads from database"
+        automaticScheduler -> externalDataProviderEntry "Requests data about schoolrooms and buildings to recognize mutual distances"
+
         dispatcher -> logger "Logs requests"
         automaticSchedulerCaller -> automaticScheduler "Calls automatic scheduling"
 
@@ -125,6 +138,18 @@ workspace {
             exclude frontendContainer
             autoLayout
         }
+
+        component externalDataProvider {
+            include *
+            autoLayout
+        }
+
+        component APIProvider {
+            include *
+            autoLayout
+        }
+
+
         component staticFileServerContainer {
             include *
             autoLayout
