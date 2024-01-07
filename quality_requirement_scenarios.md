@@ -83,11 +83,16 @@ TODO
 
 ## Security
 
-1. - Source of Stimulus: Unknown attacker
+### Scenario 1
+
+   - Source of Stimulus: Unknown attacker
    - Stimulus: Request to view schedule of a specific student
    - Artifact: Business Processor
    - Response: Unauthorized request detected
-   - Measure: Each unauthorized request is detected and its information is stored for further analysis, such requests are not processed.
+   - Measure: Each unauthorized request is detected, such requests are not processed.
+   - Architecture: OK
+
+In current architecture, Business Processor is able to send API calls to authorize users, if authorization fails, the request will not be processed.
 
 2. - Source of Stimulus: Unknown attacker.
    - Stimulus: Request to edit ticket data.
@@ -98,11 +103,18 @@ TODO
 
 ## Scalability
 
-1. - Source of Stimulus: Browser/User
+### Scenario 1
+
+   - Source of Stimulus: Browser/User
    - Stimulus: Increasing avarage number of requests
    - Artifact: Business Processor
    - Response: Request processing is scaled up
    - Measure: Performance and availability is not affected
+   - Architecture: Needs update
+
+To be able to scale up Business Processor, we would need a new container - router, to be able to devide requests between multiple instances of Business Processsor by grouping similar requests.
+
+
   
 2. - Source of Stimulus: Browser/User.
    - Stimulus: Higher number of tickets to schedule.
