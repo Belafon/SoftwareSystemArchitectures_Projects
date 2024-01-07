@@ -94,5 +94,6 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
 
 2. - Stimulus Source: Collision Controller (Automatic Scheduller Caller) 
    - Stimulus: Stimulus Source needs data about schoolrooms, buildings and mutual distances from the Student Information System to schedule tickets.
-   - Artifact: Collision Controller (Automatic Scheduller Caller)
+   - Artifact: External Data Provider (External Data Provider Entry)
    - Response: Data about schoolrooms, buildings and distances between them are provided.
+   - The architecture lacks a communication channel between the Collision Controller and the Student Information System. New contianer should be added for retrieving data from external services (External Data Provider).
