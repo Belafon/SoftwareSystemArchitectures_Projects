@@ -66,7 +66,7 @@ workspace {
 
         dispatcher -> externalDataProviderEntry "Requests call to authorize user access"
         externalDataProviderEntry -> SIS "Make API call to get data from external system"
-        APIProviderEntry -> Dispatcher "Reads from database"
+        APIProviderEntry -> Dispatcher "Requests data and authorization"
         automaticScheduler -> externalDataProviderEntry "Requests data about schoolrooms and buildings to recognize mutual distances"
 
         dispatcher -> logger "Logs requests"
@@ -122,6 +122,14 @@ workspace {
 
                 deploymentNode "Audit database node" {
                     auditDatabaseInstance = containerInstance auditDatabaseContainer
+                }
+
+                deploymentNode "External data provider node" {
+                    externalDataProviderInstance = containerInstance externalDataProvider
+                }
+
+                deploymentNode "API provider node" {
+                    APIProviderInstance = containerInstance APIProvider
                 }
             }
         }
