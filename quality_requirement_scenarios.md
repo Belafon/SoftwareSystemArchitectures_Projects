@@ -36,11 +36,12 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
 
 ## Performance
 
-1. - Automatic Scheduller Caller sends request to Automatic Scheduler to schedule tickets and the results have to be provided in a reasonable time.
-   - Stimulus Source: Business Processor (Automatic Scheduller Caller)
+1. - Stimulus Source: Business Processor (Automatic Scheduller Caller)
+   - Stimuilus: Automatic Scheduller Caller sends request to Automatic Scheduler to schedule tickets and the results are not provided in a reasonable time. 
    - Artifact: Collision Controller (Automatic Scheduler)
-   - Response: The system can analyze the task to estimate the time needed to schedule tickets. If the time is too long, the system can notify the user and ask for permission to make compromises.
+   - Response: Try to avoid the situation by analyzing the task to estimate the time needed to schedule tickets. If the time is too long, the system can make a compromise by not fulfilling some of teachers preferences. If there is no preference fulfilled, but the estimated time is still too long, the system will notify the particular person about the situation.
    - Measure: The estimate corresponds approximately to the final time.
+   - The Architecture doesn't have to be changed with new components. To get the right list of contacts, the container need to retrieve the data from the Student Information System.
 
 ## Security
 
