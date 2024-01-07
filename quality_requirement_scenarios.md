@@ -1,4 +1,4 @@
-# Quality scenarios for Schedules module
+# Quality scenarios for the Schedules module
 
 **Task:**
 
@@ -42,9 +42,9 @@ Why is the architecture OK. / Note about architecture changes.
 - Measure: 1-second downtime
 - Architecture: Needs update
 
-Current architecture fails to respond if Static File Server is unavailable. Implementing active redundancy and fault detection using HTTP HEAD requests will improve reliability.
+The current architecture fails to respond if the Static File Server is unavailable. Implementing active redundancy and fault detection using HTTP HEAD requests will improve reliability.
 
-Browser should send the request to the Request Handler, which will request data from the Static File Server and repeat the request if needed. It is also possible to provide backup copies of the static file server with active redundancy so the system can recover from a fault. If the Static File Server does not respond repeatedly, the Request Handler will redirect the request to one of back up copies.
+Browser should send the request to the Request Handler, which will request data from the Static File Server and repeat the request if needed. It is also possible to provide backup copies of the static file server with active redundancy so the system can recover from a fault. If the Static File Server does not respond repeatedly, the Request Handler will redirect the request to one of the backup copies.
 
 ### Scenario 2
 
@@ -55,7 +55,7 @@ Browser should send the request to the Request Handler, which will request data 
 - Measure: 5-minute retry interval
 - Architecture: Needs update
 
-New container will be added for queueing requests. Within 5 minutes request will be sent to the Business processor again to be sent to Collision Controller and serviced.
+A new container will be added for queueing requests. Within 5 minutes request will be sent to the Business processor again to be sent to the Collision Controller and serviced.
 
 ### Scenario 3
 
@@ -74,12 +74,12 @@ TODO
 
 ### Scenario 1
 
-   - Stimulus Source: Business Processor (Automatic Scheduller Caller)
-   - Stimuilus: Automatic Scheduller Caller sends request to Automatic Scheduler to schedule tickets and the results are not provided in a reasonable time. 
+   - Stimulus Source: Business Processor (Automatic Scheduler Caller)
+   - Stimulus: Automatic Scheduler Caller sends a request to Automatic Scheduler to schedule tickets and the results are not provided in a reasonable time. 
    - Artifact: Collision Controller (Automatic Scheduler)
-   - Response: Try to avoid the situation by analyzing the task to estimate the time needed to schedule tickets. If the time is too long, the system can make a compromise by not fulfilling some of teachers preferences. If there is no preference fulfilled, but the estimated time is still too long, the system will notify the particular person about the situation.
+   - Response: Try to avoid the situation by analyzing the task to estimate the time needed to schedule tickets. If the time is too long, the system can make a compromise by not fulfilling some of the teachers' preferences. If there is no preference fulfilled, but the estimated time is still too long, the system will notify the particular person about the situation.
    - Measure: The estimate corresponds approximately to the final time.
-   - The Architecture doesn't have to be changed with new components. To get the right list of contacts, the container need to retrieve the data from the Student Information System.
+   - The Architecture doesn't have to be changed with new components. To get the right list of contacts, the container needs to retrieve the data from the Student Information System.
 
 ---
 
@@ -88,13 +88,13 @@ TODO
 ### Scenario 1
 
    - Source of Stimulus: Unknown attacker
-   - Stimulus: Request to view schedule of a specific student
+   - Stimulus: Request to view the schedule of a specific student
    - Artifact: Business Processor
    - Response: Unauthorized request detected
    - Measure: Each unauthorized request is detected, such requests are not processed.
    - Architecture: OK
 
-In current architecture, Business Processor is able to send API calls to authorize users, if authorization fails, the request will not be processed.
+In the current architecture, Business Processor is able to send API calls to authorize users, if authorization fails, the request will not be processed.
 
 ### Scenario 2
 
@@ -102,18 +102,18 @@ In current architecture, Business Processor is able to send API calls to authori
    - Stimulus: Editing ticket data
    - Artifact: Business Processor
    - Response: Data are edited.
-   - Measure: Data are edited and contain stamp with identity of editor.
+   - Measure: Data are edited and contain a stamp with the identity of the editor.
    - Architecture: OK
-In current architecture, Business Processor is able to add information about the editor.
+In the current architecture, the Business Processor is able to add information about the editor.
 
 ### Scenario 3
    -	Source of Stimulus: Known attacker
-   -	Stimulus: Request to view schedule of every schoolroom in small amount of time
+   -	Stimulus: Request to view the schedule of every schoolroom in a small amount of time
    -	Artifact: Business Processor
    -	Response: Request is detected before the attacker views every schedule.
-   -	Measure: Each request is detected, after 5 viewed schedules requests for shedule viewing are not processed.
+   -	Measure: Each request is detected, after 5 viewed schedules requests for schedule viewing are not processed.
    -	Architecture: Needs update
-New component will be added for counting viewed schedules in a row.
+A new component will be added for counting viewed schedules in a row.
 
 
 
@@ -130,7 +130,7 @@ New component will be added for counting viewed schedules in a row.
    - Measure: Performance and availability are not affected
    - Architecture: Needs update
 
-To be able to scale up Business Processor, we would need a new container - router, to be able to divide requests between multiple instances of Business Processor by grouping similar requests.
+To scale up the Business Processor, we would need a new container - router, to divide requests between multiple instances of the Business Processor by grouping similar requests.
 
 
   
@@ -157,7 +157,7 @@ To scale up Automatic Scheduler, we would need a new container - router, to be a
    - System tester (stimulus source)
    - Stimulus: Testing Business Processor (dispatcher in particular) with requests
    - Artifact: Business Processor (Dispatcher)
-   - Response: Synthetic user data prepared, correctness of requests dispatching is checked on the data
+   - Response: Synthetic user data is prepared, the correctness of requests dispatching is checked on the data
    - Measure: Coverage of 100% known user requests with different rights and permissions in 3 man-months
 
 ### Scenario 2
@@ -174,13 +174,13 @@ To scale up Automatic Scheduler, we would need a new container - router, to be a
 ### Scenario 1
 
    - The Enrollments module (stimulus source) needs the data from the Schedules module (artifact) to display scheduled tickets (interoperability on data).
-   - The responce: 100% of already scheduled tickets are provided
+   - The response: 100% of already scheduled tickets are provided
    - The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added.
 
 ### Scenario 2
 
-   - Stimulus Source: Collision Controller (Automatic Scheduller Caller)
-   - Stimulus: Stimulus Source needs data about schoolrooms, buildings and mutual distances from the Student Information System to schedule tickets.
+   - Stimulus Source: Collision Controller (Automatic Scheduler Caller)
+   - Stimulus: Stimulus Source needs data about schoolrooms, buildings, and mutual distances from the Student Information System to schedule tickets.
    - Artifact: External Data Provider (External Data Provider Entry)
-   - Response: Data about schoolrooms, buildings and distances between them are provided.
-   - The architecture lacks a communication channel between the Collision Controller and the Student Information System. New contianer should be added for retrieving data from external services (External Data Provider).
+   - Response: Data about schoolrooms, buildings, and distances between them are provided.
+   - The architecture lacks a communication channel between the Collision Controller and the Student Information System. A new container should be added for retrieving data from external services (External Data Provider).
