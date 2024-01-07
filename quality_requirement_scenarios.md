@@ -72,7 +72,9 @@ TODO
 
 ## Performance
 
-1. - Stimulus Source: Business Processor (Automatic Scheduller Caller)
+### Scenario 1
+
+   - Stimulus Source: Business Processor (Automatic Scheduller Caller)
    - Stimuilus: Automatic Scheduller Caller sends request to Automatic Scheduler to schedule tickets and the results are not provided in a reasonable time. 
    - Artifact: Collision Controller (Automatic Scheduler)
    - Response: Try to avoid the situation by analyzing the task to estimate the time needed to schedule tickets. If the time is too long, the system can make a compromise by not fulfilling some of teachers preferences. If there is no preference fulfilled, but the estimated time is still too long, the system will notify the particular person about the situation.
@@ -94,7 +96,9 @@ TODO
 
 In current architecture, Business Processor is able to send API calls to authorize users, if authorization fails, the request will not be processed.
 
-2. - Source of Stimulus: Unknown attacker.
+### Scenario 2
+
+   - Source of Stimulus: Unknown attacker.
    - Stimulus: Request to edit ticket data.
    - Artifact: Business Processor.
    - Response: Unauthorized request detected.
@@ -116,7 +120,9 @@ To be able to scale up Business Processor, we would need a new container - route
 
 
   
-2. - Source of Stimulus: Browser/User.
+### Scenario 2
+
+   - Source of Stimulus: Browser/User.
    - Stimulus: Higher number of tickets to schedule.
    - Atifact: Business Processor.
    - Response: Automatic scheduling is scaled up.
@@ -130,13 +136,16 @@ To be able to scale up Business Processor, we would need a new container - route
 
 ## Testability
 
-1. - System tester (stimulus source)
+### Scenario 1
+
+   - System tester (stimulus source)
    - Stimulus: Testing Business Processor (dispatcher in particular) with requests
    - Artifact: Business Processor (Dispatcher)
    - Response: Synthetic user data prepared, correctness of requests dispatching is checked on the data
    - Measure: Coverage of 100% known user requests with different rights and permissions in 3 man-months
 
-2. - Source of Stimulus: System tester
+### Scenario 2
+   - Source of Stimulus: System tester
    - Stimulus: Testing Collision Controller with tickets to check for collisions
    - Artifact: Collision Controller (Collision Checker)
    - Response: Synthetic tickets prepared and checked for collisions
@@ -146,11 +155,15 @@ To be able to scale up Business Processor, we would need a new container - route
 
 ## Interoperability
 
-1. - The Enrollments module (stimulus source) needs the data from the Schedules module (artifact) to display scheduled tickets (interoperability on data).
+### Scenario 1
+
+   - The Enrollments module (stimulus source) needs the data from the Schedules module (artifact) to display scheduled tickets (interoperability on data).
    - The responce: 100% of already scheduled tickets are provided
    - The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added.
 
-2. - Stimulus Source: Collision Controller (Automatic Scheduller Caller)
+### Scenario 2
+
+   - Stimulus Source: Collision Controller (Automatic Scheduller Caller)
    - Stimulus: Stimulus Source needs data about schoolrooms, buildings and mutual distances from the Student Information System to schedule tickets.
    - Artifact: External Data Provider (External Data Provider Entry)
    - Response: Data about schoolrooms, buildings and distances between them are provided.
