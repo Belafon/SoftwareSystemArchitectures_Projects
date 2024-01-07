@@ -5,34 +5,70 @@
 Describe 12 quality requirement scenarios for at least 6 quality dimensions.
 
 - $>= 3$ quality requirements in design-time dimensions
-  - modifiability, testability, interoperability
+  - [modifiability](#modifiability), [testability](#testability), [interoperability](#interoperability)
 - $<= 9$ quality requirements in run-time dimensions
-  - performance, availability, scalability, security
+  - [performance](#performance), [availability](#availability), [scalability](#scalability), [security](#security)
 
 For each scenario, decide if the architecture needs to be updated. Use the tactics from the lecture.
 
 - If yes, update the C4 model and explain.
 - If not, explain why the current architecture can fulfill the scenario.
 
+**Template for a requirement:**
+
+```markdown
+### Scenario number
+
+- Source of Stimulus:
+- Stimulus:
+- Artifact:
+- Response:
+- Measure:
+- Architecture: OK / Needs update
+
+Why is the architecture OK. / Note about architecture changes.
+```
+
+---
+
 ## Availability
 
-1. - Browser (stimulus source): unable to recieve client source code from Static File Server (artifact)
-   - The response: mask the fault and repeat the request within 1 second
-   - The architecture does not fullfill the scenario: if Static File Server is unavailable, the request is lost and no responce is provided.
-   - The scenario can be fullfilled by detecting the fault using the HTTP HEAD request method. Browser should send the request to the Request Handler, which will request data from the Static File Server and repeat the request if needed. It is also possible to provide backup copies of the static file server with active redundancy so the system can recover from a fault. If the Static File Server does not respond repeatedly, the Request Handler will redirect the request to one of back up copies.
+### Scenario 1
 
-2. - Stimulus source: Business Processor
-   - Stimulus: unable to get response (data) about collisions (Example: Ticket Editing, Automatic Scheduling Caller) after sending data to be checked
-   - Artifact: Collision Controller
-   - Response: mask the fault and postpone (within 5 minutes repeat action), and log
-   - New container will be added for queueing requests. Within 5 minutes request will be sent to the Business processor again to be sent to Collision Controller and serviced. 
-   - Measure: 5 minutes 
+- Source of Stimulus: Browser
+- Stimulus: Inability to receive client source code from Static File Server
+- Artifact: Static File Server
+- Response: Mask the fault and repeat the request
+- Measure: 1-second downtime
+- Architecture: Needs update
 
-3. - Source of Stimulus: Browser/User
-   - Stimulus: Unable to get response from the system
-   - Artifact: Business Processor
-   - Response: Mask the fault and repeat the request
-   - Measure: 5 second downtime
+Current architecture fails to respond if Static File Server is unavailable. Implementing active redundancy and fault detection using HTTP HEAD requests will improve reliability.
+
+Browser should send the request to the Request Handler, which will request data from the Static File Server and repeat the request if needed. It is also possible to provide backup copies of the static file server with active redundancy so the system can recover from a fault. If the Static File Server does not respond repeatedly, the Request Handler will redirect the request to one of back up copies.
+
+### Scenario 2
+
+- Stimulus source: Business Processor
+- Stimulus: Unable to get collision data response (Example: Ticket Editing, Automatic Scheduling Caller) after sending data to be checked
+- Artifact: Collision Controller
+- Response: Mask the fault, postpone, and log
+- Measure: 5-minute retry interval
+- Architecture: Needs update
+
+New container will be added for queueing requests. Within 5 minutes request will be sent to the Business processor again to be sent to Collision Controller and serviced.
+
+### Scenario 3
+
+- Source of Stimulus: Browser/User
+- Stimulus: No response from the system
+- Artifact: Business Processor
+- Response: Mask the fault and repeat the request
+- Measure: 5-second downtime
+- Architecture: TODO
+
+TODO
+
+---
 
 ## Performance
 
@@ -41,6 +77,8 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
    - Artifact: Collision Controller (Automatic Scheduler)
    - Response: The system can analyze the task to estimate the time needed to schedule tickets. If the time is too long, the system can notify the user and ask for permission to make compromises.
    - Measure: The estimate corresponds approximately to the final time.
+
+---
 
 ## Security
 
@@ -54,6 +92,8 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
    - Stimulus: Request to edit ticket data.
    - Artifact: Business Processor.
    - Response: Unauthorized request detected.
+
+---
 
 ## Scalability
 
@@ -69,7 +109,11 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
    - Response: Automatic scheduling is scaled up.
    - Measure: Performance and availability is not affected.
 
+---
+
 ## Modifiability
+
+---
 
 ## Testability
 
@@ -84,14 +128,16 @@ For each scenario, decide if the architecture needs to be updated. Use the tacti
    - Artifact: Collision Controller (Collision Checker)
    - Response: Synthetic tickets prepared and checked for collisions
    - Measure: Coverage of 100% known kinds of collisions in 2 man-weeks
-  
+
+---
+
 ## Interoperability
 
 1. - The Enrollments module (stimulus source) needs the data from the Schedules module (artifact) to display scheduled tickets (interoperability on data).
    - The responce: 100% of already scheduled tickets are provided
    - The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added.
 
-2. - Stimulus Source: Collision Controller (Automatic Scheduller Caller) 
+2. - Stimulus Source: Collision Controller (Automatic Scheduller Caller)
    - Stimulus: Stimulus Source needs data about schoolrooms, buildings and mutual distances from the Student Information System to schedule tickets.
    - Artifact: Collision Controller (Automatic Scheduller Caller)
    - Response: Data about schoolrooms, buildings and distances between them are provided.
