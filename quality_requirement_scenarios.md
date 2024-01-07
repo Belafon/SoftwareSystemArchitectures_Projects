@@ -98,10 +98,24 @@ In current architecture, Business Processor is able to send API calls to authori
 
 ### Scenario 2
 
-   - Source of Stimulus: Unknown attacker.
-   - Stimulus: Request to edit ticket data.
-   - Artifact: Business Processor.
-   - Response: Unauthorized request detected.
+   - Source of Stimulus: Known attacker
+   - Stimulus: Editing ticket data
+   - Artifact: Business Processor
+   - Response: Data are edited.
+   - Measure: Data are edited and contain stamp with identity of editor.
+   - Architecture: OK
+In current architecture, Business Processor is able to add information about the editor.
+
+### Scenario 3
+   -	Source of Stimulus: Known attacker
+   -	Stimulus: Request to view schedule of every schoolroom in small amount of time
+   -	Artifact: Business Processor
+   -	Response: Request is detected before the attacker views every schedule.
+   -	Measure: Each request is detected, after 5 viewed schedules requests for shedule viewing are not processed.
+   -	Architecture: Needs update
+New component will be added for counting viewed schedules in a row.
+
+
 
 ---
 
@@ -110,23 +124,25 @@ In current architecture, Business Processor is able to send API calls to authori
 ### Scenario 1
 
    - Source of Stimulus: Browser/User
-   - Stimulus: Increasing avarage number of requests
+   - Stimulus: Increasing average number of requests
    - Artifact: Business Processor
    - Response: Request processing is scaled up
-   - Measure: Performance and availability is not affected
+   - Measure: Performance and availability are not affected
    - Architecture: Needs update
 
-To be able to scale up Business Processor, we would need a new container - router, to be able to devide requests between multiple instances of Business Processsor by grouping similar requests.
+To be able to scale up Business Processor, we would need a new container - router, to be able to divide requests between multiple instances of Business Processor by grouping similar requests.
 
 
   
 ### Scenario 2
 
-   - Source of Stimulus: Browser/User.
-   - Stimulus: Higher number of tickets to schedule.
-   - Atifact: Business Processor.
-   - Response: Automatic scheduling is scaled up.
-   - Measure: Performance and availability is not affected.
+   -	Source of Stimulus: Browser/User
+   -	Stimulus: Higher number of tickets to schedule.
+   -	Artifact: Collision Controller
+   -	Response: Automatic Scheduler is scaled up.
+   -	Measure: Performance and availability are not affected 
+   -	Architecture: Need update
+To scale up Automatic Scheduler, we would need a new container - router, to be able to divide requests between multiple instances of Automatic Scheduler by grouping similar requests.
 
 ---
 
