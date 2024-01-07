@@ -74,12 +74,14 @@ TODO
 
 ### Scenario 1
 
-   - Stimulus Source: Business Processor (Automatic Scheduler Caller)
+   - Source of Stimulus: Business Processor (Automatic Scheduler Caller)
    - Stimulus: Automatic Scheduler Caller sends a request to Automatic Scheduler to schedule tickets and the results are not provided in a reasonable time. 
    - Artifact: Collision Controller (Automatic Scheduler)
    - Response: Try to avoid the situation by analyzing the task to estimate the time needed to schedule tickets. If the time is too long, the system can make a compromise by not fulfilling some of the teachers' preferences. If there is no preference fulfilled, but the estimated time is still too long, the system will notify the particular person about the situation.
    - Measure: The estimate corresponds approximately to the final time.
-   - The Architecture doesn't have to be changed with new components. To get the right list of contacts, the container needs to retrieve the data from the Student Information System.
+   - Architecture: Needs update
+  
+  The Architecture doesn't have to be changed with new components. To get the right list of contacts, the container needs to retrieve the data from the Student Information System.
 
 ---
 
@@ -179,8 +181,11 @@ To scale up Automatic Scheduler, we would need a new container - router, to be a
 
 ### Scenario 2
 
-   - Stimulus Source: Collision Controller (Automatic Scheduler Caller)
+   - Source of Stimulus: Collision Controller (Automatic Scheduler Caller)
    - Stimulus: Stimulus Source needs data about schoolrooms, buildings, and mutual distances from the Student Information System to schedule tickets.
    - Artifact: External Data Provider (External Data Provider Entry)
    - Response: Data about schoolrooms, buildings, and distances between them are provided.
-   - The architecture lacks a communication channel between the Collision Controller and the Student Information System. A new container should be added for retrieving data from external services (External Data Provider).
+   - Measure: 100% of required data are provided
+   - Architecture: OK / Needs update
+  
+  The architecture lacks a communication channel between the Collision Controller and the Student Information System. A new container should be added for retrieving data from external services (External Data Provider).
