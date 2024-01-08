@@ -181,6 +181,7 @@ To scale up Automatic Scheduler, we would need a new container - router, to be a
 - Artifact: Schedules module
 - Response: 100% of already scheduled tickets are provided
 - Architecture: The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added
+![Schedule module](./inter.png)
 
 ### Scenario 2
 
