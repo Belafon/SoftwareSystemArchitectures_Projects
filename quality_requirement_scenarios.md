@@ -176,9 +176,11 @@ To scale up Automatic Scheduler, we would need a new container - router, to be a
 
 ### Scenario 1
 
-   - The Enrollments module (stimulus source) needs the data from the Schedules module (artifact) to display scheduled tickets (interoperability on data).
-   - The response: 100% of already scheduled tickets are provided
-   - The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added.
+- Source of Stimulus: Enrollments module
+- Stimulus: Display scheduled tickets (interoperability on data)
+- Artifact: Schedules module
+- Response: 100% of already scheduled tickets are provided
+- Architecture: The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added
 
 ### Scenario 2
 
