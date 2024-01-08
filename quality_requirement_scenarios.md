@@ -56,7 +56,7 @@ Browser should send the request to the Request Handler, which will request data 
 - Architecture: Needs update
 
 A new container will be added for queueing requests. Within 5 minutes request will be sent to the Business processor again to be sent to the Collision Controller and serviced.
-![Schedule module](./IMG_0466.jpg)
+![Schedule module](./IMG_0469.jpg)
 *C4 diagram*
 ### Scenario 3
 
