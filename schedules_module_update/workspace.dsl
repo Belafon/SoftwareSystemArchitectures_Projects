@@ -67,7 +67,7 @@ workspace {
         dispatcher -> externalDataProviderEntry "Requests call to authorize user access"
         externalDataProviderEntry -> SIS "Make API call to get data from external system"
         APIProviderEntry -> Dispatcher "Requests data and authorization"
-        automaticScheduler -> externalDataProviderEntry "Requests data about schoolrooms and buildings to recognize mutual distances"
+        automaticScheduler -> externalDataProviderEntry "Requests data about schoolrooms, or contacts to authorized persons"
 
         dispatcher -> logger "Logs requests"
         automaticSchedulerCaller -> automaticScheduler "Calls automatic scheduling"
