@@ -58,6 +58,7 @@ Browser should send the request to the Request Handler, which will request data 
 A new container will be added for queueing requests. Within 5 minutes request will be sent to the Business processor again to be sent to the Collision Controller and serviced.
 ![Schedule module](./IMG_0469.jpg)
 *C4 diagram*
+
 ### Scenario 3
 
 - Source of Stimulus: Browser/User
@@ -65,9 +66,9 @@ A new container will be added for queueing requests. Within 5 minutes request wi
 - Artifact: Business Processor
 - Response: Mask the fault and repeat the request
 - Measure: 5-second downtime
-- Architecture: TODO
+- Architecture: OK
 
-TODO
+The current architecture is able to mask the fault and repeat the request.
 
 ---
 
@@ -75,14 +76,14 @@ TODO
 
 ### Scenario 1
 
-   - Source of Stimulus: Business Processor (Automatic Scheduler Caller)
-   - Stimulus: Automatic Scheduler Caller sends a request to Automatic Scheduler to schedule tickets and the results are not provided in a reasonable time. 
-   - Artifact: Collision Controller (Automatic Scheduler)
-   - Response: Try to avoid the situation by analyzing the task to estimate the time needed to schedule tickets. If the time is too long, the system can make a compromise by not fulfilling some of the teachers' preferences. If there is no preference fulfilled, but the estimated time is still too long, the system will notify the particular person about the situation.
-   - Measure: The estimate corresponds approximately to the final time.
-   - Architecture: Needs update
+- Source of Stimulus: Business Processor (Automatic Scheduler Caller)
+- Stimulus: Automatic Scheduler Caller sends a request to Automatic Scheduler to schedule tickets and the results are not provided in a reasonable time. 
+- Artifact: Collision Controller (Automatic Scheduler)
+- Response: Try to avoid the situation by analyzing the task to estimate the time needed to schedule tickets. If the time is too long, the system can make a compromise by not fulfilling some of the teachers' preferences. If there is no preference fulfilled, but the estimated time is still too long, the system will notify the particular person about the situation.
+- Measure: The estimate corresponds approximately to the final time.
+- Architecture: Needs update
   
-  The Architecture doesn't have to be changed with new components. To get the right list of contacts, the container needs to retrieve the data from the Student Information System.
+The Architecture doesn't have to be changed with new components. To get the right list of contacts, the container needs to retrieve the data from the Student Information System.
 
 ---
 
@@ -90,35 +91,36 @@ TODO
 
 ### Scenario 1
 
-   - Source of Stimulus: Unknown attacker
-   - Stimulus: Request to view the schedule of a specific student
-   - Artifact: Business Processor
-   - Response: Unauthorized request detected
-   - Measure: Each unauthorized request is detected, such requests are not processed.
-   - Architecture: OK
+- Source of Stimulus: Unknown attacker
+- Stimulus: Request to view the schedule of a specific student
+- Artifact: Business Processor
+- Response: Unauthorized request detected
+- Measure: Each unauthorized request is detected, such requests are not processed.
+- Architecture: OK
 
 In the current architecture, Business Processor is able to send API calls to authorize users, if authorization fails, the request will not be processed.
 
 ### Scenario 2
 
-   - Source of Stimulus: Known attacker
-   - Stimulus: Editing ticket data
-   - Artifact: Business Processor
-   - Response: Data are edited.
-   - Measure: Data are edited and contain a stamp with the identity of the editor.
-   - Architecture: OK
+- Source of Stimulus: Known attacker
+- Stimulus: Editing ticket data
+- Artifact: Business Processor
+- Response: Data are edited.
+- Measure: Data are edited and contain a stamp with the identity of the editor.
+- Architecture: OK
+
 In the current architecture, the Business Processor is able to add information about the editor.
 
 ### Scenario 3
-   -	Source of Stimulus: Known attacker
-   -	Stimulus: Request to view the schedule of every schoolroom in a small amount of time
-   -	Artifact: Business Processor
-   -	Response: Request is detected before the attacker views every schedule.
-   -	Measure: Each request is detected, after 5 viewed schedules requests for schedule viewing are not processed.
-   -	Architecture: Needs update
+
+- Source of Stimulus: Known attacker
+- Stimulus: Request to view the schedule of every schoolroom in a small amount of time
+- Artifact: Business Processor
+- Response: Request is detected before the attacker views every schedule.
+- Measure: Each request is detected, after 5 viewed schedules requests for schedule viewing are not processed.
+- Architecture: Needs update
+
 A new component will be added for counting viewed schedules in a row.
-
-
 
 ---
 
@@ -126,25 +128,24 @@ A new component will be added for counting viewed schedules in a row.
 
 ### Scenario 1
 
-   - Source of Stimulus: Browser/User
-   - Stimulus: Increasing average number of requests
-   - Artifact: Business Processor
-   - Response: Request processing is scaled up
-   - Measure: Performance and availability are not affected
-   - Architecture: Needs update
+- Source of Stimulus: Browser/User
+- Stimulus: Increasing average number of requests
+- Artifact: Business Processor
+- Response: Request processing is scaled up
+- Measure: Performance and availability are not affected
+- Architecture: Needs update
 
 To scale up the Business Processor, we would need a new container - router, to divide requests between multiple instances of the Business Processor by grouping similar requests.
 
-
-  
 ### Scenario 2
 
-   -	Source of Stimulus: Browser/User
-   -	Stimulus: Higher number of tickets to schedule.
-   -	Artifact: Collision Controller
-   -	Response: Automatic Scheduler is scaled up.
-   -	Measure: Performance and availability are not affected 
-   -	Architecture: Need update
+- Source of Stimulus: Browser/User
+- Stimulus: Higher number of tickets to schedule.
+- Artifact: Collision Controller
+- Response: Automatic Scheduler is scaled up.
+- Measure: Performance and availability are not affected 
+- Architecture: Need update
+
 To scale up Automatic Scheduler, we would need a new container - router, to be able to divide requests between multiple instances of Automatic Scheduler by grouping similar requests.
 
 ---
@@ -157,18 +158,19 @@ To scale up Automatic Scheduler, we would need a new container - router, to be a
 
 ### Scenario 1
 
-   - System tester (stimulus source)
-   - Stimulus: Testing Business Processor (dispatcher in particular) with requests
-   - Artifact: Business Processor (Dispatcher)
-   - Response: Synthetic user data is prepared, the correctness of requests dispatching is checked on the data
-   - Measure: Coverage of 100% known user requests with different rights and permissions in 3 man-months
+- System tester (stimulus source)
+- Stimulus: Testing Business Processor (dispatcher in particular) with requests
+- Artifact: Business Processor (Dispatcher)
+- Response: Synthetic user data is prepared, the correctness of requests dispatching is checked on the data
+- Measure: Coverage of 100% known user requests with different rights and permissions in 3 man-months
 
 ### Scenario 2
-   - Source of Stimulus: System tester
-   - Stimulus: Testing Collision Controller with tickets to check for collisions
-   - Artifact: Collision Controller (Collision Checker)
-   - Response: Synthetic tickets prepared and checked for collisions
-   - Measure: Coverage of 100% known kinds of collisions in 2 man-weeks
+
+- Source of Stimulus: System tester
+- Stimulus: Testing Collision Controller with tickets to check for collisions
+- Artifact: Collision Controller (Collision Checker)
+- Response: Synthetic tickets prepared and checked for collisions
+- Measure: Coverage of 100% known kinds of collisions in 2 man-weeks
 
 ---
 
@@ -180,16 +182,18 @@ To scale up Automatic Scheduler, we would need a new container - router, to be a
 - Stimulus: Display scheduled tickets (interoperability on data)
 - Artifact: Schedules module
 - Response: 100% of already scheduled tickets are provided
-- Architecture: The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added
+- Architecture: Needs update
+
+The architecture lacks a communication channel with the Enrollments module. The Dispatcher for the communication with external services should be added
 ![Schedule module](./inter.png)
 
 ### Scenario 2
 
-   - Source of Stimulus: Collision Controller (Automatic Scheduler Caller)
-   - Stimulus: Stimulus Source needs data about schoolrooms, buildings, and mutual distances from the Student Information System to schedule tickets.
-   - Artifact: External Data Provider (External Data Provider Entry)
-   - Response: Data about schoolrooms, buildings, and distances between them are provided.
-   - Measure: 100% of required data are provided
-   - Architecture: OK / Needs update
+- Source of Stimulus: Collision Controller (Automatic Scheduler Caller)
+- Stimulus: Stimulus Source needs data about schoolrooms, buildings, and mutual distances from the Student Information System to schedule tickets.
+- Artifact: External Data Provider (External Data Provider Entry)
+- Response: Data about schoolrooms, buildings, and distances between them are provided.
+- Measure: 100% of required data are provided
+- Architecture: Needs update
   
-  The architecture lacks a communication channel between the Collision Controller and the Student Information System. A new container should be added for retrieving data from external services (External Data Provider).
+The architecture lacks a communication channel between the Collision Controller and the Student Information System. A new container should be added for retrieving data from external services (External Data Provider).
